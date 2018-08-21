@@ -1,58 +1,98 @@
 package com.accenture.interviewproj.entities;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.accenture.interviewproj.enums.Role;
+
 @Entity
-@Table(name="EMPLOYEE")
-public class Employee {
+@Table(name = "TABLE_EMPLOYEE")
+public class Employee implements Serializable{
+	
+	private static final long serialVersionUID = 6764477767635148623L;
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="EMPLOYEE_ID")
-	private Long employeeId;
+	@Column(name = "EMPLOYEE_ID")
+	private String employeeId;
 	
-	@Column(name="PASSWORD")
-	private String password;
+	@Column(name = "EMPLOYEE_NAME", nullable = false)
+	private String employeeName;
 	
-	@Column(name="ROLE")
-	private String role;
+	@Column(name = "EMPLOYEE_PASSWORD", nullable = false)
+	private String employeePassword;
 	
-	public Employee() {
-		super();
+	@Column(name = "ROLE")
+	@Enumerated(EnumType.STRING)
+	private Role role;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "TABLE_JOB_EMPLOYEE", 
+	joinColumns = { @JoinColumn(name = "EMPLOYEE_EMPLOYEE_ID")},
+	inverseJoinColumns = { @JoinColumn(name = "JOB_JOB_ID")})
+	private List<Job> jobs;
+	
+	@OneToMany(mappedBy = "employee")
+	private Set<Tracking> trackings;
+
+	public List<Job> getJobs() {
+		return jobs;
 	}
 
-	public Employee(Long employeeId, String password, String role) {
-		super();
-		this.employeeId = employeeId;
-		this.password = password;
-		this.role = role;
+	public void setJobs(List<Job> jobs) {
+		this.jobs = jobs;
 	}
 
-	public Long getEmployeeId() {
+	public Set<Tracking> getTrackings() {
+		return trackings;
+	}
+
+	public void setTrackings(Set<Tracking> trackings) {
+		this.trackings = trackings;
+	}
+
+	public String getEmployeeId() {
 		return employeeId;
 	}
 
-	public void setEmployeeId(Long employeeId) {
+	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getEmployeeName() {
+		return employeeName;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
 	}
 
-	public String getRole() {
+	public String getEmployeePassword() {
+		return employeePassword;
+	}
+
+	public void setEmployeePassword(String employeePassword) {
+		this.employeePassword = employeePassword;
+	}
+
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 }

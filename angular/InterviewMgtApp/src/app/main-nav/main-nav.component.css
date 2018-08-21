@@ -1,0 +1,27 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.main-nav a{
+  padding: 20px;
+  margin-left: 20px;
+  color: aliceblue;
+}
+
+.main-nav mat-list-item {
+    display: inline-block;
+}
+
+
+.sidenav {
+  width: 200px;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+}
+
+.hidden{
+  display: none;
+}

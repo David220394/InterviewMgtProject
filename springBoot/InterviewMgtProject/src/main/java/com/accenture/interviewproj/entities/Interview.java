@@ -1,44 +1,65 @@
 package com.accenture.interviewproj.entities;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="INTERVIEW")
-public class Interview {
+@Table(name="TABLE_INTERVIEW")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "INTERVIEW_TYPE")
+public class Interview implements Serializable {
+	
+	private static final long serialVersionUID = 9044017024222964347L;
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="INTERVIEW_ID")
 	private Long interviewId;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="SCHEDULING")
-	private Date scheduling;
-	
-	@Column(name="LOCATION")
+	@Column(name="INTERVIEW_LOCATION")
 	private String location;
 	
-	@Column(name="INTERVIEWER_ID")
-	private Long InterviewerId;
+	@Column(name="COMPLETED")
+	private Boolean completed;
 	
-	public Interview() {
-		super();
+	@Column(name="SCHEDULE_DATE_TIME")
+	private LocalDateTime scheduleDateTime;
+	
+	@Column(name="SCORE")
+	private Double score;
+	
+	@ManyToOne
+	@JoinColumn(name="JOB_ID")
+	private Job job;
+	
+	@ManyToOne
+	@JoinColumn(name="CANDIDATE_ID")
+	private Candidate candidate;
+
+	
+	public Job getJob() {
+		return job;
 	}
 
-	public Interview(Long interviewId, Date scheduling, String location, Long interviewerId) {
-		super();
-		this.interviewId = interviewId;
-		this.scheduling = scheduling;
-		this.location = location;
-		InterviewerId = interviewerId;
+	public void setJob(Job job) {
+		this.job = job;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
 	}
 
 	public Long getInterviewId() {
@@ -49,14 +70,6 @@ public class Interview {
 		this.interviewId = interviewId;
 	}
 
-	public Date getScheduling() {
-		return scheduling;
-	}
-
-	public void setScheduling(Date scheduling) {
-		this.scheduling = scheduling;
-	}
-
 	public String getLocation() {
 		return location;
 	}
@@ -65,11 +78,27 @@ public class Interview {
 		this.location = location;
 	}
 
-	public Long getInterviewerId() {
-		return InterviewerId;
+	public Boolean getCompleted() {
+		return completed;
 	}
 
-	public void setInterviewerId(Long interviewerId) {
-		InterviewerId = interviewerId;
+	public void setCompleted(Boolean completed) {
+		this.completed = completed;
+	}
+
+	public LocalDateTime getScheduleDateTime() {
+		return scheduleDateTime;
+	}
+
+	public void setScheduleDateTime(LocalDateTime scheduleDateTime) {
+		this.scheduleDateTime = scheduleDateTime;
+	}
+
+	public Candidate getCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
 	}
 }
