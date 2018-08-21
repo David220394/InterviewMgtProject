@@ -1,18 +1,14 @@
-
 package com.accenture.interviewproj.entities;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,10 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.accenture.interviewproj.enums.CandidateStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 @Entity
 @Table(name="TABLE_CANDIDATE")
@@ -42,6 +36,7 @@ public class Candidate implements Serializable {
 	@Column(name="CANDIDATE_ADDRESS")
 	private String candidateAddress;
 	
+
 	@Column(name="CANDIDATE_EMAIL")
 	private String email;
 	
@@ -54,7 +49,7 @@ public class Candidate implements Serializable {
 	@Column(name="CANDIDATE_STATUS")
 	@Enumerated(EnumType.STRING)
 	private CandidateStatus status;
-	
+
 	@Column(name="CANDIDATE_AVAILABILITY")
 	private Boolean availability;
 	
@@ -101,6 +96,7 @@ public class Candidate implements Serializable {
 	public void setJob(Job job) {
 		this.job = job;
 	}
+
 
 	public Integer getScore() {
 		return score;
@@ -162,7 +158,6 @@ public class Candidate implements Serializable {
 		return candidatePhones;
 	}
 
-
 	public String getEmail() {
 		return email;
 	}
@@ -186,7 +181,8 @@ public class Candidate implements Serializable {
 	public void setCoverLetter(String coverLetter) {
 		this.coverLetter = coverLetter;
 	}
-
+		
+	
 	public Set<CandidateExperience> getCandidateExperiences() {
 		return candidateExperiences;
 	}

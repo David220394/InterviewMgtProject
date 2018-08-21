@@ -13,8 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="TABLE_SKILL")
@@ -29,7 +30,7 @@ public class Skill implements Serializable {
 	
 	@Column(name="SKILL_DESCRIPTION")
 	private String description;
-	
+
 	@Column(name="SKILL_LOCATION")
 	private String location;
 	

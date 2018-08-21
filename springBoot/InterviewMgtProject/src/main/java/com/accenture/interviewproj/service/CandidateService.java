@@ -1,6 +1,7 @@
 package com.accenture.interviewproj.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -35,6 +36,10 @@ public class CandidateService {
 		}else {
 			throw new IdNotFoundException("Candidate ID not Found");
 		}
+	}
+	
+	public List<Candidate> findCandidateByJobId(Long jobId){
+		return candidateRepository.findByJobId(jobId);
 	}
 	
 	public void createCandidate(Candidate candidate) {

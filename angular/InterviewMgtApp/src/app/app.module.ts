@@ -18,6 +18,9 @@ import { ExperienceComponent } from './components/candidate-profile/experience/e
 import { TrackDialogComponent } from './components/candidate-profile/track-dialog/track-dialog.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { ContactDialogComponent } from './components/candidate-profile/contact-dialog/contact-dialog.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatSelectModule} from '@angular/material/select';
+import { PipelineCandidateComponent } from './components/pipeline/pipeline-candidate/pipeline-candidate.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -32,7 +35,8 @@ import { FormsModule } from '@angular/forms';
     SkillComponent,
     ExperienceComponent,
     TrackDialogComponent,
-    ContactDialogComponent
+    ContactDialogComponent,
+    PipelineCandidateComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +44,9 @@ import { FormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     AppMaterialModule,
     LayoutModule,
+    HttpClientModule,
+    FormsModule,MatTabsModule,
+    MatSelectModule,
     HttpClientModule,
     FormsModule
 
