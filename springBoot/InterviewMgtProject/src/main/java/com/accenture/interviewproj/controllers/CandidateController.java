@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.accenture.interviewproj.dtos.CandidateDto;
 import com.accenture.interviewproj.entities.Candidate;
-import com.accenture.interviewproj.exception.IdNotFoundException;
-import com.accenture.interviewproj.service.CandidateService;
+import com.accenture.interviewproj.exceptions.IdNotFoundException;
+import com.accenture.interviewproj.services.CandidateService;
 import com.accenture.interviewproj.utilities.CandidateUtility;
 
 @CrossOrigin
@@ -26,7 +26,7 @@ public class CandidateController {
 	@Autowired
 	private CandidateService candidateService;
 	
-	@GetMapping("/job/{id}")
+	@GetMapping("/{jobId}")
 	public ResponseEntity<?> findCandidateByJodId(@PathVariable Long jobId){
 		List<CandidateDto> candidateDtos = new ArrayList<>();
 		List<Candidate> cnadidates = candidateService.findCandidateByJobId(jobId);
@@ -36,10 +36,10 @@ public class CandidateController {
 		return ResponseEntity.ok(candidateDtos);
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<?> findCandidateById(@PathVariable Long id){
+	@GetMapping("/{jobId}/{cid}")
+	public ResponseEntity<?> findCandidateByJobIdAndId(@PathVariable Long jobId,@PathVariable Long cid){
 		try {
-			CandidateDto candidateDto = CandidateUtility.convertCandidateToDto(candidateService.findCandidateById(id));
+			CandidateDto candidateDto = CandidateUtility.convertCandidateToDto(candidateService.findCandidateByJobIdAndCandidateId(jobId,cid));
 			return ResponseEntity.ok(candidateDto);
 		} catch (IdNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

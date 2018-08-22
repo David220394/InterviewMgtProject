@@ -67,3 +67,4 @@ public class CandidateExperience implements Serializable {
 	}
 
 }
+

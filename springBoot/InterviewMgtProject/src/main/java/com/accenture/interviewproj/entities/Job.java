@@ -2,7 +2,9 @@ package com.accenture.interviewproj.entities;
 
 import java.io.File;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 @Entity
@@ -29,7 +32,7 @@ public class Job implements Serializable {
 	@Column(name = "JOB_ID")
 	private Long jobId;
 
-	@Column(name = "JOB_NAME")
+	@Column(name = "JOB_NAME", unique = true)
 	private String jobName;
 
 	@Column(name = "POSITION")
@@ -39,7 +42,7 @@ public class Job implements Serializable {
 	private String location;
 
 	@Column(name = "NUMBER_OF_VACANCY")
-	private Integer noOfVancancy;
+	private Integer noOfVacancy;
 
 	@Column(name = "CLOSING_DATE", nullable = false)
 	private LocalDateTime closingDate;
@@ -64,7 +67,7 @@ public class Job implements Serializable {
 	private List<Employee> employee;
 
 	@OneToMany(mappedBy = "job")
-	private Set<JobRequirement> jobRequirements;
+	private Set<Requirement> requirements = new HashSet<>();
 	
 	@OneToMany(mappedBy = "job")
 	private Set<Interview> interviews;
@@ -78,14 +81,6 @@ public class Job implements Serializable {
 
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
-	}
-
-	public Boolean getActiveJob() {
-		return activeJob;
-	}
-
-	public void setActiveJob(Boolean activeJob) {
-		this.activeJob = activeJob;
 	}
 
 	public Set<String> getAssignTo() {
@@ -104,12 +99,12 @@ public class Job implements Serializable {
 		this.employee = employee;
 	}
 
-	public Set<JobRequirement> getJobRequirements() {
-		return jobRequirements;
+	public Set<Requirement> getRequirements() {
+		return requirements;
 	}
 
-	public void setJobRequirements(Set<JobRequirement> jobRequirements) {
-		this.jobRequirements = jobRequirements;
+	public void setRequirements(Set<Requirement> requirements) {
+		this.requirements = requirements;
 	}
 
 	public Set<Interview> getInterviews() {
@@ -126,10 +121,6 @@ public class Job implements Serializable {
 
 	public void setCandidates(Set<Candidate> candidates) {
 		this.candidates = candidates;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 	public Long getJobId() {
@@ -156,13 +147,15 @@ public class Job implements Serializable {
 		this.location = location;
 	}
 
-	public Integer getNoOfVancancy() {
-		return noOfVancancy;
+	
+	public Integer getNoOfVacancy() {
+		return noOfVacancy;
 	}
 
-	public void setNoOfVancancy(Integer noOfVancancy) {
-		this.noOfVancancy = noOfVancancy;
+	public void setNoOfVacancy(Integer noOfVacancy) {
+		this.noOfVacancy = noOfVacancy;
 	}
+
 
 	public LocalDateTime getClosingDate() {
 		return closingDate;
@@ -202,6 +195,12 @@ public class Job implements Serializable {
 
 	public void setField(String field) {
 		this.field = field;
+	}
+	
+	@PrePersist
+	public void initCreatedDate() {
+		this.creationDate = LocalDateTime.now();
+		this.closingDate = LocalDateTime.of(LocalDate.now().getYear(), (LocalDate.now().getMonthValue() + 2), 1, 0, 0);
 	}
 
 }

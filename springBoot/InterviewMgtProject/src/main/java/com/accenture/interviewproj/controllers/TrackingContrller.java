@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.accenture.interviewproj.dtos.TrackingDTO;
 import com.accenture.interviewproj.entities.Tracking;
 import com.accenture.interviewproj.enums.Track;
-import com.accenture.interviewproj.exception.IdNotFoundException;
-import com.accenture.interviewproj.service.TrackingService;
+import com.accenture.interviewproj.exceptions.IdNotFoundException;
+import com.accenture.interviewproj.services.TrackingService;
 
 @RestController
 @RequestMapping("/tracking")

@@ -53,7 +53,7 @@ public class Candidate implements Serializable {
 	@Column(name="CANDIDATE_AVAILABILITY")
 	private Boolean availability;
 	
-	@Column(name="CANDIDATE_COVER_LETTER",length=40000)
+	@Column(name="CANDIDATE_COVER_LETTER")
 	private String coverLetter;
 	
 	@ElementCollection
@@ -96,8 +96,7 @@ public class Candidate implements Serializable {
 	public void setJob(Job job) {
 		this.job = job;
 	}
-
-
+	
 	public Integer getScore() {
 		return score;
 	}
@@ -200,3 +199,4 @@ public class Candidate implements Serializable {
 	}
 
 }
+
