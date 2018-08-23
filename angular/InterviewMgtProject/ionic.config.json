@@ -1,7 +1,0 @@
-{
-  "name": "InterviewMgtProject",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "ionic-angular"
-}
