@@ -1,0 +1,82 @@
+<mat-card class="header-card">
+  <mat-card-header>
+    <img mat-card-avatar src="../../../assets/img/profile-circle-3.png"/>
+    <mat-card-title><h1>{{candidate?.name}}</h1></mat-card-title>
+    <button mat-stroked-button color="primary" id="contact" (click)="openContact()">Contact</button>
+    <button mat-stroked-button color="primary" id="track" (click)="openTracking()">Track Progress</button>
+  </mat-card-header>
+  <mat-card-content>
+      <div>
+        <h4>HR Interview</h4>
+        <mat-progress-spinner
+        [color]="'accent'"
+        [mode]="'determinate'"
+        [value]="'80'"
+        [diameter]="'75'">
+    </mat-progress-spinner>
+    <span style="top:50%">4/5</span>
+      </div>
+      <div>
+        <h4>Tech. Interview</h4>
+        <mat-progress-spinner
+        [color]="'accent'"
+        [mode]="'determinate'"
+        [value]="'80'"
+        [diameter]="'75'">
+        </mat-progress-spinner>
+        <span>4/5</span>
+      </div>
+      <div id="rating">
+        <h4>Rating</h4>
+        <mat-progress-spinner
+        [color]="'warn'"
+        [mode]="'determinate'"
+        [value]=candidate?.score
+        [diameter]=120>
+        </mat-progress-spinner>
+        <span>{{candidate?.score}}</span>
+      </div>
+      <div>
+        <h4>IQ Test</h4>
+        <mat-progress-spinner
+        [color]="'accent'"
+        [mode]="'determinate'"
+        [value]="'100'"
+        [diameter]="'75'">
+        </mat-progress-spinner>
+        <span>5/5</span>
+      </div>
+
+    </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-tab-group>
+        <mat-tab label="About">
+          <div  id="about">
+            <div id="generalInfo">
+                <h3>General Information</h3>
+                <div><h4>Address</h4>{{candidate?.address}}</div>
+                <div><h4>Availability</h4>{{availability}}</div>
+                <div><h4>Education Level</h4>{{skill?.name}} at {{skill?.location}} with an overall {{skill?.grade}}</div>
+                <div><h4>Past Job</h4>{{experience?.name}}</div>
+              </div>
+          <div id="coverLetter">
+            <h3>Cover Letter</h3>
+            {{candidate?.cover}}
+          </div>
+          <div id="feedback">
+              <h3>Feedback</h3>
+
+          </div>
+          <div id="interview">
+            <button>HR Int</button>
+            <button>Tech Int</button>
+            <button>QI Assessment</button>
+          </div>
+          </div>
+          </mat-tab>
+        <mat-tab label="Resume"> Content 2 </mat-tab>
+      </mat-tab-group>
+</mat-card>
+

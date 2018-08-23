@@ -1,0 +1,39 @@
+<div class="jobsearch">
+Job Title: &nbsp; &nbsp; &nbsp;
+
+<mat-form-field name = "pipeline">
+    <mat-select  [(ngModel)]="selected" (ngModelChange)="changeView()">
+      <mat-option *ngFor="let job of jobs" [value]="job.id">{{ job.id }} &nbsp; {{job.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+<p>You selected: {{selected}}</p>
+
+
+
+<br><br>
+</div>
+
+<mat-tab-group>
+  <mat-tab label="Applied">
+
+    <app-pipeline-candidate [candidate]="candidate" *ngFor="let candidate of candidates"></app-pipeline-candidate>
+
+  </mat-tab>
+  <mat-tab label="Schedule Interview">
+    <h1>Are</h1>
+
+  </mat-tab>
+  <mat-tab label="Interview in Progress">
+    <h1>In</h1>
+
+  </mat-tab>
+  <mat-tab label="Completed">
+    <h1>Deep</h1>
+
+  </mat-tab>
+  <mat-tab label="Rejected">
+    <h1>Shit</h1>
+
+  </mat-tab>
+</mat-tab-group>

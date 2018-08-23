@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Create a new Job</title>
+</head>
+<body>
+  <form class="p-5">
+    <h2 class="mb-3">Create a new job</h2>
+
+    <div class="form-group">
+        <label for="jobName">1.Job Name</label>
+        <input required ngModel name="jobName" #jobName="ngModel" (change)="log(jobName)" type="text" class="form-control"/>
+        <div class="alert alert-danger" *ngIf="jobName.touched && !jobName.valid">Job Name is required</div>
+      </div>
+    <div class="form-group">
+        <label for="position">2.Position</label>
+        <input required ngModel name="position" #position="ngModel" (change)="log(position)" id="position" type="text" class="form-control"/>
+        <div class="alert alert-danger" *ngIf="position.touched && !position.valid">Position of job is required</div>
+      </div>
+    <div class="form-group">
+        <label for="location">3.Location</label>
+        <input matInput required ngModel name="location" #location="ngModel" (change)="log(location)" id="location" type="text" class="form-control"/>
+        <div class="alert alert-danger" *ngIf="location.touched && !location.valid">Location of job is required</div>
+      </div>
+    <div class="form-group">
+      <label>4.Number of Vacancy: </label>
+      <input matInput required ngModel name="noOfVacancy" #number="ngModel" (change)="log(number)" type="number"/><br>
+      <div class="alert alert-danger" *ngIf="number.touched && !number.valid">Number of job vacancy is required</div>
+    </div>
+    <div class="form-group">
+      <label>5.Creation Date: </label>
+      <input required ngModel name="creationDate" #creationDate="ngModel" (change)="log(creationDate)" type="date"/><br>
+      <div class="alert alert-danger" *ngIf="creationDate.touched && !creationDate.valid">Creation Date of job is required</div>
+    </div>
+    <div class="form-group">
+        <label>6.Closing Date: </label>
+        <input  required ngModel name="closingDate" #closingDate="ngModel" (change)="log(closingDate)" type="date"/><br>
+        <div class="alert alert-danger" *ngIf="closingDate.touched && !closingDate.valid">Closing Date of job is required</div>
+    </div>
+    <div class="form-group">
+      <label>7.Assessment File: </label>
+      <button class="btn btn-primary">Upload</button>
+    </div>
+    <div class="form-group">
+        <label for="field">8.Field:</label>
+        <input required ngModel name="field" #field="ngModel" (change)="log(field)" id="field" type="text" class="form-control"/>
+        <div class="alert alert-danger" *ngIf="field.touched && !field.valid">Field of job is required</div>
+    </div>
+    <div class="form-group">
+        <label for="assignTo">9.Assign To:</label>
+        <input required ngModel name="assignTo" #assignTo="ngModel" (change)="log(assignTo)" id="assignTo" type="text" class="form-control"/>
+        <div class="alert alert-danger" *ngIf="assignTo.touched && !assignTo.valid">Assigning Job is required</div>
+      </div>
+    <div class="form-group">
+        <label for="requirements">10.Requirements:</label>
+        <input required ngModel name="requirements" #requirements="ngModel" (change)="log(requirements)" id="requirements" type="text" class="form-control"/>
+        <div class="alert alert-danger" *ngIf="requirements.touched && !requirements.valid">Requirements of Job is required</div>
+    </div>
+    <div class="center-button">
+    <button class="btn btn-primary" >Submit</button>
+    </div>
+  </form>
+</body>
+</html>
