@@ -5,13 +5,15 @@ import com.accenture.interviewproj.entities.Candidate;
 
 public class CandidateUtility {
 	
+	private CandidateUtility() {}
+	
 	public static CandidateDto convertCandidateToDto(Candidate candidate) {
 		CandidateDto candidateDto = new CandidateDto();
 		candidateDto.setCandidateAddress(candidate.getCandidateAddress());
 		candidateDto.setCandidateCv(candidate.getCandidateCv());
-		candidateDto.setCandidateExperiences(candidate.getCandidateExperiences());
+		candidateDto.setCandidateExperience(candidate.getCandidateExperience());
 		candidateDto.setCandidateName(candidate.getCandidateName());
-		candidateDto.setCandidatePhones(candidate.getCandidatePhones());
+		candidateDto.setCandidatePhone(candidate.getCandidatePhone());
 		candidateDto.setAvailability(candidate.getAvailability());
 		candidateDto.setScore(candidate.getScore());
 		candidateDto.setEmail(candidate.getEmail());
@@ -21,6 +23,13 @@ public class CandidateUtility {
 		candidateDto.setJob(candidate.getJob());
 		candidateDto.setStatus(candidate.getStatus());
 		candidateDto.setTrackings(candidate.getTrackings());
+		candidateDto.setApplicationDate(candidate.getApplicationDate());
+		candidateDto.setCompleteApplication(candidate.getCompleteApplication());
+		candidateDto.setDob(candidate.getDob());
+		candidateDto.setEducation(candidate.getEducation());
+		candidateDto.setGender(candidate.getGender());
+		candidateDto.setRehire(candidate.getRehire());
+		candidateDto.setInternalApplication(candidate.getInternalApplication());
 		return candidateDto;
 		
 	}

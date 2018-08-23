@@ -1,6 +1,7 @@
 package com.accenture.interviewproj.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,55 +11,49 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="TABLE_CANDIDATE_EXPERIENCE")
-public class CandidateExperience implements Serializable {
-	
-	private static final long serialVersionUID = -1531993904282123130L;
+@Table(name="TABLE_STATUS")
+public class Status implements Serializable{
+
+	private static final long serialVersionUID = -5346198218741189722L;
 
 	@Id
-	@Column(name="EXPERIENCE_ID")
+	@Column(name="STATUS_ID")
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long experienceId;
+	private Long statusId;
 	
-	@Column(name="EXPERIENCE_NAME")
-	private String experienceName;
+	@Column(name="STATUS_NAME")
+	private String statusName;
 	
-	@Column(name="DURATION")
-	private Integer duration;
+	@Column(name="STATUS_CHANGE_DATE")
+	private LocalDateTime creationDate;
 	
+
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "CANDIDATE_ID")
 	@JsonIgnore
 	private Candidate candidate;
 
-	public Long getExperienceId() {
-		return experienceId;
+	public String getStatusName() {
+		return statusName;
 	}
 
-	public void setExperienceId(Long experienceId) {
-		this.experienceId = experienceId;
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 
-	public String getExperienceName() {
-		return experienceName;
+	public LocalDateTime getCreationDate() {
+		return creationDate;
 	}
 
-	public void setExperienceName(String experienceName) {
-		this.experienceName = experienceName;
-	}
-
-	public Integer getDuration() {
-		return duration;
-	}
-
-	public void setDuration(Integer duration) {
-		this.duration = duration;
+	public void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
 	}
 
 	public Candidate getCandidate() {
@@ -68,6 +63,12 @@ public class CandidateExperience implements Serializable {
 	public void setCandidate(Candidate candidate) {
 		this.candidate = candidate;
 	}
+	
+	@PrePersist
+	public void initCreatedDate() {
+		this.creationDate = LocalDateTime.now();
+	}
 
+	
+	
 }
-

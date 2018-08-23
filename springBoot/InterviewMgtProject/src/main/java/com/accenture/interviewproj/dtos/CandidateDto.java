@@ -1,14 +1,18 @@
 package com.accenture.interviewproj.dtos;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import com.accenture.interviewproj.entities.CandidateExperience;
+import com.accenture.interviewproj.entities.Education;
 import com.accenture.interviewproj.entities.Interview;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.entities.Skill;
+import com.accenture.interviewproj.entities.Status;
 import com.accenture.interviewproj.entities.Tracking;
-import com.accenture.interviewproj.enums.CandidateStatus;
+import com.accenture.interviewproj.enums.Gender;
 
 public class CandidateDto {
 
@@ -16,34 +20,82 @@ public class CandidateDto {
 
 	private String candidateAddress;
 
+	private Gender gender;
+
+	private LocalDate dob;
+
+	private LocalDateTime applicationDate;
+
+	private String email;
+
+	private Boolean completeApplication;
+
+	private Boolean internalApplication;
+
+	private Boolean rehire;
+
+	private Integer score;
+
 	private File candidateCv;
 
-	private CandidateStatus status;
-	
-	private Integer score;
-	
-	private String email;
-	
+	private Status status;
+
 	private Boolean availability;
-	
+
 	private String coverLetter;
-	
-	private Set<Long> candidatePhones;
-	
-	private Set<CandidateExperience> candidateExperiences;
-	
+
+	private Long candidatePhone;
+
+	private CandidateExperience candidateExperience;
+
+	private Education education;
+
 	private Set<Skill> skills;
 
 	private Set<Interview> interviews;
-	
+
 	private Set<Tracking> trackings;
-	
+
+	private Job job;
+
 	public String getCandidateName() {
 		return candidateName;
 	}
 
 	public void setCandidateName(String candidateName) {
 		this.candidateName = candidateName;
+	}
+
+	public String getCandidateAddress() {
+		return candidateAddress;
+	}
+
+	public void setCandidateAddress(String candidateAddress) {
+		this.candidateAddress = candidateAddress;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public LocalDate getDob() {
+		return dob;
+	}
+
+	public void setDob(LocalDate dob) {
+		this.dob = dob;
+	}
+
+	public LocalDateTime getApplicationDate() {
+		return applicationDate;
+	}
+
+	public void setApplicationDate(LocalDateTime applicationDate) {
+		this.applicationDate = applicationDate;
 	}
 
 	public String getEmail() {
@@ -54,12 +106,52 @@ public class CandidateDto {
 		this.email = email;
 	}
 
+	public Boolean getCompleteApplication() {
+		return completeApplication;
+	}
+
+	public void setCompleteApplication(Boolean completeApplication) {
+		this.completeApplication = completeApplication;
+	}
+
+	public Boolean getInternalApplication() {
+		return internalApplication;
+	}
+
+	public void setInternalApplication(Boolean internalApplication) {
+		this.internalApplication = internalApplication;
+	}
+
+	public Boolean getRehire() {
+		return rehire;
+	}
+
+	public void setRehire(Boolean rehire) {
+		this.rehire = rehire;
+	}
+
 	public Integer getScore() {
 		return score;
 	}
 
 	public void setScore(Integer score) {
 		this.score = score;
+	}
+
+	public File getCandidateCv() {
+		return candidateCv;
+	}
+
+	public void setCandidateCv(File candidateCv) {
+		this.candidateCv = candidateCv;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public Boolean getAvailability() {
@@ -78,44 +170,28 @@ public class CandidateDto {
 		this.coverLetter = coverLetter;
 	}
 
-	public String getCandidateAddress() {
-		return candidateAddress;
+	public Long getCandidatePhone() {
+		return candidatePhone;
 	}
 
-	public void setCandidateAddress(String candidateAddress) {
-		this.candidateAddress = candidateAddress;
+	public void setCandidatePhone(Long candidatePhone) {
+		this.candidatePhone = candidatePhone;
 	}
 
-	public File getCandidateCv() {
-		return candidateCv;
+	public CandidateExperience getCandidateExperience() {
+		return candidateExperience;
 	}
 
-	public void setCandidateCv(File candidateCv) {
-		this.candidateCv = candidateCv;
+	public void setCandidateExperience(CandidateExperience candidateExperience) {
+		this.candidateExperience = candidateExperience;
 	}
 
-	public CandidateStatus getStatus() {
-		return status;
+	public Education getEducation() {
+		return education;
 	}
 
-	public void setStatus(CandidateStatus status) {
-		this.status = status;
-	}
-
-	public Set<Long> getCandidatePhones() {
-		return candidatePhones;
-	}
-
-	public void setCandidatePhones(Set<Long> candidatePhones) {
-		this.candidatePhones = candidatePhones;
-	}
-
-	public Set<CandidateExperience> getCandidateExperiences() {
-		return candidateExperiences;
-	}
-
-	public void setCandidateExperiences(Set<CandidateExperience> candidateExperiences) {
-		this.candidateExperiences = candidateExperiences;
+	public void setEducation(Education education) {
+		this.education = education;
 	}
 
 	public Set<Skill> getSkills() {
@@ -149,7 +225,7 @@ public class CandidateDto {
 	public void setJob(Job job) {
 		this.job = job;
 	}
+	
 
-	private Job job;
 
 }

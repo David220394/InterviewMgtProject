@@ -22,6 +22,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "TABLE_JOB")
 public class Job implements Serializable {
@@ -73,6 +75,7 @@ public class Job implements Serializable {
 	private Set<Interview> interviews;
 	
 	@OneToMany(mappedBy = "job")
+	@JsonIgnore
 	private Set<Candidate> candidates;
 
 	public String getJobName() {

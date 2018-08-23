@@ -1,8 +1,7 @@
 package com.accenture.interviewproj.services;
 
-import java.util.HashSet;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -11,13 +10,18 @@ import org.springframework.stereotype.Service;
 
 import com.accenture.interviewproj.entities.Candidate;
 import com.accenture.interviewproj.entities.CandidateExperience;
+import com.accenture.interviewproj.entities.Education;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.entities.Skill;
+import com.accenture.interviewproj.entities.Status;
+import com.accenture.interviewproj.enums.Gender;
 import com.accenture.interviewproj.exceptions.IdNotFoundException;
 import com.accenture.interviewproj.repositories.CandidateExperienceRepository;
 import com.accenture.interviewproj.repositories.CandidateRepository;
+import com.accenture.interviewproj.repositories.EducationRepository;
 import com.accenture.interviewproj.repositories.JobRepository;
 import com.accenture.interviewproj.repositories.SkillRepository;
+import com.accenture.interviewproj.repositories.StatusRepository;
 
 @Service
 public class CandidateService {
@@ -33,6 +37,12 @@ public class CandidateService {
 	
 	@Autowired
 	private JobRepository jobRepository;
+	
+	@Autowired
+	private StatusRepository statusRepository;
+	
+	@Autowired
+	private EducationRepository educationRepository;
 	
 	public Candidate findCandidateByJobIdAndCandidateId(Long jobId, Long cid) throws IdNotFoundException {
 		Candidate candidate = candidateRepository.findByJobIdAndCandidateId(jobId,cid);
@@ -73,16 +83,21 @@ public class CandidateService {
 		job1.setPosition("SAP Developer");
 		jobRepository.save(job1);
 		
+		
+		
 		Candidate candidate = new Candidate();
 		candidate.setCandidateName("Brandon");
 		candidate.setCandidateAddress("Beau Bassin");
 		candidate.setAvailability(true);
 		candidate.setEmail("brandondavid220394@gmail.com");
 		candidate.setCoverLetter("Dear .. . .");
-		Set<Long> phones = new HashSet<>();
-		phones.add((long) 57565279);
-		candidate.setCandidatePhones(phones);
+		candidate.setCandidatePhone((long) 57565279);
 		candidate.setJob(job);
+		candidate.setDob(LocalDate.of(1994, 3, 22));
+		candidate.setGender(Gender.MALE);
+		candidate.setInternalApplication(false);
+		candidate.setRehire(false);
+		candidate.setScore(0);
 		candidateRepository.save(candidate);
 		
 		Candidate candidate1 = new Candidate();
@@ -91,10 +106,13 @@ public class CandidateService {
 		candidate1.setAvailability(true);
 		candidate1.setEmail("hemantahuril220394@gmail.com");
 		candidate1.setCoverLetter("Hi .. . .");
-		Set<Long> phones1 = new HashSet<>();
-		phones1.add((long) 5754363);
 		candidate1.setJob(job);
-		candidate1.setCandidatePhones(phones1);
+		candidate1.setCandidatePhone((long) 5754363);
+		candidate1.setDob(LocalDate.of(1994, 3, 22));
+		candidate1.setGender(Gender.FEMALE);
+		candidate1.setInternalApplication(false);
+		candidate1.setRehire(false);
+		candidate1.setScore(0);
 		candidateRepository.save(candidate1);
 		
 		Candidate candidate2 = new Candidate();
@@ -103,18 +121,50 @@ public class CandidateService {
 		candidate2.setAvailability(true);
 		candidate2.setEmail("l.jankee@gmail.com");
 		candidate2.setCoverLetter("Dear .. . .");
-		Set<Long> phones2 = new HashSet<>();
-		phones2.add((long) 5723452);
 		candidate2.setJob(job1);
-		candidate2.setCandidatePhones(phones2);
+		candidate2.setCandidatePhone((long) 5723452);
+		candidate2.setDob(LocalDate.of(1994, 3, 22));
+		candidate2.setGender(Gender.MALE);
+		candidate2.setInternalApplication(false);
+		candidate2.setRehire(false);
+		candidate2.setScore(0);
 		candidateRepository.save(candidate2);
-
-		Skill skill = new Skill();
-		skill.setDescription("HSC");
-		skill.setGrade(19.0);
-		skill.setLocation("St Andrew's School");
-		skill.setCandidate(candidate);
-		skillRepository.save(skill);
+		
+		Status status = new Status();
+		status.setStatusName("Applied");
+		status.setCandidate(candidate);
+		statusRepository.save(status);
+		
+		Status status1 = new Status();
+		status1.setStatusName("Applied");
+		status1.setCandidate(candidate1);
+		statusRepository.save(status1);
+		
+		Status status2 = new Status();
+		status2.setStatusName("Applied");
+		status2.setCandidate(candidate2);
+		statusRepository.save(status2);
+		
+		Education education = new Education();
+		education.setInstitutionName("UOM");
+		education.setProgramStrudy("Mtx");
+		education.setGrade(69.7);
+		education.setCandidate(candidate);
+		educationRepository.save(education);
+		
+		Education education1 = new Education();
+		education1.setInstitutionName("Pune");
+		education1.setProgramStrudy("BSc Electronics");
+		education1.setGrade(69.7);
+		education1.setCandidate(candidate1);
+		educationRepository.save(education1);
+		
+		Education education2 = new Education();
+		education2.setInstitutionName("China Unicersity");
+		education2.setProgramStrudy("MBa");
+		education2.setGrade(69.7);
+		education2.setCandidate(candidate2);
+		educationRepository.save(education2);
 		
 		CandidateExperience candidateExperience = new CandidateExperience();
 		candidateExperience.setExperienceName("Java");
@@ -122,6 +172,24 @@ public class CandidateService {
 		candidateExperience.setCandidate(candidate);
 		candidateExperienceRepository.save(candidateExperience);
 		
+		CandidateExperience candidateExperience1 = new CandidateExperience();
+		candidateExperience1.setExperienceName("Java");
+		candidateExperience1.setDuration(1);
+		candidateExperience1.setCandidate(candidate1);
+		candidateExperienceRepository.save(candidateExperience1);
+		
+		CandidateExperience candidateExperience2 = new CandidateExperience();
+		candidateExperience2.setExperienceName("SAP");
+		candidateExperience2.setDuration(2);
+		candidateExperience2.setCandidate(candidate2);
+		candidateExperienceRepository.save(candidateExperience2);
+
+		Skill skill = new Skill();
+		skill.setDescription("HSC");
+		skill.setGrade(19.0);
+		skill.setLocation("St Andrew's School");
+		skill.setCandidate(candidate);
+		skillRepository.save(skill);
 		}
 		
 	}

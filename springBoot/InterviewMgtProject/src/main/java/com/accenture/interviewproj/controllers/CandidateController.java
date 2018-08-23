@@ -1,6 +1,5 @@
 package com.accenture.interviewproj.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +27,12 @@ public class CandidateController {
 	
 	@GetMapping("/{jobId}")
 	public ResponseEntity<?> findCandidateByJodId(@PathVariable Long jobId){
-		List<CandidateDto> candidateDtos = new ArrayList<>();
-		List<Candidate> cnadidates = candidateService.findCandidateByJobId(jobId);
-		for (Candidate candidate : cnadidates) {
-			candidateDtos.add(CandidateUtility.convertCandidateToDto(candidate));
+		List<Candidate> candidates = candidateService.findCandidateByJobId(jobId);
+		if(candidates != null) {
+		return ResponseEntity.ok(candidates);
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job Id not found");
 		}
-		return ResponseEntity.ok(candidateDtos);
 	}
 	
 	@GetMapping("/{jobId}/{cid}")
