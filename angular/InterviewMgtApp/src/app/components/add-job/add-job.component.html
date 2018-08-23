@@ -22,12 +22,12 @@
       </div>
     <div class="form-group">
         <label for="location">3.Location</label>
-        <input required ngModel name="location" #location="ngModel" (change)="log(location)" id="location" type="text" class="form-control"/>
+        <input matInput required ngModel name="location" #location="ngModel" (change)="log(location)" id="location" type="text" class="form-control"/>
         <div class="alert alert-danger" *ngIf="location.touched && !location.valid">Location of job is required</div>
       </div>
     <div class="form-group">
       <label>4.Number of Vacancy: </label>
-      <input required ngModel name="noOfVacancy" #number="ngModel" (change)="log(number)" type="number"/><br>
+      <input matInput required ngModel name="noOfVacancy" #number="ngModel" (change)="log(number)" type="number"/><br>
       <div class="alert alert-danger" *ngIf="number.touched && !number.valid">Number of job vacancy is required</div>
     </div>
     <div class="form-group">

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Candidate } from '../dto/candidate';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pipeline-candidate',
@@ -10,9 +11,13 @@ export class PipelineCandidateComponent implements OnInit {
 
   @Input() candidate:Candidate;
 
-  constructor() { }
+  constructor(private router : Router) { }
 
   ngOnInit() {
+  }
+
+  onClickRedirect(): void{
+    this.router.navigateByUrl('/candidatePage');
   }
 
 }

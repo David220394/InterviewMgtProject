@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { Experience } from '../dtos/experience';
 import { Candidate } from '../dtos/candidate';
 import { Skill } from '../dtos/skill';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,9 @@ export class CandidatePageService {
 
   constructor(private _httpClient : HttpClient) { }
 
-  public getCandidateById(id : number): Observable<Candidate> {
+  public getCandidateById(jobId : number,cid : number): Observable<Candidate> {
     return new Observable( observer => {
-      this._httpClient.get('http://localhost:8082/candidate/'+id)
+      this._httpClient.get(environment.url+'/candidate/'+jobId+"/"+cid)
       .pipe( finalize(() => { observer.complete(); }))
       .subscribe( (data: any) => {
 

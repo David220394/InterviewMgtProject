@@ -47,7 +47,6 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule,MatTabsModule,
     MatSelectModule,
-    HttpClientModule,
     FormsModule
 
   ],

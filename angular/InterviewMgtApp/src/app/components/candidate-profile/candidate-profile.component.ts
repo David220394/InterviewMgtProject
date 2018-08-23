@@ -28,7 +28,7 @@ export class CandidateProfileComponent implements OnInit {
   constructor(private candidatePageService : CandidatePageService, public dialog : MatDialog) { }
 
   ngOnInit() {
-    this.candidatePageService.getCandidateById(4).subscribe((data: any) => {
+    this.candidatePageService.getCandidateById(1,3).subscribe((data: any) => {
       this.candidate = data;
       console.log(this.candidate)
       this.phone = this.candidate.phones[0];
