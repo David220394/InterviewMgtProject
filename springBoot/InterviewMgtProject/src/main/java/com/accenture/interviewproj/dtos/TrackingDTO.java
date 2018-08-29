@@ -1,7 +1,5 @@
 package com.accenture.interviewproj.dtos;
 
-import com.accenture.interviewproj.enums.Track;
-
 public class TrackingDTO {
 	
 	private String trackingType;

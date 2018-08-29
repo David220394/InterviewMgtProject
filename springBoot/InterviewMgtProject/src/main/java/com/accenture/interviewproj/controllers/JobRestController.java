@@ -1,9 +1,7 @@
 package com.accenture.interviewproj.controllers;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-
-import javax.validation.Valid;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -16,12 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.accenture.interviewproj.dtos.JobDto;
-import com.accenture.interviewproj.dtos.RequirementDto;
 import com.accenture.interviewproj.entities.Job;
-import com.accenture.interviewproj.entities.Requirement;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.JobNotFoundException;
 import com.accenture.interviewproj.services.JobService;
@@ -41,20 +39,25 @@ public class JobRestController {
 	@PostMapping("/")
 	public ResponseEntity<?> createJob(@RequestBody JobDto jobDto) {
 		try {
-			Set<RequirementDto> requirementDtos = jobDto.getRequirements();
 			
 			Job job = JobUtility.convertJobDtoToJob(jobDto);
-			
-			for(RequirementDto r: requirementDtos) {
-				Requirement requirement = JobUtility.convertRequirementDtoToDto(r);
-				requirement.setJob(job);
-				job.getRequirements().add(requirement);
-			}
-			
 			return ResponseEntity.ok(jobService.insertJob(job));
 		} catch (JobNameAlreadyExistsException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Job name already exists");
 		}
+	}
+	
+	@PostMapping("/upload")
+	public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file, @RequestParam("jobId") Long jobId) throws JobNameAlreadyExistsException {
+		
+		Job job = this.jobService.findByJobId(jobId);
+		
+			try {
+				job.setAssessmentFile(file.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return ResponseEntity.ok(jobService.insertJob(job));
 	}
 
 	@GetMapping("/")
