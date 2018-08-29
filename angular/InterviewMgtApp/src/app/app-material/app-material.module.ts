@@ -16,7 +16,10 @@ import { MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
-        MatOptionModule} from '@angular/material';
+        MatOptionModule,
+        MatDatepicker,
+        MatDatepickerModule,
+        MatNativeDateModule} from '@angular/material';
 
 @NgModule({
   imports: [
@@ -38,6 +41,8 @@ import { MatButtonModule,
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   exports: [
     MatToolbarModule,
@@ -57,6 +62,8 @@ import { MatButtonModule,
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   declarations: []
 })
