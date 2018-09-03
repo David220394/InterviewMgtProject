@@ -1,60 +1,63 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpEventType } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { Experience } from '../dtos/experience';
 import { Candidate } from '../dtos/candidate';
 import { Skill } from '../dtos/skill';
 import { environment } from '../../../../environments/environment';
+import { Education } from '../dtos/education';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CandidatePageService {
 
-  constructor(private _httpClient : HttpClient) { }
+  constructor(private http : HttpClient) { }
 
-  public getCandidateById(jobId : number,cid : number): Observable<Candidate> {
+
+
+  /**
+   * obtain a candidate from server using jobId and candidateId
+   * @param jobId
+   * @param cid
+   */
+  public getCandidateById(jobId : string,cid : string): Observable<Candidate> {
     return new Observable( observer => {
-      this._httpClient.get(environment.url+'/candidate/'+jobId+"/"+cid)
+      this.http.get(environment.url+'/candidate/'+jobId+"/"+cid)
       .pipe( finalize(() => { observer.complete(); }))
       .subscribe( (data: any) => {
 
         let candidate : Candidate;
-        const experiences: Experience[] = [];
-        const skills : Skill[] = [];
-        const phones : number[] = [];
-
-        data.candidateExperiences.forEach( experience => {
-          experiences.push({
-            name : experience.experienceName,
-            duration : experience.duration
-          });
-        });
-
-        data.skills.forEach(skill => {
-          skills.push({
-            description : skill.description,
-            grade : skill.grade,
-            location : skill.location
-          })
-        });
-
-        data.candidatePhones.forEach(phone => {
-          phones.push(phone);
-        });
+        const experience: Experience  = {
+          name : data.candidateExperience.experienceName,
+          specialty : data.candidateExperience.specialty,
+          location : data.candidateExperience.location
+        };
+        const education : Education = {
+          institutionName : data.education.institutionName,
+          grade : data.education.grade,
+          programStudy : data.education.programStudy
+        };
 
         candidate ={
           name : data.candidateName,
           address : data.candidateAddress,
+          gender : data.gender,
+          dob : data.dob,
+          applicationDate : data.applicationDate,
+          education : education,
           email : data.email,
+          completeApplication : data.completeApplication,
+          internalApplication : data.internalApplication,
+          rehire : data.rehire,
           availability : data.availability,
           score : data.score,
           cover : data.coverLetter,
-          phones : phones,
-          status : data.status,
-          experiences : experiences,
-          skills : skills
+          phone : data.candidatePhone,
+          status : data.status.statusName,
+          experience : experience,
+          skills : null
         }
         observer.next(candidate);
       },

@@ -22,6 +22,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
 import { PipelineCandidateComponent } from './components/pipeline/pipeline-candidate/pipeline-candidate.component';
 import { FormsModule } from '@angular/forms';
+import { TestPageComponent } from './components/test-page/test-page.component';
+import { BarRatingModule } from "ngx-bar-rating";
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { FormsModule } from '@angular/forms';
     ExperienceComponent,
     TrackDialogComponent,
     ContactDialogComponent,
-    PipelineCandidateComponent
+    PipelineCandidateComponent,
+    TestPageComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,8 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule,MatTabsModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    BarRatingModule,
 
   ],
   entryComponents : [TrackDialogComponent, ContactDialogComponent],

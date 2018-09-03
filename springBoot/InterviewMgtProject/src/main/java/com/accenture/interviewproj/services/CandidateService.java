@@ -1,13 +1,24 @@
 package com.accenture.interviewproj.services;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.accenture.interviewproj.dtos.CandidateDto;
 import com.accenture.interviewproj.entities.Candidate;
 import com.accenture.interviewproj.entities.CandidateExperience;
 import com.accenture.interviewproj.entities.Education;
@@ -19,9 +30,10 @@ import com.accenture.interviewproj.exceptions.IdNotFoundException;
 import com.accenture.interviewproj.repositories.CandidateExperienceRepository;
 import com.accenture.interviewproj.repositories.CandidateRepository;
 import com.accenture.interviewproj.repositories.EducationRepository;
-import com.accenture.interviewproj.repositories.JobRepository;
+import com.accenture.interviewproj.repositories.JobsRepository;
 import com.accenture.interviewproj.repositories.SkillRepository;
 import com.accenture.interviewproj.repositories.StatusRepository;
+import com.accenture.interviewproj.utilities.CandidateUtility;
 
 @Service
 public class CandidateService {
@@ -36,13 +48,63 @@ public class CandidateService {
 	private CandidateExperienceRepository candidateExperienceRepository;
 	
 	@Autowired
-	private JobRepository jobRepository;
+	private JobsRepository jobRepository;
 	
 	@Autowired
 	private StatusRepository statusRepository;
 	
 	@Autowired
 	private EducationRepository educationRepository;
+	
+	public Candidate createCandidate(MultipartFile candidateFile) {
+		try {
+			Workbook workbook = WorkbookFactory.create(candidateFile.getInputStream());
+			Sheet sheet = workbook.getSheetAt(0);
+			DataFormatter dataFormatter = new DataFormatter();
+			Iterator<Row> rowIterator = sheet.rowIterator();
+			if(!rowIterator.hasNext()) {
+				return null;
+			}
+			rowIterator.next();
+			while(rowIterator.hasNext()) {
+				Row row = rowIterator.next();
+				CandidateDto candidateDto = CandidateUtility.getCandidateFromExcel(row);
+				createCandidateFromDto(candidateDto);
+			}
+		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) { }
+		
+		return null;
+	}
+	
+	public Candidate createCandidateFromDto(CandidateDto candidateDto) {
+		Candidate candidate = null;
+		if(candidateRepository.findByJobIdAndCandidateName(candidateDto.getJobId(), candidateDto.getCandidateName()) == null) {
+		Job job = jobRepository.findByJobId(candidateDto.getJobId());
+		candidate = CandidateUtility.convertCandidateDtoToCandidate(candidateDto);
+		candidate.setJob(job);
+		candidateRepository.save(candidate);
+		
+		Status status = new Status();
+		status.setStatusName(candidateDto.getStatus());
+		status.setCandidate(candidate);
+		statusRepository.save(status);
+		
+		Education education = new Education();
+		education.setInstitutionName(candidateDto.getInstitution());
+		education.setProgramStudy(candidateDto.getProgramStudy());
+		education.setGrade(candidateDto.getGrade());
+		education.setCandidate(candidate);
+		educationRepository.save(education);
+		
+		CandidateExperience candidateExperience = new CandidateExperience();
+		candidateExperience.setExperienceName(candidateDto.getLastJobRole());
+		candidateExperience.setSpecialty(candidateDto.getSpecialty());
+		candidateExperience.setLocation(candidateDto.getEmployer());
+		candidateExperience.setCandidate(candidate);
+		candidateExperienceRepository.save(candidateExperience);
+		}
+		return candidate;
+	}
 	
 	public Candidate findCandidateByJobIdAndCandidateId(Long jobId, Long cid) throws IdNotFoundException {
 		Candidate candidate = candidateRepository.findByJobIdAndCandidateId(jobId,cid);
@@ -83,8 +145,6 @@ public class CandidateService {
 		job1.setPosition("SAP Developer");
 		jobRepository.save(job1);
 		
-		
-		
 		Candidate candidate = new Candidate();
 		candidate.setCandidateName("Brandon");
 		candidate.setCandidateAddress("Beau Bassin");
@@ -95,6 +155,7 @@ public class CandidateService {
 		candidate.setJob(job);
 		candidate.setDob(LocalDate.of(1994, 3, 22));
 		candidate.setGender(Gender.MALE);
+		candidate.setCompleteApplication(false);
 		candidate.setInternalApplication(false);
 		candidate.setRehire(false);
 		candidate.setScore(0);
@@ -110,8 +171,9 @@ public class CandidateService {
 		candidate1.setCandidatePhone((long) 5754363);
 		candidate1.setDob(LocalDate.of(1994, 3, 22));
 		candidate1.setGender(Gender.FEMALE);
+		candidate1.setCompleteApplication(true);
 		candidate1.setInternalApplication(false);
-		candidate1.setRehire(false);
+		candidate1.setRehire(true);
 		candidate1.setScore(0);
 		candidateRepository.save(candidate1);
 		
@@ -125,7 +187,8 @@ public class CandidateService {
 		candidate2.setCandidatePhone((long) 5723452);
 		candidate2.setDob(LocalDate.of(1994, 3, 22));
 		candidate2.setGender(Gender.MALE);
-		candidate2.setInternalApplication(false);
+		candidate2.setCompleteApplication(true);
+		candidate2.setInternalApplication(true);
 		candidate2.setRehire(false);
 		candidate2.setScore(0);
 		candidateRepository.save(candidate2);
@@ -147,40 +210,43 @@ public class CandidateService {
 		
 		Education education = new Education();
 		education.setInstitutionName("UOM");
-		education.setProgramStrudy("Mtx");
+		education.setProgramStudy("Mtx");
 		education.setGrade(69.7);
 		education.setCandidate(candidate);
 		educationRepository.save(education);
 		
 		Education education1 = new Education();
 		education1.setInstitutionName("Pune");
-		education1.setProgramStrudy("BSc Electronics");
+		education1.setProgramStudy("BSc Electronics");
 		education1.setGrade(69.7);
 		education1.setCandidate(candidate1);
 		educationRepository.save(education1);
 		
 		Education education2 = new Education();
 		education2.setInstitutionName("China Unicersity");
-		education2.setProgramStrudy("MBa");
+		education2.setProgramStudy("MBa");
 		education2.setGrade(69.7);
 		education2.setCandidate(candidate2);
 		educationRepository.save(education2);
 		
 		CandidateExperience candidateExperience = new CandidateExperience();
-		candidateExperience.setExperienceName("Java");
-		candidateExperience.setDuration(2);
+		candidateExperience.setExperienceName("Trainee Engineer");
+		candidateExperience.setSpecialty("Mechanical And Electronics");
+		candidateExperience.setLocation("CMT");
 		candidateExperience.setCandidate(candidate);
 		candidateExperienceRepository.save(candidateExperience);
 		
 		CandidateExperience candidateExperience1 = new CandidateExperience();
-		candidateExperience1.setExperienceName("Java");
-		candidateExperience1.setDuration(1);
+		candidateExperience1.setExperienceName("Trainee");
+		candidateExperience1.setSpecialty("Electronics");
+		candidateExperience1.setLocation("Linkopia");
 		candidateExperience1.setCandidate(candidate1);
 		candidateExperienceRepository.save(candidateExperience1);
 		
 		CandidateExperience candidateExperience2 = new CandidateExperience();
-		candidateExperience2.setExperienceName("SAP");
-		candidateExperience2.setDuration(2);
+		candidateExperience2.setExperienceName("Trainee");
+		candidateExperience2.setSpecialty("Aviation");
+		candidateExperience2.setLocation("SSR Airport");
 		candidateExperience2.setCandidate(candidate2);
 		candidateExperienceRepository.save(candidateExperience2);
 

@@ -31,7 +31,7 @@ public class EmployeeService {
 	
 	@PostConstruct
 	public void init() {
-		if(employeeRepository.getOne("sylvio.brandon.david") == null) {
+		if(!employeeRepository.findById("sylvio.brandon.david").isPresent()) {
 		Employee employee = new Employee();
 		employee.setEmployeeId("sylvio.brandon.david");
 		employee.setEmployeeName("David");

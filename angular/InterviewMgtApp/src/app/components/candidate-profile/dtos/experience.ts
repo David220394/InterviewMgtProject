@@ -1,5 +1,7 @@
 export interface Experience {
 
   name : string,
-  duration : number
+  specialty : string,
+  location : string
+
 }

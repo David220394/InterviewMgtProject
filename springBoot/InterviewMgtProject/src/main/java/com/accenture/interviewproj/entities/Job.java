@@ -77,6 +77,27 @@ public class Job implements Serializable {
 	@OneToMany(mappedBy = "job")
 	@JsonIgnore
 	private Set<Candidate> candidates;
+	
+	@OneToMany(mappedBy = "job")
+	@JsonIgnore
+	private Set<Tracking> trakings;
+
+	
+	public Boolean getActiveJob() {
+		return activeJob;
+	}
+
+	public void setActiveJob(Boolean activeJob) {
+		this.activeJob = activeJob;
+	}
+
+	public Set<Tracking> getTrakings() {
+		return trakings;
+	}
+
+	public void setTrakings(Set<Tracking> trakings) {
+		this.trakings = trakings;
+	}
 
 	public String getJobName() {
 		return jobName;
@@ -182,14 +203,6 @@ public class Job implements Serializable {
 
 	public void setAssessmentFile(File assessmentFile) {
 		this.assessmentFile = assessmentFile;
-	}
-
-	public boolean isActiveJob() {
-		return activeJob;
-	}
-
-	public void setActiveJob(boolean activeJob) {
-		this.activeJob = activeJob;
 	}
 
 	public String getField() {

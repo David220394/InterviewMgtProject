@@ -9,7 +9,7 @@ import com.accenture.interviewproj.entities.Tracking;
 
 public interface TrackingRepository extends JpaRepository<Tracking, Long> {
 	
-	@Query(value="SELECT * FROM TABLE_TRACKING WHERE CANDIDATE_ID = ?", nativeQuery=true)
-	public List<Tracking> findByCandidateId(Long candidateId);
+	@Query(value="SELECT * FROM TABLE_TRACKING WHERE JOB_ID = ? AND CANDIDATE_ID = ?", nativeQuery=true)
+	public List<Tracking> findByCandidateIdAndJobId(Long jobId,Long candidateId);
 
 }

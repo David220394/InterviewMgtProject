@@ -14,5 +14,8 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long>{
 	
 	@Query(value="SELECT * FROM TABLE_CANDIDATE WHERE JOB_ID=? AND CANDIDATE_ID=?", nativeQuery=true)
 	Candidate findByJobIdAndCandidateId(Long jobId, Long cid);
+	
+	@Query(value="SELECT * FROM TABLE_CANDIDATE WHERE JOB_ID=? AND CANDIDATE_NAME=?", nativeQuery=true)
+	Candidate findByJobIdAndCandidateName(Long jobId, String candidateName);
 
 }

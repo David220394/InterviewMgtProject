@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -68,6 +69,7 @@ public class Candidate implements Serializable {
 	private Integer score;
 
 	@Column(name = "CANDIDATE_CV")
+	@Lob
 	private File candidateCv;
 
 	@OneToOne(fetch = FetchType.LAZY,

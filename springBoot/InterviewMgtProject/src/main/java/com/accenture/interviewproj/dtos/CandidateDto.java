@@ -34,29 +34,27 @@ public class CandidateDto {
 
 	private Boolean rehire;
 
-	private Integer score;
-
 	private File candidateCv;
 
-	private Status status;
+	private String status;
 
 	private Boolean availability;
 
-	private String coverLetter;
-
 	private Long candidatePhone;
+	
+	private String specialty;
+	
+	private String lastJobRole;
+	
+	private String employer;
+	
+	private String institution;
+	
+	private String programStudy;
+	
+	private Double grade;
 
-	private CandidateExperience candidateExperience;
-
-	private Education education;
-
-	private Set<Skill> skills;
-
-	private Set<Interview> interviews;
-
-	private Set<Tracking> trackings;
-
-	private Job job;
+	private Long jobId;
 
 	public String getCandidateName() {
 		return candidateName;
@@ -130,13 +128,7 @@ public class CandidateDto {
 		this.rehire = rehire;
 	}
 
-	public Integer getScore() {
-		return score;
-	}
 
-	public void setScore(Integer score) {
-		this.score = score;
-	}
 
 	public File getCandidateCv() {
 		return candidateCv;
@@ -144,14 +136,6 @@ public class CandidateDto {
 
 	public void setCandidateCv(File candidateCv) {
 		this.candidateCv = candidateCv;
-	}
-
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
 	}
 
 	public Boolean getAvailability() {
@@ -162,14 +146,6 @@ public class CandidateDto {
 		this.availability = availability;
 	}
 
-	public String getCoverLetter() {
-		return coverLetter;
-	}
-
-	public void setCoverLetter(String coverLetter) {
-		this.coverLetter = coverLetter;
-	}
-
 	public Long getCandidatePhone() {
 		return candidatePhone;
 	}
@@ -178,53 +154,70 @@ public class CandidateDto {
 		this.candidatePhone = candidatePhone;
 	}
 
-	public CandidateExperience getCandidateExperience() {
-		return candidateExperience;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setCandidateExperience(CandidateExperience candidateExperience) {
-		this.candidateExperience = candidateExperience;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
-	public Education getEducation() {
-		return education;
+	public String getSpecialty() {
+		return specialty;
 	}
 
-	public void setEducation(Education education) {
-		this.education = education;
+	public void setSpecialty(String specialty) {
+		this.specialty = specialty;
 	}
 
-	public Set<Skill> getSkills() {
-		return skills;
+	public String getLastJobRole() {
+		return lastJobRole;
 	}
 
-	public void setSkills(Set<Skill> skills) {
-		this.skills = skills;
+	public void setLastJobRole(String lastJobRole) {
+		this.lastJobRole = lastJobRole;
 	}
 
-	public Set<Interview> getInterviews() {
-		return interviews;
+	public String getEmployer() {
+		return employer;
 	}
 
-	public void setInterviews(Set<Interview> interviews) {
-		this.interviews = interviews;
+	public void setEmployer(String employer) {
+		this.employer = employer;
 	}
 
-	public Set<Tracking> getTrackings() {
-		return trackings;
+	public String getInstitution() {
+		return institution;
 	}
 
-	public void setTrackings(Set<Tracking> trackings) {
-		this.trackings = trackings;
+	public void setInstitution(String institution) {
+		this.institution = institution;
 	}
 
-	public Job getJob() {
-		return job;
+	public String getProgramStudy() {
+		return programStudy;
 	}
 
-	public void setJob(Job job) {
-		this.job = job;
+	public void setProgramStudy(String programStudy) {
+		this.programStudy = programStudy;
 	}
+
+	public Double getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Double grade) {
+		this.grade = grade;
+	}
+
+	public Long getJobId() {
+		return jobId;
+	}
+
+	public void setJobId(Long jobId) {
+		this.jobId = jobId;
+	}
+
 	
 
 

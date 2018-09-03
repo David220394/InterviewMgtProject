@@ -29,8 +29,11 @@ public class CandidateExperience implements Serializable {
 	@Column(name="EXPERIENCE_NAME")
 	private String experienceName;
 	
-	@Column(name="DURATION")
-	private Integer duration;
+	@Column(name="SPECIALITY")
+	private String specialty;
+	
+	@Column(name="LOCATION")
+	private String location;
 	
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "CANDIDATE_ID")
@@ -53,12 +56,22 @@ public class CandidateExperience implements Serializable {
 		this.experienceName = experienceName;
 	}
 
-	public Integer getDuration() {
-		return duration;
+	
+
+	public String getSpecialty() {
+		return specialty;
 	}
 
-	public void setDuration(Integer duration) {
-		this.duration = duration;
+	public void setSpecialty(String specialty) {
+		this.specialty = specialty;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	public Candidate getCandidate() {

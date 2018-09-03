@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map, finalize } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { Job } from '../dto/job';
+import { element } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,11 @@ export class PipelineCandidateService {
 
   constructor(private httpClient:HttpClient) { }
 
-  private candidates: Candidate[] = [];
+  candidatesApplied: Candidate[];
+  candidatesInterviewScheduled: Candidate[];
+  candidatesInterviewInProgress: Candidate[];
+  candidatesCompleted: Candidate[];
+  candidatesRejected: Candidate[];
 
   public getAlljob() : Observable<any>{
     return new Observable( observer => {
@@ -37,10 +42,6 @@ export class PipelineCandidateService {
   }
 
 
-  get candidatesList():Candidate[]{
-    return this.candidates;
-  }
-
   /*public getallcandidates():Observable<any>{
     return this.httpClient.get(environment.url+"/candidate/job/all/")
     .pipe(map((contents:any):void => {
@@ -57,21 +58,53 @@ export class PipelineCandidateService {
   }*/
 
 
-  public getallcandidatesbyjob(jobid: string):Observable<any>{
+  public getallcandidatesbyjob(jobid: number):Observable<any>{
     return this.httpClient.get(environment.url+"/candidate/"+ jobid)
     .pipe(map((contents:any):void => {
-      this.candidates = [];
+      this.candidatesApplied = [];
+      this.candidatesInterviewScheduled = [];
+      this.candidatesInterviewInProgress =[];
+      this.candidatesCompleted = [];
+      this.candidatesRejected = [];
+      let candidates : Candidate[] = [];
       contents.forEach((element:any)=> {
-        let experience : string = "";
-        let description : string = "";
-        this.candidates.push({
+        candidates.push({
+          id : element.candidateId,
           rating:element.score,
           name: element.candidateName,
           picture:null,
           title:element.candidateExperience.experienceName,
-          education:element.education.programStrudy
+          education:element.education.programStrudy,
+          status : element.status.statusName
         })
       });
+
+      candidates.forEach((element:Candidate)=>{
+        switch(element.status){
+          case "Applied":{
+            this.candidatesApplied.push(element);
+            break;
+          }
+          case "Scheduled Interview":{
+            this.candidatesInterviewScheduled.push(element);
+            break;
+          }
+          case "Interview In progress":{
+            this.candidatesInterviewInProgress.push(element);
+            break;
+          }
+          case "Completed":{
+            this.candidatesCompleted.push(element);
+            break;
+          }
+          case "Rejected":{
+            this.candidatesRejected.push(element);
+            break;
+          }
+        }
+      });
+
+
     }))
   }
 

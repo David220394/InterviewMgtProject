@@ -4,6 +4,7 @@ import {Job} from './dto/job';
 import { Candidate } from './dto/candidate';
 import { PipelineCandidateService } from './providers/pipeline-candidate.service';
 import { FormGroup } from '@angular/forms';
+import { SharePreferencesService } from '../providers/share-preferences.service';
 
 @Component({
   selector: 'app-pipeline',
@@ -12,13 +13,18 @@ import { FormGroup } from '@angular/forms';
 })
 export class PipelineComponent implements OnInit {
 
-  constructor(private service:PipelineCandidateService) { }
+  constructor(private service:PipelineCandidateService, private sharePreferences : SharePreferencesService) { }
 
     jobs: Job[];
 
-    public selected?: any;
+    selected?: number;
 
-    candidates: Candidate[];
+    candidatesApplied: Candidate[];
+    candidatesInterviewScheduled: Candidate[];
+    candidatesInterviewInProgress: Candidate[];
+    candidatesCompleted: Candidate[];
+    candidatesRejected: Candidate[];
+
 
 
   ngOnInit(): void {
@@ -28,18 +34,18 @@ export class PipelineComponent implements OnInit {
     }
     )
 
-    this.service.getallcandidatesbyjob(this.selected).subscribe(
-      () => {this.candidates = this.service.candidatesList,
-        console.log(this.candidates)},error => {console.error(error)}
-    );
-
   }
 
   changeView(): void{
-    console.log(this.selected);
+    this.sharePreferences.setJobId(this.selected);
     this.service.getallcandidatesbyjob(this.selected).subscribe(
-      () => {this.candidates = this.service.candidatesList,
-        console.log(this.candidates)},error => {console.error(error)}
+      () => {
+        this.candidatesApplied = this.service.candidatesApplied,
+        this.candidatesInterviewScheduled = this.service.candidatesInterviewScheduled,
+        this.candidatesInterviewInProgress = this.service.candidatesInterviewInProgress,
+        this.candidatesCompleted = this.service.candidatesCompleted,
+        this.candidatesRejected = this.service.candidatesRejected
+        },error => {console.error(error)}
     );
   }
 

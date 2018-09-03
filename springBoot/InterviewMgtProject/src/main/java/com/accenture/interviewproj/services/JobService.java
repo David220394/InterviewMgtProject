@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.JobNotFoundException;
-import com.accenture.interviewproj.repositories.JobRepository;
+import com.accenture.interviewproj.repositories.JobsRepository;
 
 @Service
 public class JobService {
 	
-	private final JobRepository jobRepository;
+	private final JobsRepository jobRepository;
 	
-	public JobService(JobRepository jobRepository) {
+	public JobService(JobsRepository jobRepository) {
 		this.jobRepository = jobRepository;
 	}
 

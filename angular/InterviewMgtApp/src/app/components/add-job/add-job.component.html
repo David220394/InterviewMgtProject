@@ -10,6 +10,10 @@
   <form class="p-5">
     <h2 class="mb-3">Create a new job</h2>
 
+    <mat-form-field>
+      <input matInput placeholder="Test">
+    </mat-form-field>
+
     <div class="form-group">
         <label for="jobName">1.Job Name</label>
         <input required ngModel name="jobName" #jobName="ngModel" (change)="log(jobName)" type="text" class="form-control"/>

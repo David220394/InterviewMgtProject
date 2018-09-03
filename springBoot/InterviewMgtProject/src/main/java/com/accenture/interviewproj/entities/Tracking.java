@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -49,6 +50,18 @@ public class Tracking implements Serializable{
 	@ManyToOne
 	@JoinColumn(name= "CANDIDATE_ID")
 	private Candidate candidate;
+	
+	@ManyToOne
+	@JoinColumn(name= "JOB_ID")
+	private Job job;
+
+	public Job getJob() {
+		return job;
+	}
+
+	public void setJob(Job job) {
+		this.job = job;
+	}
 
 	public Employee getEmployee() {
 		return employee;

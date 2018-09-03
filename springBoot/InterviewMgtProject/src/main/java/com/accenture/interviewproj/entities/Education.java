@@ -30,7 +30,7 @@ public class Education implements Serializable {
 	private String institutionName;
 	
 	@Column(name="PROGRAM_STUDY")
-	private String programStrudy;
+	private String programStudy;
 	
 	@Column(name="GRADE")
 	private double grade;
@@ -57,12 +57,12 @@ public class Education implements Serializable {
 		this.institutionName = institutionName;
 	}
 
-	public String getProgramStrudy() {
-		return programStrudy;
+	public String getProgramStudy() {
+		return programStudy;
 	}
 
-	public void setProgramStrudy(String programStrudy) {
-		this.programStrudy = programStrudy;
+	public void setProgramStudy(String programStudy) {
+		this.programStudy = programStudy;
 	}
 
 	public double getGrade() {

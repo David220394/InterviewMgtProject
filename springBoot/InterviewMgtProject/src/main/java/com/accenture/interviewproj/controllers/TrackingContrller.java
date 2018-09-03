@@ -21,16 +21,16 @@ import com.accenture.interviewproj.services.TrackingService;
 
 @RestController
 @RequestMapping("/tracking")
-@CrossOrigin
+@CrossOrigin(exposedHeaders="Access-Control-Allow-Origin",allowedHeaders="Content-Type")
 public class TrackingContrller {
 	
 	@Autowired
 	private TrackingService trackingService;
 	
-	@GetMapping("/{candidateId}")
-	public ResponseEntity<?> findByCandidateIdAndUserId(@PathVariable Long candidateId){
+	@GetMapping("/{jobId}/{candidateId}")
+	public ResponseEntity<?> findByJobIdAndCandidateId(@PathVariable Long jobId, @PathVariable Long candidateId){
 		try {
-			List<Tracking> trackings = trackingService.findTrackingByCandidate(candidateId);
+			List<Tracking> trackings = trackingService.findTrackingByJobIdAndCandidateId(jobId, candidateId);
 			return ResponseEntity.ok(trackings);
 		} catch (IdNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -40,7 +40,8 @@ public class TrackingContrller {
 	@PostMapping("/")
 	public ResponseEntity<?> insertTracking(@RequestBody TrackingDTO trackingDto){
 		trackingService.insertTracking(trackingDto);
-		return ResponseEntity.ok("Inserted");
+			return ResponseEntity.ok("Inserted");
+		
 	}
 
 }

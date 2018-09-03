@@ -8,9 +8,11 @@ public class TrackingDTO {
 
 	private String comment;
 
-	private String employee;
+	private String employeeId;
 	
-	private Long candidate;
+	private Long candidateId;
+
+	private Long jobId;
 
 	public String getTrackingType() {
 		return trackingType;
@@ -28,21 +30,30 @@ public class TrackingDTO {
 		this.comment = comment;
 	}
 
-	public String getEmployee() {
-		return employee;
+	public String getEmployeeId() {
+		return employeeId;
 	}
 
-	public void setEmployee(String employee) {
-		this.employee = employee;
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
 	}
 
-	public Long getCandidate() {
-		return candidate;
+	public Long getCandidateId() {
+		return candidateId;
 	}
 
-	public void setCandidate(Long candidate) {
-		this.candidate = candidate;
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
 	}
+
+	public Long getJobId() {
+		return jobId;
+	}
+
+	public void setJobId(Long jobId) {
+		this.jobId = jobId;
+	}
+
 	
 	
 

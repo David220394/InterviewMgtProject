@@ -5,25 +5,25 @@
           <textarea rows="4" cols="50" matInput [(ngModel)]="comment" placeholder="Write your comment"></textarea>
         </mat-form-field>
         <br/>
-        <button mat-button [mat-dialog-close]="true">Save</button>
+        <button mat-button (click)="onContactSubmit()">Save</button>
     </mat-tab>
     <mat-tab label="mail">
       From : {{user}} <br/>
       To : {{email}} <br/>
 
               <mat-form-field>
-                <mat-select placeholder="E-mail type" [(ngModel)]="selectedValue" name="mail">
-                  <mat-option *ngFor="let mail of mails" [value]="mail.body">
+                <mat-select placeholder="E-mail type"  name="mail">
+                  <mat-option *ngFor="let mail of mails" [value]="mail.value" (click)="updateSelected($event, mail.value, mail.body)">
                     {{mail.viewValue}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
               <br/>
               <mat-form-field>
-          <textarea rows="4" cols="50" matInput [(ngModel)]="comment" placeholder="e-mail body" [value]="selectedValue">{{selectedValue}}</textarea>
+          <textarea rows="4" cols="50" matInput [(ngModel)]="comment" placeholder="e-mail body" [value]="selectedValue"></textarea>
         </mat-form-field>
         <br/>
-        <button mat-button [mat-dialog-close]="true">Save</button>
+        <button mat-button (click)="onMailSubmit()">Save</button>
     </mat-tab>
     <mat-tab  label="others">
       <mat-form-field>
@@ -34,7 +34,7 @@
             <textarea rows="4" cols="50" matInput [(ngModel)]="comment" placeholder="e-mail body" [value]="selectedValue">{{selectedValue}}</textarea>
           </mat-form-field>
           <br/>
-          <button mat-button [mat-dialog-close]="true">Save</button>
+          <button mat-button [mat-dialog-close]="other">Save</button>
     </mat-tab>
   </mat-tab-group>
 <mat-dialog-actions align="end">
