@@ -26,18 +26,18 @@
       </mat-form-field>
 
     <mat-form-field class="form-group">
-      <input matInput placeholder="Number of vacancy" required ngModel name="noOfVacancy" #number="ngModel"  type="number"/><br>
+      <input matInput placeholder="Number of vacancy" required ngModel name="noOfVacancy" #number="ngModel" id="noOfVacancy" type="number"/><br>
       <div class="alert alert-danger" *ngIf="number.touched && !number.valid">Number of job vacancy is required</div>
     </mat-form-field>
 
     <mat-form-field class="form-group">
-      <input matInput [matDatepicker]="picker1" placeholder="Choose a Creation Date">
+      <input matInput [matDatepicker]="picker1" ngModel name="creationDate" placeholder="Choose a Creation Date">
       <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker #picker1></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field class="form-group">
-      <input matInput [matDatepicker]="picker" placeholder="Choose a Closing Date">
+      <input matInput [matDatepicker]="picker" ngModel name="closingDate" placeholder="Choose a Closing Date">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>

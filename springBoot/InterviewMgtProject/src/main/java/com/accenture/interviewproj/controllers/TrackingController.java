@@ -21,11 +21,16 @@ import com.accenture.interviewproj.services.TrackingService;
 @RestController
 @RequestMapping("/tracking")
 @CrossOrigin
-public class TrackingContrller {
+public class TrackingController {
 	
 	@Autowired
 	private TrackingService trackingService;
 	
+	/**
+	 * 
+	 * @param candidateId
+	 * find by candidate id and user id 
+	 */
 	@GetMapping("/{candidateId}")
 	public ResponseEntity<?> findByCandidateIdAndUserId(@PathVariable Long candidateId){
 		try {
@@ -36,6 +41,11 @@ public class TrackingContrller {
 		}
 	}
 	
+	/**
+	 *
+	 * @param trackingDto
+	 * Insert the candidate tracking progress
+	 */
 	@PostMapping("/")
 	public ResponseEntity<?> insertTracking(@RequestBody TrackingDTO trackingDto){
 		trackingService.insertTracking(trackingDto);

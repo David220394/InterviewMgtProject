@@ -26,7 +26,13 @@ public class TrackingService {
 	
 	@Autowired
 	private CandidateRepository candidateRepository;
-
+	
+	/**
+	 * 
+	 * @param candidateId
+	 * @throws IdNotFoundException
+	 * Tracking progress of the candidate
+	 */
 	public List<Tracking> findTrackingByCandidate(Long candidateId) throws IdNotFoundException {
 		List<Tracking> trackings = trackingRepository.findByCandidateId(candidateId);
 		if(!trackings.isEmpty()) {
@@ -37,6 +43,11 @@ public class TrackingService {
 		
 	}
 	
+	/**
+	 * 
+	 * @param trackingDto
+	 * Insert the tracking progress of the candidate
+	 */
 	public void insertTracking(TrackingDTO trackingDto) {
 		Tracking tracking = new Tracking();
 		tracking.setComment(tracking.getComment());
@@ -46,6 +57,9 @@ public class TrackingService {
 		trackingRepository.save(tracking);
 	}
 	
+	/**
+	 * Details for the tracking progress of the candidate
+	 */
 	@PostConstruct
 	public void init() {
 		if(trackingRepository.findByCandidateId((long) 4) == null) {

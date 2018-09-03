@@ -26,7 +26,7 @@ import com.accenture.interviewproj.services.JobService;
 import com.accenture.interviewproj.utilities.JobUtility;
 
 @RestController
-@RequestMapping("/jobs")
+@RequestMapping("api/jobs")
 @CrossOrigin
 public class JobRestController {
 
@@ -36,7 +36,13 @@ public class JobRestController {
 		this.jobService = jobService;
 	}
 
-	@PostMapping("/")
+	/**
+	 * 
+	 * @param jobDto
+	 * Creating a job
+	 * checks if job already exist in database
+	 */
+	@PostMapping("/createJob")
 	public ResponseEntity<?> createJob(@RequestBody JobDto jobDto) {
 		try {
 			
@@ -47,24 +53,41 @@ public class JobRestController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param file
+	 * @param jobId
+	 * @throws JobNameAlreadyExistsException
+	 * Upload the assessment file 
+	 */
 	@PostMapping("/upload")
 	public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file, @RequestParam("jobId") Long jobId) throws JobNameAlreadyExistsException {
 		
-		Job job = this.jobService.findByJobId(jobId);
-		
-			try {
-				job.setAssessmentFile(file.getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return ResponseEntity.ok(jobService.insertJob(job));
+		Job updatedJob;
+		try {
+			updatedJob = jobService.updateJob(jobId, file.getBytes());
+			return ResponseEntity.ok(updatedJob);
+		} catch (JobNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
-
+	
+	/**
+	 * 
+	 * @Get the list of all jobs 
+	 */
 	@GetMapping("/")
 	public ResponseEntity<List<?>> getAllJobs() {
 		return ResponseEntity.ok(jobService.findAll());
 	}
-
+	
+	/**
+	 * 
+	 * @param jobId
+	 * Find a job by its id 
+	 */
 	@GetMapping("/{jobId}")
 	public ResponseEntity<?> findJobByName(@PathVariable("jobId") Long jobId) {
 		Job job = jobService.findByJobId(jobId);
@@ -74,9 +97,14 @@ public class JobRestController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param jobName
+	 * Delete a job by its name
+	 */
 	@DeleteMapping("/{jobName}")
-	public HttpEntity<String> deleteIncident(@PathVariable("jobName") String jobName) {
+	public HttpEntity<String> deleteJob(@PathVariable("jobName") String jobName) {
 		try {
 			jobService.deleteJob(jobName);
 			return ResponseEntity.ok("DELETED!!");
@@ -84,9 +112,14 @@ public class JobRestController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param job
+	 * Update a job
+	 */
 	@PutMapping("/")
-	public ResponseEntity<?> updateIncident(@RequestBody Job job) {
+	public ResponseEntity<?> updateJob(@RequestBody Job job) {
 		try {
 			jobService.updateJob(job);
 			return ResponseEntity.ok("Updated");

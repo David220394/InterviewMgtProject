@@ -24,13 +24,19 @@ export class AddJobComponent implements OnInit {
   }
 
   createJob(createJobForm) {
-    let job = createJobForm.value;
-    job.assignTo = ["David"];
-    job.requirements = ['HSC'];
+
+    if (this.file != null) {
+      const job = createJobForm.value;
+
+    //convert to array
+    job.assignTo = job.assignTo.split(",");
+
+    //delete file field
     delete job.file;
+
     console.log(job);
 
-    this.http.post('http://localhost:8082/jobs/', job, this.httpOptions)
+    this.http.post('http://localhost:8082/api/jobs/createJob', job, this.httpOptions)
     .subscribe((data: any) => {
       console.log(data);
 
@@ -38,11 +44,12 @@ export class AddJobComponent implements OnInit {
       uploadData.append('jobId', data.jobId);
       uploadData.append('file', this.file);
 
-      this.http.post('http://localhost:8082/jobs/upload', uploadData)
-      .subscribe((data: any) => {
-        console.log("dsdsdsd");
-      })
+      this.http.post('http://localhost:8082/api/jobs/upload', uploadData)
+      .subscribe((updatedJob: any) => {
+        console.log(updatedJob);
+      });
     })
+    }
   }
 
   onUpload($event) {

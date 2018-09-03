@@ -3,11 +3,13 @@ package com.accenture.interviewproj.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -58,16 +60,15 @@ public class Job implements Serializable {
 
 	@Column(name = "FIELD")
 	private String field;
+	
+	@Column(name = "REQUIREMENTS")
+	private String requirements;
 
-	/*@ElementCollection
-	@CollectionTable(name="TABLE_JOB_ASSIGN_TO")
-	private Set<String> assignTo;*/
+	@ElementCollection
+	private List<String> assignTo = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "jobs", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Employee> employee;
-
-	@OneToMany(mappedBy = "job")
-	private String requirements;
 	
 	@OneToMany(mappedBy = "job")
 	private Set<Interview> interviews;
@@ -194,6 +195,14 @@ public class Job implements Serializable {
 	public void initCreatedDate() {
 		this.creationDate = LocalDateTime.now();
 		this.closingDate = LocalDateTime.of(LocalDate.now().getYear(), (LocalDate.now().getMonthValue() + 2), 1, 0, 0);
+	}
+
+	public List<String> getAssignTo() {
+		return assignTo;
+	}
+
+	public void setAssignTo(List<String> assignTo) {
+		this.assignTo = assignTo;
 	}
 
 }

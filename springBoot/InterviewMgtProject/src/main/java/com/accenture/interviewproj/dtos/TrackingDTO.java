@@ -9,7 +9,7 @@ public class TrackingDTO {
 	private String employee;
 	
 	private Long candidate;
-
+	
 	public String getTrackingType() {
 		return trackingType;
 	}

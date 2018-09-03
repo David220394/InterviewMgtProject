@@ -20,6 +20,12 @@ public class EmployeeService {
 		employeeRepository.save(employee);
 	}
 	
+	/**
+	 * 
+	 * @param eid
+	 * @throws IdNotFoundException
+	 * Find an employee by id
+	 */
 	public Employee findById(String eid) throws IdNotFoundException {
 		Employee employee = employeeRepository.getOne(eid);
 		if(employee != null) {
@@ -29,6 +35,9 @@ public class EmployeeService {
 		}
 	}
 	
+	/**
+	 * Insert employee details
+	 */
 	@PostConstruct
 	public void init() {
 		if(employeeRepository.getOne("sylvio.brandon.david") == null) {
