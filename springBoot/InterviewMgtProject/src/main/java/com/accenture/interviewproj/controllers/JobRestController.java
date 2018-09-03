@@ -1,9 +1,7 @@
 package com.accenture.interviewproj.controllers;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-
-import javax.validation.Valid;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -16,19 +14,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.accenture.interviewproj.dtos.JobDto;
-import com.accenture.interviewproj.dtos.RequirementDto;
 import com.accenture.interviewproj.entities.Job;
-import com.accenture.interviewproj.entities.Requirement;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.JobNotFoundException;
 import com.accenture.interviewproj.services.JobService;
 import com.accenture.interviewproj.utilities.JobUtility;
 
 @RestController
-@RequestMapping("/jobs")
+@RequestMapping("api/jobs")
 @CrossOrigin
 public class JobRestController {
 
@@ -38,30 +36,58 @@ public class JobRestController {
 		this.jobService = jobService;
 	}
 
-	@PostMapping("/")
+	/**
+	 * 
+	 * @param jobDto
+	 * Creating a job
+	 * checks if job already exist in database
+	 */
+	@PostMapping("/createJob")
 	public ResponseEntity<?> createJob(@RequestBody JobDto jobDto) {
 		try {
-			Set<RequirementDto> requirementDtos = jobDto.getRequirements();
 			
 			Job job = JobUtility.convertJobDtoToJob(jobDto);
-			
-			for(RequirementDto r: requirementDtos) {
-				Requirement requirement = JobUtility.convertRequirementDtoToDto(r);
-				requirement.setJob(job);
-				job.getRequirements().add(requirement);
-			}
-			
 			return ResponseEntity.ok(jobService.insertJob(job));
 		} catch (JobNameAlreadyExistsException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Job name already exists");
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param file
+	 * @param jobId
+	 * @throws JobNameAlreadyExistsException
+	 * Upload the assessment file 
+	 */
+	@PostMapping("/upload")
+	public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file, @RequestParam("jobId") Long jobId) throws JobNameAlreadyExistsException {
+		
+		Job updatedJob;
+		try {
+			updatedJob = jobService.updateJob(jobId, file.getBytes());
+			return ResponseEntity.ok(updatedJob);
+		} catch (JobNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * @Get the list of all jobs 
+	 */
 	@GetMapping("/")
 	public ResponseEntity<List<?>> getAllJobs() {
 		return ResponseEntity.ok(jobService.findAll());
 	}
-
+	
+	/**
+	 * 
+	 * @param jobId
+	 * Find a job by its id 
+	 */
 	@GetMapping("/{jobId}")
 	public ResponseEntity<?> findJobByName(@PathVariable("jobId") Long jobId) {
 		Job job = jobService.findByJobId(jobId);
@@ -71,9 +97,14 @@ public class JobRestController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param jobName
+	 * Delete a job by its name
+	 */
 	@DeleteMapping("/{jobName}")
-	public HttpEntity<String> deleteIncident(@PathVariable("jobName") String jobName) {
+	public HttpEntity<String> deleteJob(@PathVariable("jobName") String jobName) {
 		try {
 			jobService.deleteJob(jobName);
 			return ResponseEntity.ok("DELETED!!");
@@ -81,9 +112,14 @@ public class JobRestController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param job
+	 * Update a job
+	 */
 	@PutMapping("/")
-	public ResponseEntity<?> updateIncident(@RequestBody Job job) {
+	public ResponseEntity<?> updateJob(@RequestBody Job job) {
 		try {
 			jobService.updateJob(job);
 			return ResponseEntity.ok("Updated");

@@ -56,6 +56,7 @@ public class CandidateService {
 	@Autowired
 	private EducationRepository educationRepository;
 	
+
 	public Candidate createCandidate(MultipartFile candidateFile) {
 		try {
 			Workbook workbook = WorkbookFactory.create(candidateFile.getInputStream());
@@ -106,6 +107,14 @@ public class CandidateService {
 		return candidate;
 	}
 	
+
+	/**
+	 * 
+	 * @param jobId
+	 * @param cid
+	 * @throws IdNotFoundException
+	 * find a candidate by job id and candidate id
+	 */
 	public Candidate findCandidateByJobIdAndCandidateId(Long jobId, Long cid) throws IdNotFoundException {
 		Candidate candidate = candidateRepository.findByJobIdAndCandidateId(jobId,cid);
 		if(candidate != null) {
@@ -115,14 +124,27 @@ public class CandidateService {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param jobId
+	 * Find a candidate by job id
+	 */
 	public List<Candidate> findCandidateByJobId(Long jobId){
 		return candidateRepository.findByJobId(jobId);
 	}
 	
+	/**
+	 * 
+	 * @param candidate
+	 * Insert a candidate
+	 */
 	public void insertCandidate(Candidate candidate) {
 		candidateRepository.save(candidate);
 	}
 	
+	/**
+	 * Details for job and candidate
+	 */
 	@PostConstruct
 	public void init() {
 		if(candidateRepository.findAll().isEmpty()) {

@@ -1,10 +1,8 @@
 package com.accenture.interviewproj.dtos;
 
-import java.io.File;
 import java.time.LocalDateTime;
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class JobDto {
@@ -15,21 +13,19 @@ public class JobDto {
 	
 	private String location;
 	
-	private Integer noOfVancancy;
+	private Integer noOfVacancy;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	//@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime closingDate;
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	//@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime creationDate;
-
-	private File assessmentFile;
 
 	private String field;
 	
-	private Set<String> assignTo;
+	private List<String> assignTo = new ArrayList<>();
 	
-	private Set<RequirementDto> requirements;
+	private String requirements;
 
 	public String getJobName() {
 		return jobName;
@@ -55,12 +51,13 @@ public class JobDto {
 		this.location = location;
 	}
 
-	public Integer getNoOfVancancy() {
-		return noOfVancancy;
+
+	public Integer getNoOfVacancy() {
+		return noOfVacancy;
 	}
 
-	public void setNoOfVancancy(Integer noOfVancancy) {
-		this.noOfVancancy = noOfVancancy;
+	public void setNoOfVacancy(Integer noOfVacancy) {
+		this.noOfVacancy = noOfVacancy;
 	}
 
 	public LocalDateTime getClosingDate() {
@@ -79,14 +76,6 @@ public class JobDto {
 		this.creationDate = creationDate;
 	}
 
-	public File getAssessmentFile() {
-		return assessmentFile;
-	}
-
-	public void setAssessmentFile(File assessmentFile) {
-		this.assessmentFile = assessmentFile;
-	}
-
 	public String getField() {
 		return field;
 	}
@@ -95,19 +84,19 @@ public class JobDto {
 		this.field = field;
 	}
 
-	public Set<String> getAssignTo() {
+	public List<String> getAssignTo() {
 		return assignTo;
 	}
 
-	public void setAssignTo(Set<String> assignTo) {
+	public void setAssignTo(List<String> assignTo) {
 		this.assignTo = assignTo;
 	}
 
-	public Set<RequirementDto> getRequirements() {
+	public String getRequirements() {
 		return requirements;
 	}
 
-	public void setRequirements(Set<RequirementDto> requirements) {
+	public void setRequirements(String requirements) {
 		this.requirements = requirements;
 	}
 }

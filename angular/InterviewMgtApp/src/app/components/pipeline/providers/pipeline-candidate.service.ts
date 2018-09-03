@@ -22,7 +22,7 @@ export class PipelineCandidateService {
 
   public getAlljob() : Observable<any>{
     return new Observable( observer => {
-      this.httpClient.get(environment.url+'/jobs/')
+      this.httpClient.get(environment.url+'/api/jobs/')
       .pipe( finalize(() => { observer.complete(); }))
       .subscribe( (data: any) => {
         let jobs : Job[] = [];

@@ -52,7 +52,12 @@ public class CandidateController {
  
         return "Done!";
     }
-	
+
+	/**
+	 * 
+	 * @param jobId
+	 * finding a candidate by its jobId
+	 */
 	@GetMapping("/{jobId}")
 	public ResponseEntity<?> findCandidateByJodId(@PathVariable Long jobId){
 		List<Candidate> candidates = candidateService.findCandidateByJobId(jobId);
@@ -63,6 +68,12 @@ public class CandidateController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param jobId
+	 * @param cid
+	 * finding a candidate by its jobId and candidate id
+	 */
 	@GetMapping("/{jobId}/{cid}")
 	public ResponseEntity<?> findCandidateByJobIdAndId(@PathVariable Long jobId,@PathVariable Long cid){
 		try {

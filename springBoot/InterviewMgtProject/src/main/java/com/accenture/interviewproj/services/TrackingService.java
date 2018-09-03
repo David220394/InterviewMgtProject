@@ -27,7 +27,7 @@ public class TrackingService {
 	
 	@Autowired
 	private CandidateRepository candidateRepository;
-	
+
 	@Autowired
 	private JobsRepository jobRepository;
 
@@ -41,6 +41,11 @@ public class TrackingService {
 		
 	}
 	
+	/**
+	 * 
+	 * @param trackingDto
+	 * Insert the tracking progress of the candidate
+	 */
 	public void insertTracking(TrackingDTO trackingDto) {
 		Tracking tracking = new Tracking();
 		tracking.setComment(trackingDto.getComment());
@@ -51,6 +56,5 @@ public class TrackingService {
 		trackingRepository.save(tracking);
 	}
 	
-
 	
 }

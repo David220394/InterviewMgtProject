@@ -7,6 +7,7 @@ import { CandidateProfileComponent } from '../components/candidate-profile/candi
 import { AddJobComponent } from '../components/add-job/add-job.component';
 import { JobListComponent } from '../components/job-list/job-list.component';
 import { TestPageComponent } from '../components/test-page/test-page.component';
+import { RegisterHrComponent } from '../components/register-hr/register-hr.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -16,7 +17,8 @@ const routes: Routes = [
   { path: 'addJob', component: AddJobComponent },
   { path: 'jobList', component: JobListComponent },
   { path: 'candidatePage', component : CandidateProfileComponent },
-  { path: 'testPage', component: TestPageComponent }
+  { path: 'testPage', component: TestPageComponent },
+  { path: 'regPage', component: RegisterHrComponent },
 ];
 
 

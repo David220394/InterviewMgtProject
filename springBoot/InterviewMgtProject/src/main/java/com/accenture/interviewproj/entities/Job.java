@@ -1,15 +1,13 @@
 package com.accenture.interviewproj.entities;
 
-import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -17,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -53,23 +52,23 @@ public class Job implements Serializable {
 	private LocalDateTime creationDate;
 
 	@Column(name = "ASSESSMENT_FILE")
-	private File assessmentFile;
+	@Lob
+	private byte[] assessmentFile;
 
 	@Column(name = "ACTIVE_JOB")
 	private Boolean activeJob;
 
 	@Column(name = "FIELD")
 	private String field;
+	
+	@Column(name = "REQUIREMENTS")
+	private String requirements;
 
 	@ElementCollection
-	@CollectionTable(name="TABLE_JOB_ASSIGN_TO")
-	private Set<String> assignTo;
+	private List<String> assignTo = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "jobs", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Employee> employee;
-
-	@OneToMany(mappedBy = "job")
-	private Set<Requirement> requirements = new HashSet<>();
 	
 	@OneToMany(mappedBy = "job")
 	private Set<Interview> interviews;
@@ -107,14 +106,6 @@ public class Job implements Serializable {
 		this.jobName = jobName;
 	}
 
-	public Set<String> getAssignTo() {
-		return assignTo;
-	}
-
-	public void setAssignTo(Set<String> assignTo) {
-		this.assignTo = assignTo;
-	}
-
 	public List<Employee> getEmployee() {
 		return employee;
 	}
@@ -123,11 +114,11 @@ public class Job implements Serializable {
 		this.employee = employee;
 	}
 
-	public Set<Requirement> getRequirements() {
+	public String getRequirements() {
 		return requirements;
 	}
 
-	public void setRequirements(Set<Requirement> requirements) {
+	public void setRequirements(String requirements) {
 		this.requirements = requirements;
 	}
 
@@ -197,11 +188,11 @@ public class Job implements Serializable {
 		this.creationDate = creationDate;
 	}
 
-	public File getAssessmentFile() {
+	public byte[] getAssessmentFile() {
 		return assessmentFile;
 	}
 
-	public void setAssessmentFile(File assessmentFile) {
+	public void setAssessmentFile(byte[] assessmentFile) {
 		this.assessmentFile = assessmentFile;
 	}
 
@@ -213,10 +204,18 @@ public class Job implements Serializable {
 		this.field = field;
 	}
 	
-	@PrePersist
+	/*@PrePersist
 	public void initCreatedDate() {
 		this.creationDate = LocalDateTime.now();
 		this.closingDate = LocalDateTime.of(LocalDate.now().getYear(), (LocalDate.now().getMonthValue() + 2), 1, 0, 0);
+	}*/
+
+	public List<String> getAssignTo() {
+		return assignTo;
+	}
+
+	public void setAssignTo(List<String> assignTo) {
+		this.assignTo = assignTo;
 	}
 
 }

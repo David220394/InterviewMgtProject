@@ -24,6 +24,7 @@ import { PipelineCandidateComponent } from './components/pipeline/pipeline-candi
 import { FormsModule } from '@angular/forms';
 import { TestPageComponent } from './components/test-page/test-page.component';
 import { BarRatingModule } from "ngx-bar-rating";
+import { RegisterHrComponent } from './components/register-hr/register-hr.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { BarRatingModule } from "ngx-bar-rating";
     TrackDialogComponent,
     ContactDialogComponent,
     PipelineCandidateComponent,
-    TestPageComponent
+    TestPageComponent,
+    RegisterHrComponent
   ],
   imports: [
     BrowserModule,

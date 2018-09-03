@@ -1,7 +1,5 @@
 package com.accenture.interviewproj.dtos;
 
-import com.accenture.interviewproj.enums.Track;
-
 public class TrackingDTO {
 	
 	private String trackingType;
@@ -9,7 +7,7 @@ public class TrackingDTO {
 	private String comment;
 
 	private String employeeId;
-	
+
 	private Long candidateId;
 
 	private Long jobId;
