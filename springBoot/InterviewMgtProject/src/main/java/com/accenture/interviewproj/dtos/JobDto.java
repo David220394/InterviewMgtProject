@@ -20,8 +20,6 @@ public class JobDto {
 
 	//@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime creationDate;
-
-	private String field;
 	
 	private List<String> assignTo = new ArrayList<>();
 	
@@ -74,14 +72,6 @@ public class JobDto {
 
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
-	}
-
-	public String getField() {
-		return field;
-	}
-
-	public void setField(String field) {
-		this.field = field;
 	}
 
 	public List<String> getAssignTo() {

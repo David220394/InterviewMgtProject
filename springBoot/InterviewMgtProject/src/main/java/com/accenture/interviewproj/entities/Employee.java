@@ -3,6 +3,7 @@ package com.accenture.interviewproj.entities;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import com.accenture.interviewproj.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

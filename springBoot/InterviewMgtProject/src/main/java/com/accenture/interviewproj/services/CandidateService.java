@@ -152,18 +152,14 @@ public class CandidateService {
 		Job job = new Job();
 		job.setActiveJob(true);
 		job.setJobName("Accenture Academy");
-		job.setField("Technology");
 		job.setLocation("NexTracom");
-		job.setNoOfVacancy(4);
 		job.setPosition("Java Developer");
 		jobRepository.save(job);
 		
 		Job job1 = new Job();
 		job1.setActiveJob(true);
 		job1.setJobName("SAP Development");
-		job1.setField("Technology");
 		job1.setLocation("NexTracom");
-		job1.setNoOfVacancy(3);
 		job1.setPosition("SAP Developer");
 		jobRepository.save(job1);
 		

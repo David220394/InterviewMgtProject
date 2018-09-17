@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RegisterHrService } from './providers/register-hr.service';
 
 @Component({
   selector: 'app-register-hr',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterHrComponent implements OnInit {
 
-  constructor() { }
+  constructor(private registerHRService: RegisterHrService) { }
 
   ngOnInit() {
   }
 
+  registerHR(register){
+    this.registerHRService.registerHR(register.value).subscribe ((data:any) => {
+      console.log(data);
+    })
+  }
 }

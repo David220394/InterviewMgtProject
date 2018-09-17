@@ -42,9 +42,6 @@ public class Job implements Serializable {
 	@Column(name = "LOCATION")
 	private String location;
 
-	@Column(name = "NUMBER_OF_VACANCY")
-	private Integer noOfVacancy;
-
 	@Column(name = "CLOSING_DATE", nullable = false)
 	private LocalDateTime closingDate;
 
@@ -57,9 +54,6 @@ public class Job implements Serializable {
 
 	@Column(name = "ACTIVE_JOB")
 	private Boolean activeJob;
-
-	@Column(name = "FIELD")
-	private String field;
 	
 	@Column(name = "REQUIREMENTS")
 	private String requirements;
@@ -162,16 +156,6 @@ public class Job implements Serializable {
 		this.location = location;
 	}
 
-	
-	public Integer getNoOfVacancy() {
-		return noOfVacancy;
-	}
-
-	public void setNoOfVacancy(Integer noOfVacancy) {
-		this.noOfVacancy = noOfVacancy;
-	}
-
-
 	public LocalDateTime getClosingDate() {
 		return closingDate;
 	}
@@ -195,21 +179,13 @@ public class Job implements Serializable {
 	public void setAssessmentFile(byte[] assessmentFile) {
 		this.assessmentFile = assessmentFile;
 	}
-
-	public String getField() {
-		return field;
-	}
-
-	public void setField(String field) {
-		this.field = field;
-	}
 	
-	/*@PrePersist
+	@PrePersist
 	public void initCreatedDate() {
 		this.creationDate = LocalDateTime.now();
 		this.closingDate = LocalDateTime.of(LocalDate.now().getYear(), (LocalDate.now().getMonthValue() + 2), 1, 0, 0);
-	}*/
-
+	}
+	
 	public List<String> getAssignTo() {
 		return assignTo;
 	}

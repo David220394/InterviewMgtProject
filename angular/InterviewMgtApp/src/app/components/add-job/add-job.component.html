@@ -11,8 +11,8 @@
     <h2 class="mb-3">Create a new job</h2>
 
     <mat-form-field class="form-group">
-        <input matInput placeholder="Job Name" required ngModel name="jobName" #jobName="ngModel"  type="text" class="form-control"/>
-        <div class="alert alert-danger" *ngIf="jobName.touched && !jobName.valid">Job Name is required</div>
+        <input matInput placeholder="Project Name" required ngModel name="jobName" #jobName="ngModel"  type="text" class="form-control"/>
+        <div class="alert alert-danger" *ngIf="jobName.touched && !jobName.valid">Project Name is required</div>
     </mat-form-field>
 
     <mat-form-field class="form-group">
@@ -24,11 +24,6 @@
         <input matInput placeholder="Location" required ngModel name="location" #location="ngModel"  id="location" type="text" class="form-control"/>
         <div class="alert alert-danger" *ngIf="location.touched && !location.valid">Location of job is required</div>
       </mat-form-field>
-
-    <mat-form-field class="form-group">
-      <input matInput placeholder="Number of vacancy" required ngModel name="noOfVacancy" #number="ngModel" id="noOfVacancy" type="number" min="0" max="50"/><br>
-      <div class="alert alert-danger" *ngIf="number.touched && !number.valid">Number of job vacancy is required</div>
-    </mat-form-field>
 
     <mat-form-field class="form-group">
       <input matInput [matDatepicker]="picker1" ngModel name="creationDate" placeholder="Choose a Creation Date">
@@ -43,11 +38,6 @@
     </mat-form-field>
 
     <mat-form-field class="form-group">
-        <input matInput placeholder="Field" required ngModel name="field" #field="ngModel"  id="field" type="text" class="form-control"/>
-        <div class="alert alert-danger" *ngIf="field.touched && !field.valid">Field of job is required</div>
-    </mat-form-field>
-
-    <mat-form-field class="form-group">
         <input matInput placeholder="Assign To" required ngModel name="assignTo" #assignTo="ngModel"  id="assignTo" type="text" class="form-control"/>
         <div class="alert alert-danger" *ngIf="assignTo.touched && !assignTo.valid">Assigning Job is required</div>
     </mat-form-field>
@@ -59,7 +49,7 @@
 
     <div class="center-button">
     <label>Assessment File: </label>
-    <input ngModel type="file" name="file" (change)="onUpload($event)"><br><br>
+    <input ngModel type="file" accept=".xlsx" name="file" (change)="onUpload($event)"><br><br>
     <input type="submit" class="btn btn-primary" value="submit">
     </div>
 
