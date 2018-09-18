@@ -31,6 +31,7 @@ import { TechInterviewComponent } from './components/candidate-profile/interview
 import { IqAssessmentComponent } from './components/candidate-profile/interviews/iq-assessment/iq-assessment.component';
 import { InterviewsComponent } from './components/candidate-profile/interviews/interviews.component';
 import { FeedbackComponent } from './components/candidate-profile/feedback/feedback.component';
+import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { FeedbackComponent } from './components/candidate-profile/feedback/feedb
     TechInterviewComponent,
     IqAssessmentComponent,
     InterviewsComponent,
-    FeedbackComponent
+    FeedbackComponent,
+    LoginDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +71,7 @@ import { FeedbackComponent } from './components/candidate-profile/feedback/feedb
     BarRatingModule,
 
   ],
-  entryComponents : [TrackDialogComponent, ContactDialogComponent, InterviewDialogComponent],
+  entryComponents : [TrackDialogComponent, ContactDialogComponent, InterviewDialogComponent, LoginDialogComponent],
   providers: [{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}}],
   bootstrap: [AppComponent]
 })

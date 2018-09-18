@@ -122,6 +122,7 @@ public class InterviewService {
 				interview.setScore(afterInterviewDto.getScore());
 				interview.setMaxScore(afterInterviewDto.getMaxScore());
 				interview.setFeedback(afterInterviewDto.getFeedback());
+				interview.setCompleted(true);
 				technicalInterviewRepository.save(interview);
 				updateInterviewQuestion(afterInterviewDto, interview);
 				return interview;
@@ -129,6 +130,7 @@ public class InterviewService {
 				AssessmentInterview interview = assessmentInterviewRepository.findByLink(afterInterviewDto.getLink());
 				interview.setScore(afterInterviewDto.getScore());
 				interview.setMaxScore(afterInterviewDto.getMaxScore());
+				interview.setCompleted(true);
 				return assessmentInterviewRepository.save(interview);
 			}
 		}

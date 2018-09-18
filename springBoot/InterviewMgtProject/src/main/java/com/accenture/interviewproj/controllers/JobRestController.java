@@ -1,6 +1,7 @@
 package com.accenture.interviewproj.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.EncryptedDocumentException;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.accenture.interviewproj.dtos.JobDto;
 import com.accenture.interviewproj.dtos.QuestionDto;
+import com.accenture.interviewproj.dtos.JobWithIdDto;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.JobNotFoundException;
@@ -84,6 +86,21 @@ public class JobRestController {
 	@GetMapping("/")
 	public ResponseEntity<List<?>> getAllJobs() {
 		return ResponseEntity.ok(jobService.findAll());
+	}
+	
+	/**
+	 * List of jobs with id 
+	 */
+	@GetMapping("/getAll")
+	public ResponseEntity<List<?>> getAllJobsWithId(){
+		List <Job> jobs = jobService.findAll();
+		List<JobWithIdDto> jobDto = new ArrayList<>();
+		
+		for(Job job : jobs) {
+			JobWithIdDto jobWithIdDto = JobUtility.convertJobWithIdDtoToJob(job);
+			jobDto.add(jobWithIdDto);
+		}
+		return ResponseEntity.ok(jobDto);
 	}
 	
 	/**

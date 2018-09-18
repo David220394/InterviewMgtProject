@@ -16,7 +16,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.support.IteratorItemReader;
-import org.springframework.stereotype.Component;
 
 public class CustomReader implements ItemReader<Row> {
 	
@@ -69,8 +68,6 @@ public class CustomReader implements ItemReader<Row> {
 		
 	}
 		
-	
-	
 	
 
 }

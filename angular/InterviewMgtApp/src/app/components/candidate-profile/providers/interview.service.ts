@@ -150,7 +150,7 @@ export class InterviewService {
 
   public getCompletedInterview(jobId : string,cid : string):Observable<AfterInterview[]>{
     return new Observable(observable =>{
-      this.http.get(environment.url + '/interview/'+1+'/'+3)
+      this.http.get(environment.url + '/interview/'+jobId+'/'+cid)
       .pipe( finalize(() => { observable.complete(); }))
       .subscribe( (data: any) => {
         let afterInterviews : AfterInterview[] = [];

@@ -15,7 +15,7 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
 	@Query(value="SELECT * FROM TABLE_INTERVIEW WHERE COMPLETED=true AND CANDIDATE_ID=? AND JOB_ID=?",nativeQuery=true)
 	List<Interview> findInterviewByCompletedAndCandidateIdAndJobId(long candidateId, long jobId);
 	
-	@Query(value="SELECT * FROM TABLE_INTERVIEW WHERE TYPE=? AND CANDIDATE_ID=? AND JOB_ID=? ORDER BY CREATION_DATE_TIME ASC",nativeQuery=true)
+	@Query(value="SELECT * FROM TABLE_INTERVIEW WHERE TYPE=? AND CANDIDATE_ID=? AND JOB_ID=? ORDER BY CREATION_DATE_TIME DESC",nativeQuery=true)
 	List<Interview> findByTypeOrderByCreationDate(String type, long candidateId, long jobId);
 
 }
