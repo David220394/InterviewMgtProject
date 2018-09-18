@@ -35,6 +35,17 @@
               <a routerLink="/regPage">Register</a>
             </mat-nav-list>
     </mat-toolbar>
-    <ng-content></ng-content>
+
+      <div class="container content">
+      <div class="row">             <!-- responsive row has 12 columns by default -->
+        <div class="col-md-12">      <!-- uses 6 columns on medium and larger screens... -->
+          <div class="jumbotron">
+
+            <router-outlet></router-outlet>
+                  </div>
+        </div>
+      </div>
+      </div>
+
   </mat-sidenav-content>
 </mat-sidenav-container>

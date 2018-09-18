@@ -23,8 +23,9 @@ export class CandidatePageService {
    * @param cid
    */
   public getCandidateById(jobId : string,cid : string): Observable<Candidate> {
+    console.log(jobId+','+cid);
     return new Observable( observer => {
-      this.http.get(environment.url+'/candidate/'+jobId+"/"+cid)
+      this.http.get(environment.url+'/candidate/'+jobId+'/'+cid)
       .pipe( finalize(() => { observer.complete(); }))
       .subscribe( (data: any) => {
 

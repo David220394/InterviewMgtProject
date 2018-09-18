@@ -21,10 +21,16 @@ import { ContactDialogComponent } from './components/candidate-profile/contact-d
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
 import { PipelineCandidateComponent } from './components/pipeline/pipeline-candidate/pipeline-candidate.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestPageComponent } from './components/test-page/test-page.component';
 import { BarRatingModule } from "ngx-bar-rating";
 import { RegisterHrComponent } from './components/register-hr/register-hr.component';
+import { InterviewDialogComponent } from './components/candidate-profile/interview-dialog/interview-dialog.component';
+import { HrInterviewComponent } from './components/candidate-profile/interviews/hr-interview/hr-interview.component';
+import { TechInterviewComponent } from './components/candidate-profile/interviews/tech-interview/tech-interview.component';
+import { IqAssessmentComponent } from './components/candidate-profile/interviews/iq-assessment/iq-assessment.component';
+import { InterviewsComponent } from './components/candidate-profile/interviews/interviews.component';
+import { FeedbackComponent } from './components/candidate-profile/feedback/feedback.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +47,13 @@ import { RegisterHrComponent } from './components/register-hr/register-hr.compon
     ContactDialogComponent,
     PipelineCandidateComponent,
     TestPageComponent,
-    RegisterHrComponent
+    RegisterHrComponent,
+    InterviewDialogComponent,
+    HrInterviewComponent,
+    TechInterviewComponent,
+    IqAssessmentComponent,
+    InterviewsComponent,
+    FeedbackComponent
   ],
   imports: [
     BrowserModule,
@@ -53,10 +65,11 @@ import { RegisterHrComponent } from './components/register-hr/register-hr.compon
     FormsModule,MatTabsModule,
     MatSelectModule,
     FormsModule,
+    ReactiveFormsModule,
     BarRatingModule,
 
   ],
-  entryComponents : [TrackDialogComponent, ContactDialogComponent],
+  entryComponents : [TrackDialogComponent, ContactDialogComponent, InterviewDialogComponent],
   providers: [{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}}],
   bootstrap: [AppComponent]
 })

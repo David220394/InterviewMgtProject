@@ -148,13 +148,13 @@ public class CandidateService {
 	@PostConstruct
 	public void init() {
 		if(candidateRepository.findAll().isEmpty()) {
-			
 		Job job = new Job();
 		job.setActiveJob(true);
 		job.setJobName("Accenture Academy");
 		job.setField("Technology");
 		job.setLocation("NexTracom");
 		job.setNoOfVacancy(4);
+		job.setAssessmentFile("Test1.xlsx");
 		job.setPosition("Java Developer");
 		jobRepository.save(job);
 		
@@ -164,6 +164,7 @@ public class CandidateService {
 		job1.setField("Technology");
 		job1.setLocation("NexTracom");
 		job1.setNoOfVacancy(3);
+		job1.setAssessmentFile("Test1.xlsx");
 		job1.setPosition("SAP Developer");
 		jobRepository.save(job1);
 		

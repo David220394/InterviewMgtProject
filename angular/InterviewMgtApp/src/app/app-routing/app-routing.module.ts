@@ -8,8 +8,11 @@ import { AddJobComponent } from '../components/add-job/add-job.component';
 import { JobListComponent } from '../components/job-list/job-list.component';
 import { TestPageComponent } from '../components/test-page/test-page.component';
 import { RegisterHrComponent } from '../components/register-hr/register-hr.component';
+import { InterviewsComponent } from '../components/candidate-profile/interviews/interviews.component';
+import { MainNavComponent } from '../main-nav/main-nav.component';
 
 const routes: Routes = [
+  {path: '', component: MainNavComponent,children:[
   { path: 'dashboard', component: DashboardComponent },
   { path: 'pipeline', component: PipelineComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -19,6 +22,8 @@ const routes: Routes = [
   { path: 'candidatePage', component : CandidateProfileComponent },
   { path: 'testPage', component: TestPageComponent },
   { path: 'regPage', component: RegisterHrComponent },
+  ]},
+  { path: 'interview/:link', component: InterviewsComponent }
 ];
 
 

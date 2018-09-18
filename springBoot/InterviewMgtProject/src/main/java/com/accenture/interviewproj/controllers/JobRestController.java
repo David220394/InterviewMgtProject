@@ -3,6 +3,8 @@ package com.accenture.interviewproj.controllers;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.accenture.interviewproj.dtos.JobDto;
+import com.accenture.interviewproj.dtos.QuestionDto;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.JobNotFoundException;
@@ -65,7 +68,7 @@ public class JobRestController {
 		
 		Job updatedJob;
 		try {
-			updatedJob = jobService.updateJob(jobId, file.getBytes());
+			updatedJob = jobService.updateJob(jobId, file);
 			return ResponseEntity.ok(updatedJob);
 		} catch (JobNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -124,6 +127,17 @@ public class JobRestController {
 			jobService.updateJob(job);
 			return ResponseEntity.ok("Updated");
 		} catch (JobNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/quiz/{jobId}")
+	public ResponseEntity<?> findQuiz(@PathVariable("jobId") long jobId){
+		try {
+			List<QuestionDto> questionDtos = jobService.findQuiz(jobId);
+			return ResponseEntity.ok(questionDtos);
+		} catch (EncryptedDocumentException | InvalidFormatException | JobNotFoundException | IOException e) {
+			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}

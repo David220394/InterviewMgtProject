@@ -3,6 +3,8 @@ package com.accenture.interviewproj.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import com.accenture.interviewproj.enums.IntType;
+
 @Entity
 public class AssessmentInterview extends Interview {
 
@@ -11,6 +13,10 @@ public class AssessmentInterview extends Interview {
 	@Column(name="ASSESSMENT_INTERVIEW_DESCRIPTION")
 	private String description;
 
+	public AssessmentInterview() {
+		super.type = IntType.ASSESSMENT;
+	}
+	
 	public String getDescription() {
 		return description;
 	}

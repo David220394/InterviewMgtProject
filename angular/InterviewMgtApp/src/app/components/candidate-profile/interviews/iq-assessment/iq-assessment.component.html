@@ -1,0 +1,16 @@
+<div>
+  Job Name: {{interview.jobName}}
+  Candidate: {{interview.candidate.name}}
+</div>
+<form [formGroup]="questionForm"  (ngSubmit)="save(questionForm)">
+ <div formArrayName="questions">
+  <div  *ngFor="let question of questionForm.controls.questions.controls; let i = index" [formGroupName]="i">
+<span>Question {{i+1}}</span>
+<span>{{questions[i].question}}</span>
+<div *ngFor="let ans of questions[i].possibleAnswer">
+  <span>{{ans}}<input type="radio" [value]="ans" formControlName="answer"></span>
+</div>
+ </div>
+</div>
+<button type="submit">Submit</button>
+</form>

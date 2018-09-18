@@ -52,8 +52,7 @@ public class Job implements Serializable {
 	private LocalDateTime creationDate;
 
 	@Column(name = "ASSESSMENT_FILE")
-	@Lob
-	private byte[] assessmentFile;
+	private String assessmentFile;
 
 	@Column(name = "ACTIVE_JOB")
 	private Boolean activeJob;
@@ -71,6 +70,7 @@ public class Job implements Serializable {
 	private List<Employee> employee;
 	
 	@OneToMany(mappedBy = "job")
+	@JsonIgnore
 	private Set<Interview> interviews;
 	
 	@OneToMany(mappedBy = "job")
@@ -188,11 +188,11 @@ public class Job implements Serializable {
 		this.creationDate = creationDate;
 	}
 
-	public byte[] getAssessmentFile() {
+	public String getAssessmentFile() {
 		return assessmentFile;
 	}
 
-	public void setAssessmentFile(byte[] assessmentFile) {
+	public void setAssessmentFile(String assessmentFile) {
 		this.assessmentFile = assessmentFile;
 	}
 
@@ -204,11 +204,11 @@ public class Job implements Serializable {
 		this.field = field;
 	}
 	
-	/*@PrePersist
+	@PrePersist
 	public void initCreatedDate() {
 		this.creationDate = LocalDateTime.now();
 		this.closingDate = LocalDateTime.of(LocalDate.now().getYear(), (LocalDate.now().getMonthValue() + 2), 1, 0, 0);
-	}*/
+	}
 
 	public List<String> getAssignTo() {
 		return assignTo;

@@ -1,13 +1,37 @@
 package com.accenture.interviewproj.services;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.tomcat.jni.Directory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.accenture.interviewproj.dtos.CandidateDto;
+import com.accenture.interviewproj.dtos.QuestionDto;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.JobNotFoundException;
 import com.accenture.interviewproj.repositories.JobsRepository;
+import com.accenture.interviewproj.utilities.CandidateUtility;
 
 @Service
 public class JobService {
@@ -91,14 +115,56 @@ public class JobService {
 	}
 	
 	
-	public Job updateJob(Long jobId, byte[] assessmentFile) throws JobNotFoundException {
+	public Job updateJob(Long jobId, MultipartFile file) throws JobNotFoundException, IllegalStateException, IOException {
 		Job searchJob = jobRepository.findByJobId(jobId);
 		if(searchJob != null) {
-			searchJob.setAssessmentFile(assessmentFile);
+		
+			
+			 File convFile = new File(file.getOriginalFilename());
+			    convFile.createNewFile();
+			    FileOutputStream fos = new FileOutputStream(convFile); 
+			    fos.write(file.getBytes());
+			    fos.close(); 
+			    
+			searchJob.setAssessmentFile(file.getOriginalFilename());
 			return jobRepository.save(searchJob);
 		}else {
 			throw new JobNotFoundException("Failed to update job");
 		}
 	}
+	
+	public List<QuestionDto> findQuiz(long jobId) throws JobNotFoundException, EncryptedDocumentException, InvalidFormatException, IOException {
+		List<QuestionDto> questionDtos = new ArrayList<>();
+		Job searchJob = jobRepository.findByJobId(jobId);
+		if(searchJob != null) {
+			InputStream file = new FileInputStream(searchJob.getAssessmentFile());
+			Workbook workbook = WorkbookFactory.create(file);
+			Sheet sheet = workbook.getSheetAt(0);
+			Iterator<Row> rowIterator = sheet.rowIterator();
+			
+			if(!rowIterator.hasNext()) {
+				return null;
+			}
+			rowIterator.next();
+			DataFormatter formatter = new DataFormatter();
+			while(rowIterator.hasNext()) {
+				Row row = rowIterator.next();
+				QuestionDto questionDto = new QuestionDto();
+				questionDto.setQuestion(row.getCell(0).getStringCellValue());
+				questionDto.setCorrectAnswer(formatter.formatCellValue(row.getCell(1)));
+				questionDto.setMark((int)row.getCell(2).getNumericCellValue());
+				List<String> possibleAns = new ArrayList<>();
+				for(int i=3;i<row.getLastCellNum();i++) {	
+					possibleAns.add(formatter.formatCellValue(row.getCell(i)));
+				}
+				questionDto.setPossibleAnswers(possibleAns);
+				questionDtos.add(questionDto);
+			}
+			return questionDtos;
+		}else {
+			throw new JobNotFoundException("Failed to update job");
+		}
+	}
+	
 
 }

@@ -19,6 +19,8 @@ export class PipelineComponent implements OnInit {
 
     selected?: number;
 
+    breakpoint : number;
+
     candidatesApplied: Candidate[];
     candidatesInterviewScheduled: Candidate[];
     candidatesInterviewInProgress: Candidate[];
@@ -28,12 +30,16 @@ export class PipelineComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+    this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
     this.service.getAlljob().subscribe((data: any)=>{
       this.jobs = data;
     }
     )
 
+  }
+
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 6;
   }
 
   changeView(): void{

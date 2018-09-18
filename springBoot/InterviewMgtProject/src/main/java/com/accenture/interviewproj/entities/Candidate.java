@@ -100,6 +100,7 @@ public class Candidate implements Serializable {
 	private Set<Skill> skills;
 
 	@OneToMany(mappedBy = "candidate")
+	@JsonIgnore
 	private Set<Interview> interviews;
 
 	@OneToMany(mappedBy = "candidate")

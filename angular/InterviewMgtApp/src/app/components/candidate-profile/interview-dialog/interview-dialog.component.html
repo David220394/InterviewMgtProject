@@ -1,0 +1,7 @@
+<div>
+    <span *ngIf="type == 'hr'">Interviewer : {{user}}</span>
+    <span *ngIf="type == 'tech'">Interviewer: <input matInput type="text" [(ngModel)]="interviewer"></span>
+    <input matInput type="text" [(ngModel)]="link" #userinput readonly>
+    <button (click)="copyToClickboard(userinput)" value="click to copy" >Copy to Clickboard</button>
+    <span>{{message}}</span>
+  </div>

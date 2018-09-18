@@ -74,7 +74,10 @@ export class PipelineCandidateService {
           name: element.candidateName,
           picture:null,
           title:element.candidateExperience.experienceName,
-          education:element.education.programStrudy,
+          education:element.education.programStudy + " at " + element.education.institutionName,
+          completeApplication : element.completeApplication,
+          internalApplication : element.internalApplication,
+          rehire : element.rehire,
           status : element.status.statusName
         })
       });

@@ -9,5 +9,5 @@ public interface JobsRepository extends JpaRepository<Job, Long>{
 	public Job findByJobId(Long jobId);
 	
 	public Job findByJobName(String jobName);
-
+	
 }

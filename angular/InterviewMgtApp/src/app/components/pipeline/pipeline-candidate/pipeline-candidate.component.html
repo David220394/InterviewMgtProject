@@ -1,13 +1,10 @@
-<button class="container" (click)="onClickRedirect()">
-<div >
 
-<div class="picture">
-  {{candidate.picture}}
-</div>
-<div class="data">
-  {{candidate.title}} <br>
-  {{candidate.name}} <br>
-  {{candidate.education}}
-</div>
-</div>
-</button>
+  <mat-card  (click)="onClickRedirect()">
+      <img mat-card-avatar src="../../../assets/img/profile-circle-3.png"/>
+      <h6>{{candidate?.name}} </h6>
+      <span>{{candidate.title}}</span>
+      <span>{{candidate.education}}</span>
+      <div *ngIf="!candidate.completeApplication" class="tag" style="background-color: red">Imcomplete</div>
+      <div *ngIf="candidate.internalApplication" class="tag" style="background-color: rgb(0, 255, 13)">Internal</div>
+      <div *ngIf="candidate.rehire" class="tag" style="background-color: rgb(0, 195, 255)">Rehire</div>
+  </mat-card>
