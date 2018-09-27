@@ -11,7 +11,7 @@ public class EmployeeUtility {
 		employee.setEmployeeId(registerHRDto.getEmployeeId());
 		employee.setEmployeeName(registerHRDto.getEmployeeName());
 		employee.setEmployeePassword(registerHRDto.getEmployeePassword());
-		employee.setRole(Role.ROLE_HR);
+		employee.setRole(Role.HR);
 		return employee;
 	}
 

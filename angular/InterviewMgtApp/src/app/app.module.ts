@@ -12,7 +12,7 @@ import { AddJobComponent } from './components/add-job/add-job.component';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SkillComponent } from './components/candidate-profile/skill/skill.component';
 import { ExperienceComponent } from './components/candidate-profile/experience/experience.component';
 import { TrackDialogComponent } from './components/candidate-profile/track-dialog/track-dialog.component';
@@ -32,6 +32,8 @@ import { IqAssessmentComponent } from './components/candidate-profile/interviews
 import { InterviewsComponent } from './components/candidate-profile/interviews/interviews.component';
 import { FeedbackComponent } from './components/candidate-profile/feedback/feedback.component';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { TokenInterceptorService } from './components/providers/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -72,7 +74,11 @@ import { LoginDialogComponent } from './components/login-dialog/login-dialog.com
 
   ],
   entryComponents : [TrackDialogComponent, ContactDialogComponent, InterviewDialogComponent, LoginDialogComponent],
-  providers: [{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}}],
+  providers: [{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}}, JwtModule, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
