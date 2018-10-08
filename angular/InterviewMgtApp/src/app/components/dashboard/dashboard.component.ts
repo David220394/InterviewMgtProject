@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from './providers/dashboard.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,11 +10,15 @@ import { DashboardService } from './providers/dashboard.service';
 export class DashboardComponent implements OnInit {
 
   file : File;
+  noOfCandidate : number;
 
-  constructor(private dashboardService : DashboardService) { }
+  constructor(private router : Router, private dashboardService : DashboardService) { }
 
   ngOnInit() {
+    this.noOfCandidate = 10;
+
   }
+
 
   onFileChanged(event){
     this.file = event.target.files[0];
@@ -23,4 +28,7 @@ export class DashboardComponent implements OnInit {
       this.dashboardService.uploadCandidate(this.file);
   }
 
+  onClickRedirect(): void{
+    this.router.navigateByUrl('/jobList');
+  }
 }

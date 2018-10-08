@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.accenture.interviewproj.entities.Employee;
+import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.enums.Role;
 import com.accenture.interviewproj.exceptions.EmployeeAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.EmployeeNotFoundException;
@@ -165,6 +166,14 @@ public class EmployeeService implements UserDetailsService {
 		}
 
 		return authorities;
+	}
+	
+	public void updateJob(String eid, Job job) {
+		Employee employee = employeeRepository.findByEmployeeId(eid);
+		List<Job> jobs = employee.getJobs();
+		jobs.add(job);
+		employee.setJobs(jobs);
+		employeeRepository.save(employee);
 	}
 
 }

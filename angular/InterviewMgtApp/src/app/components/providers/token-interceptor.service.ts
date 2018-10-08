@@ -19,8 +19,8 @@ export class TokenInterceptorService implements HttpInterceptor {
       // Clone the request
       const reqClone = req.clone({
         setHeaders: {
-          //Authorization: 'Bearer ' + token
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx2aW8uYnJhbmRvbi5kYXZpZCIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNTM4MDM4NTc1LCJleHAiOjE1MzgwNTY1NzV9.0jNp99WJ0vNaV2o3MY9mfsfUQfW6JLi2gAk58JT3FAA'
+          Authorization: 'Bearer ' + token
+          //Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx2aW8uYnJhbmRvbi5kYXZpZCIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNTM4MDM4NTc1LCJleHAiOjE1MzgwNTY1NzV9.0jNp99WJ0vNaV2o3MY9mfsfUQfW6JLi2gAk58JT3FAA'
         }
       });
 

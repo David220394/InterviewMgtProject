@@ -15,6 +15,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.accenture.interviewproj.security.JwtAuthenticationEntryPoint;
 import com.accenture.interviewproj.security.JwtAuthenticationFilter;
@@ -65,5 +68,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
+    
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+    	UrlBasedCorsConfigurationSource source = new
+    			UrlBasedCorsConfigurationSource();
+    	source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+    	return source;
+    }
+    
     
 }

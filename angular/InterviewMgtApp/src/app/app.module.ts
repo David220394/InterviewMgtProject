@@ -35,6 +35,7 @@ import { LoginDialogComponent } from './components/login-dialog/login-dialog.com
 import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptorService } from './components/providers/token-interceptor.service';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,10 +72,10 @@ import { TokenInterceptorService } from './components/providers/token-intercepto
     FormsModule,
     ReactiveFormsModule,
     BarRatingModule,
-
+    JwtModule
   ],
   entryComponents : [TrackDialogComponent, ContactDialogComponent, InterviewDialogComponent, LoginDialogComponent],
-  providers: [{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}}, JwtModule, {
+  providers: [{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}},  {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,
     multi: true
