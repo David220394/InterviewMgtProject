@@ -14,6 +14,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.python.core.PyInteger;
+import org.python.core.PyObject;
+import org.python.core.PyString;
+import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -142,11 +146,34 @@ public class CandidateService {
 		candidateRepository.save(candidate);
 	}
 	
+	
+	public void pythonTest() {
+		//String x = "Hiiiii";
+		String[] arry = {"Hello", "World"};
+		PythonInterpreter interp = new PythonInterpreter();
+		interp.set("a", new PyInteger(42));
+		interp.exec("print (a)");
+		interp.exec("x = 2+2");
+		PyObject x = interp.get("x");
+
+		System.out.println("x: "+x);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Details for job and candidate
 	 */
 	@PostConstruct
 	public void init() {
+		pythonTest();
 		if(candidateRepository.findAll().isEmpty()) {
 		Job job = new Job();
 		job.setActiveJob(true);
