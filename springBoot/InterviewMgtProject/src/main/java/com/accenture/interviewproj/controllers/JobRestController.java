@@ -22,11 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.accenture.interviewproj.dtos.JobDto;
-import com.accenture.interviewproj.dtos.QuestionDto;
 import com.accenture.interviewproj.dtos.JobWithIdDto;
+import com.accenture.interviewproj.dtos.QuestionDto;
+import com.accenture.interviewproj.entities.Employee;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.JobNotFoundException;
+import com.accenture.interviewproj.services.EmployeeService;
 import com.accenture.interviewproj.services.JobService;
 import com.accenture.interviewproj.utilities.JobUtility;
 
@@ -36,9 +38,12 @@ import com.accenture.interviewproj.utilities.JobUtility;
 public class JobRestController {
 
 	private final JobService jobService;
+	
+	private final EmployeeService employeeService;
 
-	public JobRestController(JobService jobService) {
+	public JobRestController(JobService jobService,EmployeeService employeeService) {
 		this.jobService = jobService;
+		this.employeeService = employeeService;
 	}
 
 	/**
@@ -50,9 +55,15 @@ public class JobRestController {
 	@PostMapping("/createJob")
 	public ResponseEntity<?> createJob(@RequestBody JobDto jobDto) {
 		try {
-			
+			List<Employee> employees = new ArrayList<>();
 			Job job = JobUtility.convertJobDtoToJob(jobDto);
-			return ResponseEntity.ok(jobService.insertJob(job));
+			
+			job.setEmployee(employees);
+			jobService.insertJob(job);
+			for (String employee : job.getAssignTo()) {
+				employeeService.updateJob(employee, job);
+				}
+			return ResponseEntity.ok(job);
 		} catch (JobNameAlreadyExistsException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Job name already exists");
 		}
@@ -158,5 +169,22 @@ public class JobRestController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
-
+	
+	@GetMapping("/activeJob/{eid}")
+	public ResponseEntity<?> findActiveJobs(@PathVariable String eid)
+	{
+		try {
+			List<Job> jobs = jobService.findActiveJobs(eid);
+			List<JobWithIdDto> jobDto = new ArrayList<>();
+			
+			for(Job job : jobs) {
+				JobWithIdDto jobWithIdDto = JobUtility.convertJobWithIdDtoToJob(job);
+				jobDto.add(jobWithIdDto);
+			}
+			return ResponseEntity.ok(jobDto);
+		}catch(JobNotFoundException e)
+		{
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+	}
 }

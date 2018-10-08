@@ -2,36 +2,29 @@ package com.accenture.interviewproj.services;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.tomcat.jni.Directory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.accenture.interviewproj.dtos.CandidateDto;
 import com.accenture.interviewproj.dtos.QuestionDto;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.JobNotFoundException;
 import com.accenture.interviewproj.repositories.JobsRepository;
-import com.accenture.interviewproj.utilities.CandidateUtility;
 
 @Service
 public class JobService {
@@ -164,6 +157,23 @@ public class JobService {
 		}else {
 			throw new JobNotFoundException("Failed to update job");
 		}
+	}
+	
+	public List<Job> findActiveJobs(String eid) throws JobNotFoundException
+	{
+		List<BigInteger> jobIds = jobRepository.fingActiveJob(eid);
+		
+		if (jobIds.isEmpty())
+		{
+			throw new JobNotFoundException("Active Job Not found");
+		}
+		
+		List<Job> allJobs = new ArrayList<>();
+		for(BigInteger jobId : jobIds)
+		{
+			allJobs.add(jobRepository.findByJobId(jobId.longValue()));
+		}
+		return allJobs;
 	}
 	
 
