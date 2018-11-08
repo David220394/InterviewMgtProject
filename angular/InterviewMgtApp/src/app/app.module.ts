@@ -34,6 +34,9 @@ import { FeedbackComponent } from './components/candidate-profile/feedback/feedb
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptorService } from './components/providers/token-interceptor.service';
+import { DatePipe } from '@angular/common';
+import { CandidateListComponent } from './components/candidate-list/candidate-list.component';
+import { QuizComponent } from './components/quiz/quiz.component';
 
 
 @NgModule({
@@ -58,7 +61,9 @@ import { TokenInterceptorService } from './components/providers/token-intercepto
     IqAssessmentComponent,
     InterviewsComponent,
     FeedbackComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    CandidateListComponent,
+    QuizComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +84,8 @@ import { TokenInterceptorService } from './components/providers/token-intercepto
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,
     multi: true
-  }],
+  },
+DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

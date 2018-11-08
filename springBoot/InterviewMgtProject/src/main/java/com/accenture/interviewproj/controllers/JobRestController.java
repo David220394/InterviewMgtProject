@@ -28,6 +28,7 @@ import com.accenture.interviewproj.entities.Employee;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.JobNotFoundException;
+import com.accenture.interviewproj.services.AssessmentQuizService;
 import com.accenture.interviewproj.services.EmployeeService;
 import com.accenture.interviewproj.services.JobService;
 import com.accenture.interviewproj.utilities.JobUtility;
@@ -55,14 +56,7 @@ public class JobRestController {
 	@PostMapping("/createJob")
 	public ResponseEntity<?> createJob(@RequestBody JobDto jobDto) {
 		try {
-			List<Employee> employees = new ArrayList<>();
-			Job job = JobUtility.convertJobDtoToJob(jobDto);
-			
-			job.setEmployee(employees);
-			jobService.insertJob(job);
-			for (String employee : job.getAssignTo()) {
-				employeeService.updateJob(employee, job);
-				}
+			Job job = jobService.insertJob(jobDto);
 			return ResponseEntity.ok(job);
 		} catch (JobNameAlreadyExistsException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Job name already exists");
@@ -86,6 +80,10 @@ public class JobRestController {
 		} catch (JobNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		} catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} catch (IllegalStateException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} catch (InvalidFormatException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
@@ -139,21 +137,6 @@ public class JobRestController {
 		try {
 			jobService.deleteJob(jobName);
 			return ResponseEntity.ok("DELETED!!");
-		} catch (JobNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		}
-	}
-	
-	/**
-	 * 
-	 * @param job
-	 * Update a job
-	 */
-	@PutMapping("/")
-	public ResponseEntity<?> updateJob(@RequestBody Job job) {
-		try {
-			jobService.updateJob(job);
-			return ResponseEntity.ok("Updated");
 		} catch (JobNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}

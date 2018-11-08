@@ -1,101 +1,119 @@
-
+<mat-card *ngIf="!is_job">
+    <form class="job-form">
+        <mat-form-field>
+          <input matInput placeholder="Add to Job" [matAutocomplete]="jobList" [formControl]="jobCtrl">
+          <mat-autocomplete #jobList="matAutocomplete">
+            <mat-option *ngFor="let job of filteredJobs | async" [value]="job.name" (onSelectionChange)="selectedJob(job)">
+              <span>{{job.name}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-stroked-button color="primary" (click)="addJob()" id="addJob">Add</button>
+        <div class="alert alert-danger" *ngIf="errMsg">{{errMsg}}</div>
+      </form>
+</mat-card>
 <mat-card class="header">
   <div class="header1">
-  <img mat-card-avatar src="../../../assets/img/profile-circle-3.png"/>
-  <h3>{{candidate?.name | uppercase}} </h3>
-  <div *ngIf="interviewScore">
-  <bar-rating  *ngIf="interviewFlag" [(rate)]="overallScore" [max]="5" class="br-default-theme"
-   [readOnly]="true" ></bar-rating><br/>
-    {{interviewScore.aveScore}}%
-   </div>
+    <img mat-card-avatar src="../../../assets/img/profile-circle-3.png" />
+    <h3>{{candidate?.name | uppercase}} </h3>
+    {{candidate?.jobName}}
+    <div *ngIf="interviewScore">
+      <bar-rating *ngIf="interviewFlag && is_job" [(rate)]="overallScore" [max]="5" class="br-default-theme" [readOnly]="true"></bar-rating><br />
+      {{interviewScore.aveScore}}%
+    </div>
   </div>
   <div class="header2">
-  <h2><mat-icon>info_outline</mat-icon> About</h2>
-  <div><span class="column1"><mat-icon>location_on_outline</mat-icon> Adress </span><span class="column2"> {{candidate?.address}}</span></div>
-  <div><span class="column1"><mat-icon>school_outline</mat-icon> Education </span><span class="column2">{{candidate?.education.programStudy}} at {{candidate?.education.institutionName}}</span></div>
-  <div><span class="column1"><mat-icon>work_outline</mat-icon> Past Work </span><span class="column2"> {{candidate?.experience.name}}</span></div>
-  <div><span class="column1"><mat-icon>star_border</mat-icon> Speciality </span><span class="column2"> {{candidate?.experience.specialty}}</span></div>
-  <div><span class="column1"><mat-icon>alarm_on_outline</mat-icon> Availability </span><span class="column2"> {{availability}}</span></div>
-  <div><span class="column1"><mat-icon>loyalty_outline</mat-icon> Registration Date </span><span class="column2"> {{candidate?.applicationDate | date}}</span></div>
-  <div *ngIf="features?.length"><span class="column1"><mat-icon>assistant_photo_outline</mat-icon> Features </span><span class="column2" *ngFor="let feature of features">|| {{feature}} || </span></div>
-  <button *ngIf="interviewFlag" mat-stroked-button color="primary" id="contact" (click)="openContact()">Contact</button>
-  <button *ngIf="interviewFlag" mat-stroked-button color="primary" id="track" (click)="openTracking()">Track Progress</button>
-  <button *ngIf="interviewFlag" mat-stroked-button color="primary" id="resume" >Resume</button>
+    <h2>
+      <mat-icon>info_outline</mat-icon> About
+    </h2>
+    <div><span class="column1">
+        <mat-icon>location_on_outline</mat-icon> Adress
+      </span><span class="column2"> {{candidate?.address}}</span></div>
+    <div><span class="column1">
+        <mat-icon>school_outline</mat-icon> Education
+      </span><span class="column2">{{candidate?.education.programStudy}} at {{candidate?.education.institutionName}}</span></div>
+    <div><span class="column1">
+        <mat-icon>work_outline</mat-icon> Past Work
+      </span><span class="column2"> {{candidate?.experience.name}}</span></div>
+    <div><span class="column1">
+        <mat-icon>star_border</mat-icon> Speciality
+      </span><span class="column2"> {{candidate?.experience.specialty}}</span></div>
+    <div><span class="column1">
+        <mat-icon>alarm_on_outline</mat-icon> Availability
+      </span><span class="column2"> {{availability}}</span></div>
+    <div><span class="column1">
+        <mat-icon>loyalty_outline</mat-icon> Registration Date
+      </span><span class="column2"> {{candidate?.applicationDate | date}}</span></div>
+    <div *ngIf="features?.length"><span class="column1">
+        <mat-icon>assistant_photo_outline</mat-icon> Features
+      </span><span class="column2" *ngFor="let feature of features">|| {{feature}} || </span></div>
+    <button *ngIf="interviewFlag && is_job" mat-stroked-button color="primary" id="contact" (click)="openContact()">Contact</button>
+    <button *ngIf="interviewFlag && is_job" mat-stroked-button color="primary" id="track" (click)="openTracking()">Track
+      Progress</button>
+    <button *ngIf="interviewFlag && is_job" mat-stroked-button color="primary" id="resume">Resume</button>
   </div>
-  </mat-card>
+</mat-card>
 
-  <div id="content">
-    <div id="content1">
-  <mat-card id="coverLetter">
-    <mat-card-title>
-      <h2>Cover Letter</h2>
-    </mat-card-title>
-    <mat-divider [inset]="true"></mat-divider>
-    <mat-card-content>
-      {{candidate?.cover}}
-    </mat-card-content>
-  </mat-card>
-  <div *ngIf="interviewFlag" id="rating">
-    <mat-card id="hr-int">
-        <mat-card-title>
-            <h4>HR Interview</h4>
-          </mat-card-title>
-          <mat-divider [inset]="true"></mat-divider>
-          <mat-card-content *ngIf="interviewScore">
-              <mat-progress-spinner
-              [color]="'accent'"
-              [mode]="'determinate'"
-              [value]="interviewScore.hrScore"
-              [diameter]="'75'">
-              </mat-progress-spinner>
-              <span>{{interviewScore.hrScore}}%</span>
-              <button mat-stroked-button color="primary" (click)="openInterview('hr')">HR Int</button>
-          </mat-card-content>
+<div id="content">
+  <div id="content1">
+    <mat-card id="coverLetter">
+      <mat-card-title>
+        <h2>Cover Letter</h2>
+      </mat-card-title>
+      <mat-divider [inset]="true"></mat-divider>
+      <mat-card-content>
+        {{candidate?.cover}}
+      </mat-card-content>
     </mat-card>
-    <mat-card id="tec-int">
+    <div *ngIf="interviewFlag && is_job" id="rating">
+      <mat-card id="hr-int">
         <mat-card-title>
-            <h4>Technical Interview</h4>
-          </mat-card-title>
-          <mat-divider [inset]="true"></mat-divider>
-          <mat-card-content *ngIf="interviewScore">
-              <mat-progress-spinner
-              [color]="'accent'"
-              [mode]="'determinate'"
-              [value]="interviewScore.techScore"
-              [diameter]="'75'">
-              </mat-progress-spinner>
-              <span>{{interviewScore.techScore}}%</span>
-              <button mat-stroked-button color="primary" (click)="openInterview('tech')">Tech Int</button>
-          </mat-card-content>
-    </mat-card>
-    <mat-card id="iq-int">
+          <h4>HR Interview</h4>
+        </mat-card-title>
+        <mat-divider [inset]="true"></mat-divider>
+        <mat-card-content *ngIf="interviewScore">
+          <mat-progress-spinner [color]="'accent'" [mode]="'determinate'" [value]="interviewScore.hrScore" [diameter]="'75'">
+          </mat-progress-spinner>
+          <span>{{interviewScore.hrScore}}%</span>
+          <button mat-stroked-button color="primary" (click)="openInterview('hr')">HR Int</button>
+        </mat-card-content>
+      </mat-card>
+      <mat-card id="tec-int">
         <mat-card-title>
-            <h4>IQ Test</h4>
-          </mat-card-title>
-          <mat-divider [inset]="true"></mat-divider>
-          <mat-card-content *ngIf="interviewScore">
-              <mat-progress-spinner
-              [color]="'accent'"
-              [mode]="'determinate'"
-              [value]="interviewScore.iqScore"
-              [diameter]="'75'">
-              </mat-progress-spinner>
-              <span>{{interviewScore.iqScore}}%</span>
-              <button mat-stroked-button color="primary" (click)="openInterview('iq')">IQ Test</button>
-          </mat-card-content>
-    </mat-card>
-  </div>
+          <h4>Technical Interview</h4>
+        </mat-card-title>
+        <mat-divider [inset]="true"></mat-divider>
+        <mat-card-content *ngIf="interviewScore">
+          <mat-progress-spinner [color]="'accent'" [mode]="'determinate'" [value]="interviewScore.techScore" [diameter]="'75'">
+          </mat-progress-spinner>
+          <span>{{interviewScore.techScore}}%</span>
+          <button mat-stroked-button color="primary" (click)="openInterview('tech')">Tech Int</button>
+        </mat-card-content>
+      </mat-card>
+      <mat-card id="iq-int">
+        <mat-card-title>
+          <h4>IQ Test</h4>
+        </mat-card-title>
+        <mat-divider [inset]="true"></mat-divider>
+        <mat-card-content *ngIf="interviewScore">
+          <mat-progress-spinner [color]="'accent'" [mode]="'determinate'" [value]="interviewScore.iqScore" [diameter]="'75'">
+          </mat-progress-spinner>
+          <span>{{interviewScore.iqScore}}%</span>
+          <button mat-stroked-button color="primary" (click)="openInterview('iq')">IQ Test</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 
-  <mat-card *ngIf="interviewFlag" id="feedback">
+  <mat-card *ngIf="interviewFlag && is_job" id="feedback">
     <mat-card-title>
       <h2>Feedback</h2>
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
     <div *ngIf="afterInterviews">
-    <mat-card-content *ngFor="let afterInterview of afterInterviews">
-      <app-feedback [afterInterview]="afterInterview"></app-feedback>
-    </mat-card-content>
+      <mat-card-content *ngFor="let afterInterview of afterInterviews">
+        <app-feedback [afterInterview]="afterInterview"></app-feedback>
+      </mat-card-content>
     </div>
   </mat-card>
-  </div>
+</div>

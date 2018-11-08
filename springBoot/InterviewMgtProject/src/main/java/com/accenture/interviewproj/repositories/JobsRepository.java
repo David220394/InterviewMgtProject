@@ -14,5 +14,5 @@ public interface JobsRepository extends JpaRepository<Job, Long>{
 	public Job findByJobName(String jobName);
 	
 	@Query(value="SELECT JOB_JOB_ID FROM TABLE_JOB_EMPLOYEE WHERE EMPLOYEE_EMPLOYEE_ID=?", nativeQuery=true)
-	List<BigInteger> fingActiveJob (String eid);
+	List<BigInteger> findActiveJob (String eid);
 }

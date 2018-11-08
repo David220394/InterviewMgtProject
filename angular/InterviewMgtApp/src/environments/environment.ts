@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
-  url : "http://localhost:8082"
+  url : "http://localhost:8082",
+  outlookId : 'df4664e6-f498-46cd-90df-5b8e629a8d52',
+  outlookSecret : 'rqzxeOANXD67*:]sfKP358#',
+  response_type : "code",
+  scope : "User.Read+Mail.ReadWrite.Shared+Calendars.ReadWrite.Shared+Calendars.Read.Shared+Mail.Send+Mail.Send.Shared"
 };
 
 /*

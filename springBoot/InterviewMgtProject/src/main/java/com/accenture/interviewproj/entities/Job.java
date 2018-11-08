@@ -15,7 +15,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -47,14 +50,18 @@ public class Job implements Serializable {
 	@Column(name = "CREATION_DATE", nullable = false)
 	private LocalDateTime creationDate;
 
-	@Column(name = "ASSESSMENT_FILE")
-	private String assessmentFile;
+	@ManyToOne
+	@JoinColumn(name = "ASSESSMENT_QUIZ_ID")
+	private AssessmentQuiz assessmentQuiz;
 
 	@Column(name = "ACTIVE_JOB")
 	private Boolean activeJob;
 	
-	@Column(name = "REQUIREMENTS")
-	private String requirements;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "TABLE_JOB_REQUIREMENT", 
+	joinColumns = { @JoinColumn(name = "JOB_ID")},
+	inverseJoinColumns = { @JoinColumn(name = "REQUIREMENT_ID")})
+	private Set<Requirement> requirements;
 
 	@ElementCollection
 	private List<String> assignTo = new ArrayList<>();
@@ -68,7 +75,7 @@ public class Job implements Serializable {
 	
 	@OneToMany(mappedBy = "job")
 	@JsonIgnore
-	private Set<Candidate> candidates;
+	private List<JobCandidate> jobCandidates;
 	
 	@OneToMany(mappedBy = "job")
 	@JsonIgnore
@@ -107,11 +114,11 @@ public class Job implements Serializable {
 		this.employee = employee;
 	}
 
-	public String getRequirements() {
+	public Set<Requirement> getRequirements() {
 		return requirements;
 	}
 
-	public void setRequirements(String requirements) {
+	public void setRequirements(Set<Requirement> requirements) {
 		this.requirements = requirements;
 	}
 
@@ -123,12 +130,13 @@ public class Job implements Serializable {
 		this.interviews = interviews;
 	}
 
-	public Set<Candidate> getCandidates() {
-		return candidates;
+
+	public List<JobCandidate> getJobCandidates() {
+		return jobCandidates;
 	}
 
-	public void setCandidates(Set<Candidate> candidates) {
-		this.candidates = candidates;
+	public void setJobCandidates(List<JobCandidate> jobCandidates) {
+		this.jobCandidates = jobCandidates;
 	}
 
 	public Long getJobId() {
@@ -170,19 +178,19 @@ public class Job implements Serializable {
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
-
-	public String getAssessmentFile() {
-		return assessmentFile;
-	}
-
-	public void setAssessmentFile(String assessmentFile) {
-		this.assessmentFile = assessmentFile;
-	}
 	
+	public AssessmentQuiz getAssessmentQuiz() {
+		return assessmentQuiz;
+	}
+
+	public void setAssessmentQuiz(AssessmentQuiz assessmentQuiz) {
+		this.assessmentQuiz = assessmentQuiz;
+	}
+
 	@PrePersist
 	public void initCreatedDate() {
 		this.creationDate = LocalDateTime.now();
-		this.closingDate = LocalDateTime.of(LocalDate.now().getYear(), (LocalDate.now().getMonthValue() + 2), 1, 0, 0);
+		this.closingDate = LocalDateTime.now().plusMonths(2);
 	}
 
 	public List<String> getAssignTo() {

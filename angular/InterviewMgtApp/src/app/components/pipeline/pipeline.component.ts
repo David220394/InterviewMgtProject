@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
 import {Job} from './dto/job';
 import { Candidate } from './dto/candidate';
 import { PipelineCandidateService } from './providers/pipeline-candidate.service';
-import { FormGroup } from '@angular/forms';
 import { SharePreferencesService } from '../providers/share-preferences.service';
+
 
 @Component({
   selector: 'app-pipeline',
@@ -44,6 +43,11 @@ export class PipelineComponent implements OnInit {
 
   changeView(): void{
     this.sharePreferences.setJobId(this.selected);
+    this.jobs.forEach((job:any)=>{
+      if(job.id == this.selected){
+        this.sharePreferences.setJobName(job.name);
+      }
+    })
     this.service.getallcandidatesbyjob(this.selected).subscribe(
       () => {
         this.candidatesApplied = this.service.candidatesApplied,

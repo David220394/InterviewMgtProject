@@ -193,16 +193,21 @@ public class InterviewService {
 		if(candidateRepository.findByJobIdAndCandidateId(jobId, candidateId) != null) {
 			if(!interviewRepository.findByTypeOrderByCreationDate("HR", candidateId, jobId).isEmpty()) {
 				Interview hrInterview = interviewRepository.findByTypeOrderByCreationDate("HR", candidateId, jobId).get(0);
+				if(hrInterview.getScore() != null) {
 				hrScore = (hrInterview.getScore() / hrInterview.getMaxScore()) * 100;
+				}
 			}
 			if(!interviewRepository.findByTypeOrderByCreationDate("TECH", candidateId, jobId).isEmpty()) {
-				
 				Interview techInterview = interviewRepository.findByTypeOrderByCreationDate("TECH", candidateId, jobId).get(0);
+				if(techInterview.getScore() != null) {
 				techScore = (techInterview.getScore() / techInterview.getMaxScore()) * 100;
+				}
 			}
 			if(!interviewRepository.findByTypeOrderByCreationDate("ASSESSMENT", candidateId, jobId).isEmpty()) {
 				Interview iqInterview = interviewRepository.findByTypeOrderByCreationDate("ASSESSMENT", candidateId, jobId).get(0);
+				if(iqInterview.getScore() != null) {
 				iqScore = (iqInterview.getScore() / iqInterview.getMaxScore()) * 100;
+				}
 			}
 			double aveScore = (0.5 * iqScore) + (0.25 * hrScore) + (0.25 * techScore);
 			ScoreDto scoreDto = new ScoreDto();

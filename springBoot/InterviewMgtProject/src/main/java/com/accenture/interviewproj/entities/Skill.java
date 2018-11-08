@@ -1,12 +1,19 @@
 package com.accenture.interviewproj.entities;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -25,25 +32,10 @@ public class Skill implements Serializable {
 	
 	@Column(name="SKILL_DESCRIPTION")
 	private String description;
-
-	@Column(name="SKILL_LOCATION")
-	private String location;
 	
-	@Column(name="GRADE")
-	private Double grade;
-	
-	@ManyToOne
-	@JoinColumn(name = "CANDIDATE_ID")
+	@ManyToMany(mappedBy = "skills", fetch = FetchType.LAZY)
 	@JsonIgnore
-	private Candidate candidate;
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
+	private Set<Candidate> candidates;
 
 	public Long getSkillId() {
 		return skillId;
@@ -61,20 +53,12 @@ public class Skill implements Serializable {
 		this.description = description;
 	}
 
-	public Candidate getCandidate() {
-		return candidate;
+	public Set<Candidate> getCandidates() {
+		return candidates;
 	}
 
-	public Double getGrade() {
-		return grade;
-	}
-
-	public void setGrade(Double grade) {
-		this.grade = grade;
-	}
-
-	public void setCandidate(Candidate candidate) {
-		this.candidate = candidate;
+	public void setCandidates(Set<Candidate> candidates) {
+		this.candidates = candidates;
 	}
 
 }

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { SharePreferencesService } from './components/providers/share-preferences.service';
+import { LoginService } from './components/login-dialog/providers/login.service';
+import { TrackingService } from './components/candidate-profile/providers/tracking/tracking.service';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +13,12 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent implements OnInit {
 
 
-  constructor(private http: HttpClient) {
+  constructor(private test : TrackingService,private activeRoute: ActivatedRoute, private authenticationService : LoginService,private sharePref : SharePreferencesService) {
 
   }
 
   ngOnInit() {
-    this.http.get('http://localhost:8082/api/hello')
-    .subscribe(data => console.log(data),
-    err => console.log(err));
+
   }
+
 }

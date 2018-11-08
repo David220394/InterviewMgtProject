@@ -37,16 +37,18 @@ export class IqAssessmentComponent implements OnInit {
 
 
 
-      this.questions.forEach(()=>{
+      this.questions.forEach((question)=>{
         const control = <FormArray>this.questionForm.controls['questions'];
-        control.push(this.initQuestions());
+        control.push(this.initQuestions(question));
       })
     });
 
   }
 
-  initQuestions(){
+  initQuestions(question : Question){
     return this.fb.group({
+      question : question.question,
+      mark : question.mark,
       answer : ['']
     });
   }
