@@ -15,13 +15,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.accenture.interviewproj.dtos.DisplayCandidateDto;
 import com.accenture.interviewproj.entities.Candidate;
 import com.accenture.interviewproj.exceptions.IdNotFoundException;
+import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.services.CandidateService;
 
 @CrossOrigin
@@ -60,7 +63,7 @@ public class CandidateController {
 	 */
 	@GetMapping("/{jobId}")
 	public ResponseEntity<?> findCandidateByJodId(@PathVariable Long jobId){
-		List<Candidate> candidates = candidateService.findCandidateByJobId(jobId);
+		List<DisplayCandidateDto> candidates = candidateService.findCandidateByJobId(jobId);
 		if(candidates != null) {
 		return ResponseEntity.ok(candidates);
 		}else {
@@ -83,9 +86,49 @@ public class CandidateController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param cid
+	 * finding a candidate by its candidate id
+	 */
+	@GetMapping("candidatePage/{cid}")
+	public ResponseEntity<?> findCandidateById(@PathVariable Long cid){
+		try {
+			return ResponseEntity.ok(candidateService.findCandidateByCandidateId(cid));
+		} catch (IdNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Add job to a candidate
+	 * @param jobId
+	 * @param cid
+	 * @return
+	 */
+	@GetMapping("/addJob/{jobId}/{cid}")
+	public ResponseEntity<?> addJob(@PathVariable Long jobId,@PathVariable Long cid){
+		try {
+			return ResponseEntity.ok(candidateService.addJobToCandidate(cid, jobId));
+		} catch (JobNameAlreadyExistsException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+		}
+	}
+	
+	
+	
 	@PostMapping("/")
 	public ResponseEntity<?> createCandidate(@RequestParam MultipartFile file){
 		return ResponseEntity.ok(candidateService.createCandidate(file));
+	}
+	
+	/**
+	 * Find All candidate
+	 * @return
+	 */
+	@GetMapping("/")
+	public ResponseEntity<?> findAll(){
+		return ResponseEntity.ok(candidateService.findAll());
 	}
 
 }

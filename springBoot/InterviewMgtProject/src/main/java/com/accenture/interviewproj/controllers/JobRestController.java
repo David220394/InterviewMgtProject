@@ -22,11 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.accenture.interviewproj.dtos.JobDto;
-import com.accenture.interviewproj.dtos.QuestionDto;
 import com.accenture.interviewproj.dtos.JobWithIdDto;
+import com.accenture.interviewproj.dtos.QuestionDto;
+import com.accenture.interviewproj.entities.Employee;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.JobNotFoundException;
+import com.accenture.interviewproj.services.AssessmentQuizService;
+import com.accenture.interviewproj.services.EmployeeService;
 import com.accenture.interviewproj.services.JobService;
 import com.accenture.interviewproj.utilities.JobUtility;
 
@@ -36,9 +39,12 @@ import com.accenture.interviewproj.utilities.JobUtility;
 public class JobRestController {
 
 	private final JobService jobService;
+	
+	private final EmployeeService employeeService;
 
-	public JobRestController(JobService jobService) {
+	public JobRestController(JobService jobService,EmployeeService employeeService) {
 		this.jobService = jobService;
+		this.employeeService = employeeService;
 	}
 
 	/**
@@ -50,9 +56,8 @@ public class JobRestController {
 	@PostMapping("/createJob")
 	public ResponseEntity<?> createJob(@RequestBody JobDto jobDto) {
 		try {
-			
-			Job job = JobUtility.convertJobDtoToJob(jobDto);
-			return ResponseEntity.ok(jobService.insertJob(job));
+			Job job = jobService.insertJob(jobDto);
+			return ResponseEntity.ok(job);
 		} catch (JobNameAlreadyExistsException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Job name already exists");
 		}
@@ -75,6 +80,10 @@ public class JobRestController {
 		} catch (JobNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		} catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} catch (IllegalStateException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} catch (InvalidFormatException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
@@ -133,21 +142,6 @@ public class JobRestController {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param job
-	 * Update a job
-	 */
-	@PutMapping("/")
-	public ResponseEntity<?> updateJob(@RequestBody Job job) {
-		try {
-			jobService.updateJob(job);
-			return ResponseEntity.ok("Updated");
-		} catch (JobNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		}
-	}
-	
 	@GetMapping("/quiz/{jobId}")
 	public ResponseEntity<?> findQuiz(@PathVariable("jobId") long jobId){
 		try {
@@ -158,5 +152,22 @@ public class JobRestController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
-
+	
+	@GetMapping("/activeJob/{eid}")
+	public ResponseEntity<?> findActiveJobs(@PathVariable String eid)
+	{
+		try {
+			List<Job> jobs = jobService.findActiveJobs(eid);
+			List<JobWithIdDto> jobDto = new ArrayList<>();
+			
+			for(Job job : jobs) {
+				JobWithIdDto jobWithIdDto = JobUtility.convertJobWithIdDtoToJob(job);
+				jobDto.add(jobWithIdDto);
+			}
+			return ResponseEntity.ok(jobDto);
+		}catch(JobNotFoundException e)
+		{
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+	}
 }

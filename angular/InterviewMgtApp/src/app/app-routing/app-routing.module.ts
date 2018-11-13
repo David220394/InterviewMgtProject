@@ -10,6 +10,8 @@ import { TestPageComponent } from '../components/test-page/test-page.component';
 import { RegisterHrComponent } from '../components/register-hr/register-hr.component';
 import { InterviewsComponent } from '../components/candidate-profile/interviews/interviews.component';
 import { MainNavComponent } from '../main-nav/main-nav.component';
+import { CandidateListComponent } from '../components/candidate-list/candidate-list.component';
+import { QuizComponent } from '../components/quiz/quiz.component';
 
 const routes: Routes = [
   {path: '', component: MainNavComponent,children:[
@@ -19,8 +21,10 @@ const routes: Routes = [
   { path: 'candidate/:id', component: CandidateProfileComponent },
   { path: 'addJob', component: AddJobComponent },
   { path: 'jobList', component: JobListComponent },
+  { path: 'candidateList', component: CandidateListComponent },
   { path: 'candidatePage', component : CandidateProfileComponent },
-  { path: 'testPage', component: TestPageComponent },
+  { path: 'candidatePage/:jobId', component : CandidateProfileComponent },
+  { path: 'createQuiz', component: QuizComponent },
   { path: 'regPage', component: RegisterHrComponent },
   ]},
   { path: 'interview/:link', component: InterviewsComponent }

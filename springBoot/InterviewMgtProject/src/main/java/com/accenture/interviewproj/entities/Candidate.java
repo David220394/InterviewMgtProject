@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,7 +17,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -65,17 +68,9 @@ public class Candidate implements Serializable {
 	@Column(name = "REHIRE")
 	private Boolean rehire;
 
-	@Column(name = "CANDIDATE_SCORE")
-	private Integer score;
-
 	@Column(name = "CANDIDATE_CV")
 	@Lob
 	private File candidateCv;
-
-	@OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
-            mappedBy = "candidate")
-	private Status status;
 
 	@Column(name = "CANDIDATE_AVAILABILITY")
 	private Boolean availability;
@@ -96,7 +91,10 @@ public class Candidate implements Serializable {
             mappedBy = "candidate")
 	private Education education;
 
-	@OneToMany(mappedBy = "candidate")
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "TABLE_SKILL_CANDIDATE", 
+	joinColumns = { @JoinColumn(name = "CANDIDATE_ID")},
+	inverseJoinColumns = { @JoinColumn(name = "SKILL_ID")})
 	private Set<Skill> skills;
 
 	@OneToMany(mappedBy = "candidate")
@@ -106,10 +104,11 @@ public class Candidate implements Serializable {
 	@OneToMany(mappedBy = "candidate")
 	@JsonIgnore
 	private Set<Tracking> trackings;
-
-	@ManyToOne
-	@JoinColumn(name = "JOB_ID")
-	private Job job;
+	
+	@OneToMany(mappedBy = "candidate")
+	@JsonIgnore
+	private List<JobCandidate> jobCandidates;
+	
 	
 	public void setCandidatePhone(Long candidatePhone) {
 		this.candidatePhone = candidatePhone;
@@ -171,28 +170,13 @@ public class Candidate implements Serializable {
 		this.education = education;
 	}
 
-	public Status getStatus() {
-		return status;
+
+	public List<JobCandidate> getJobCandidates() {
+		return jobCandidates;
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	public Job getJob() {
-		return job;
-	}
-
-	public void setJob(Job job) {
-		this.job = job;
-	}
-
-	public Integer getScore() {
-		return score;
-	}
-
-	public void setScore(Integer score) {
-		this.score = score;
+	public void setJobCandidates(List<JobCandidate> jobCandidates) {
+		this.jobCandidates = jobCandidates;
 	}
 
 	public Set<Tracking> getTrackings() {

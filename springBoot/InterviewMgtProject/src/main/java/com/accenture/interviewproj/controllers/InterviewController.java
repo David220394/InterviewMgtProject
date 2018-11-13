@@ -9,17 +9,18 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.accenture.interviewproj.dtos.AfterInterviewDto;
 import com.accenture.interviewproj.dtos.InterviewDto;
+import com.accenture.interviewproj.dtos.QuizDto;
 import com.accenture.interviewproj.entities.Interview;
 import com.accenture.interviewproj.exceptions.ExpiredLinkException;
 import com.accenture.interviewproj.exceptions.IdNotFoundException;
 import com.accenture.interviewproj.exceptions.TypeNotFoundException;
+import com.accenture.interviewproj.services.AssessmentQuizService;
 import com.accenture.interviewproj.services.InterviewService;
 
 @RestController
@@ -29,6 +30,9 @@ public class InterviewController {
 	
 	@Autowired
 	private InterviewService interviewService;
+	
+	@Autowired
+	private AssessmentQuizService assessmentQuizService;
 	
 	@PostMapping("/")
 	public ResponseEntity<?> createInterview(@RequestBody InterviewDto interviewDto) {
@@ -80,5 +84,12 @@ public class InterviewController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());	
 		}
 	}
+	
+	@PostMapping("/createQuiz/")
+	public ResponseEntity<?> saveAssessmentQuiz(@RequestBody QuizDto quizDto){
+		return ResponseEntity.ok(assessmentQuizService.insertAssessmentQuiz(quizDto));
+	}
+	
+	
 
 }

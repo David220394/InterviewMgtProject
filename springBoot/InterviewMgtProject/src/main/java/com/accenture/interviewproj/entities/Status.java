@@ -37,7 +37,7 @@ public class Status implements Serializable{
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "CANDIDATE_ID")
 	@JsonIgnore
-	private Candidate candidate;
+	private JobCandidate jobCandidate;
 
 	public String getStatusName() {
 		return statusName;
@@ -55,12 +55,12 @@ public class Status implements Serializable{
 		this.creationDate = creationDate;
 	}
 
-	public Candidate getCandidate() {
-		return candidate;
+	public JobCandidate getCandidate() {
+		return jobCandidate;
 	}
 
-	public void setCandidate(Candidate candidate) {
-		this.candidate = candidate;
+	public void setCandidate(JobCandidate jobCandidate) {
+		this.jobCandidate = jobCandidate;
 	}
 	
 	@PrePersist

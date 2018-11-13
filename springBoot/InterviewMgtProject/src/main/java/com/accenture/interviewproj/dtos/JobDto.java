@@ -23,7 +23,7 @@ public class JobDto {
 	
 	private List<String> assignTo = new ArrayList<>();
 	
-	private String requirements;
+	private List<String> requirements;
 
 	public String getJobName() {
 		return jobName;
@@ -82,11 +82,11 @@ public class JobDto {
 		this.assignTo = assignTo;
 	}
 
-	public String getRequirements() {
+	public List<String> getRequirements() {
 		return requirements;
 	}
 
-	public void setRequirements(String requirements) {
+	public void setRequirements(List<String> requirements) {
 		this.requirements = requirements;
 	}
 }

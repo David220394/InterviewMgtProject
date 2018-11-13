@@ -70,7 +70,7 @@ export class InterviewService {
 
   public quizQuestions(jobId : number):Observable<Question[]>{
     return new Observable(observable =>{
-      this.http.get(environment.url + '/api/jobs/quiz/'+1)
+      this.http.get(environment.url + '/api/jobs/quiz/'+jobId)
       .pipe( finalize(() => { observable.complete(); }))
       .subscribe( (data: any) => {
           let questions : Question[]=[];
@@ -127,7 +127,7 @@ export class InterviewService {
           score : data.candidate.score,
           cover : data.candidate.coverLetter,
           phone : data.candidate.candidatePhone,
-          status : data.candidate.status.statusName,
+          status : data.candidate.status,
           experience : experience,
           skills : null
         }

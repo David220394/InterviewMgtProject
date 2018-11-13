@@ -17,7 +17,7 @@ Job Title: &nbsp; &nbsp; &nbsp;
 <mat-tab-group>
   <mat-tab label="Applied">
 
-    <app-pipeline-candidate [candidate]="candidate" *ngFor="let candidate of candidatesApplied"></app-pipeline-candidate>
+    <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesApplied"></app-pipeline-candidate>
 
   </mat-tab>
   <mat-tab label="Schedule Interview">

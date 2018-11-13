@@ -11,6 +11,7 @@ import { SharePreferencesService } from '../../providers/share-preferences.servi
 export class PipelineCandidateComponent implements OnInit {
 
   @Input() candidate:Candidate;
+  @Input() selected : number;
 
   constructor(private router : Router, private sharePreferences : SharePreferencesService) { }
 
@@ -18,8 +19,16 @@ export class PipelineCandidateComponent implements OnInit {
   }
 
   onClickRedirect(): void{
+
     this.sharePreferences.setCandidateId(this.candidate.id);
-    this.router.navigateByUrl('/candidatePage');
+    this.sharePreferences.setCandidateName(this.candidate.name);
+    if(this.selected){
+      console.log(this.selected);
+    this.router.navigateByUrl('/candidatePage/'+this.selected);
+    }else{
+      this.router.navigateByUrl('/candidatePage');
+    }
+
   }
 
 }

@@ -1,25 +1,38 @@
 package com.accenture.interviewproj.services;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.accenture.interviewproj.entities.Employee;
+import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.enums.Role;
 import com.accenture.interviewproj.exceptions.EmployeeAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.EmployeeNotFoundException;
 import com.accenture.interviewproj.exceptions.IdNotFoundException;
 import com.accenture.interviewproj.repositories.EmployeeRepository;
 
-@Service
-public class EmployeeService {
+@Service(value = "employeeService")
+public class EmployeeService implements UserDetailsService {
 	
-	@Autowired
-	private EmployeeRepository employeeRepository;
+	private final EmployeeRepository employeeRepository;
+	private final BCryptPasswordEncoder bcryptEncoder;
 	
+	public EmployeeService(EmployeeRepository employeeRepository, BCryptPasswordEncoder bcryptEncoder) {
+		this.employeeRepository = employeeRepository;
+		this.bcryptEncoder = bcryptEncoder;
+	}
+
 	public void createEmployee(Employee employee) {
 		employeeRepository.save(employee);
 	}
@@ -112,10 +125,55 @@ public class EmployeeService {
 		Employee employee = new Employee();
 		employee.setEmployeeId("sylvio.brandon.david");
 		employee.setEmployeeName("David");
-		employee.setEmployeePassword("Athena");
-		employee.setRole(Role.ROLE_ADMIN);
+		employee.setEmployeePassword(bcryptEncoder.encode("12345"));
+		employee.setRole(Role.ADMIN);
 		createEmployee(employee);
 		}
+	}
+	
+	
+	
+	/******
+	 * Dont Touch anything below thing
+	 */
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		Employee employee = employeeRepository.findByEmployeeId(username);
+		
+		if (employee == null) {
+			throw new UsernameNotFoundException("Invalid eid or password.");
+		}
+		
+		return new User(username, employee.getEmployeePassword(), this.getAuthority(employee));
+	}
+	
+	/**
+	 * Get the role of a User and convert it into a SimpleGrantedAuthority
+	 */
+	private Set<SimpleGrantedAuthority> getAuthority(Employee employee) {
+		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+
+		// Check if employee is an Admin
+		if (employee.getRole() == Role.ADMIN) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_" + Role.ADMIN.toString()));
+		}
+
+		// Check if employee is a HR
+		if (employee.getRole() == Role.HR) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_" + Role.HR.toString()));
+		}
+
+		return authorities;
+	}
+	
+	public void updateJob(String eid, Job job) {
+		Employee employee = employeeRepository.findByEmployeeId(eid);
+		List<Job> jobs = employee.getJobs();
+		jobs.add(job);
+		employee.setJobs(jobs);
+		employeeRepository.save(employee);
 	}
 
 }

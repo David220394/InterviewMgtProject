@@ -5,7 +5,7 @@ export interface Candidate {
   picture:string;
   title:string;
   education:string;
-  status:string;
+  status?:string;
   completeApplication : boolean;
   internalApplication : boolean;
   rehire : boolean;

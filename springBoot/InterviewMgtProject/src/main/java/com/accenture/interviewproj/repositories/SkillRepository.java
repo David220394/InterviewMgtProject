@@ -6,4 +6,5 @@ import com.accenture.interviewproj.entities.Skill;
 
 public interface SkillRepository extends JpaRepository<Skill, Long> {
 
+	Skill findByDescription(String description);
 }

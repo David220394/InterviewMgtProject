@@ -1,14 +1,21 @@
 package com.accenture.interviewproj.entities;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "TABLE_REQUIREMENT")
@@ -22,39 +29,18 @@ public class Requirement implements Serializable {
 
 	@Column(name = "NAME")
 	private String name;
+
+	@ManyToMany(mappedBy = "requirements", fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<Job> jobs;
 	
-	@Column(name = "DURATION")
-	private Integer duration;
 
-	@Column(name = "MINIMUM_REQUIREMENT")
-	private Double minRequirement;
-
-	@ManyToOne
-	@JoinColumn(name = "JOB_ID", insertable = false, updatable = false)
-	private Job job;
-	
-	public Integer getDuration() {
-		return duration;
+	public List<Job> getJobs() {
+		return jobs;
 	}
 
-	public void setDuration(Integer duration) {
-		this.duration = duration;
-	}
-
-	public Double getMinRequirement() {
-		return minRequirement;
-	}
-
-	public void setMinRequirement(Double minRequirement) {
-		this.minRequirement = minRequirement;
-	}
-
-	public Job getJob() {
-		return job;
-	}
-
-	public void setJob(Job job) {
-		this.job = job;
+	public void setJobs(List<Job> jobs) {
+		this.jobs = jobs;
 	}
 
 	public Long getRequirementId() {

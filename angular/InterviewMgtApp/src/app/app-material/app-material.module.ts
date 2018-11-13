@@ -20,7 +20,11 @@ import { MatButtonModule,
         MatPaginatorModule,
         MatDatepicker,
         MatDatepickerModule,
-        MatNativeDateModule} from '@angular/material';
+        MatNativeDateModule,
+        MatRadioModule,
+        MatBadge,
+        MatBadgeModule,
+        MatAutocompleteModule} from '@angular/material';
 
 @NgModule({
   imports: [
@@ -46,6 +50,9 @@ import { MatButtonModule,
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatRadioModule,
+    MatBadgeModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatToolbarModule,
@@ -69,6 +76,9 @@ import { MatButtonModule,
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatRadioModule,
+    MatBadgeModule,
+    MatAutocompleteModule
   ],
   declarations: []
 })

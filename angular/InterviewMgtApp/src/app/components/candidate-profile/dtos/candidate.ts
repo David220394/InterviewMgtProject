@@ -16,9 +16,10 @@ export interface Candidate {
   education : Education,
   availability : boolean,
   cover : string,
-  score : number,
+  score? : number,
   phone : number,
-  status : string,
+  status? : string,
   experience : Experience,
   skills : Skill[]
+  jobName? : string;
 }

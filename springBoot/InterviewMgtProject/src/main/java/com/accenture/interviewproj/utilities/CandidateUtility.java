@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import org.apache.poi.ss.usermodel.Row;
 
 import com.accenture.interviewproj.dtos.CandidateDto;
+import com.accenture.interviewproj.dtos.DisplayCandidateDto;
 import com.accenture.interviewproj.entities.Candidate;
 import com.accenture.interviewproj.enums.Gender;
 
@@ -14,22 +15,18 @@ public class CandidateUtility {
 	
 	private CandidateUtility() {}
 	
-/*	public static CandidateDto convertCandidateToDto(Candidate candidate) {
-		CandidateDto candidateDto = new CandidateDto();
+	public static DisplayCandidateDto convertCandidateToDto(Candidate candidate) {
+		DisplayCandidateDto candidateDto = new DisplayCandidateDto();
+		candidateDto.setCandidateId(candidate.getCandidateId());
 		candidateDto.setCandidateAddress(candidate.getCandidateAddress());
 		candidateDto.setCandidateCv(candidate.getCandidateCv());
 		candidateDto.setCandidateExperience(candidate.getCandidateExperience());
 		candidateDto.setCandidateName(candidate.getCandidateName());
 		candidateDto.setCandidatePhone(candidate.getCandidatePhone());
 		candidateDto.setAvailability(candidate.getAvailability());
-		candidateDto.setScore(candidate.getScore());
 		candidateDto.setEmail(candidate.getEmail());
 		candidateDto.setCoverLetter(candidate.getCoverLetter());
 		candidateDto.setSkills(candidate.getSkills());
-		candidateDto.setInterviews(candidate.getInterviews());
-		candidateDto.setJob(candidate.getJob());
-		candidateDto.setStatus(candidate.getStatus());
-		candidateDto.setTrackings(candidate.getTrackings());
 		candidateDto.setApplicationDate(candidate.getApplicationDate());
 		candidateDto.setCompleteApplication(candidate.getCompleteApplication());
 		candidateDto.setDob(candidate.getDob());
@@ -39,7 +36,7 @@ public class CandidateUtility {
 		candidateDto.setInternalApplication(candidate.getInternalApplication());
 		return candidateDto;
 		
-	}*/
+	}
 	
 	public static CandidateDto getCandidateFromExcel(Row row) {
 		CandidateDto candidateDto = new CandidateDto();
@@ -78,7 +75,6 @@ public class CandidateUtility {
 		candidate.setInternalApplication(candidateDto.getInternalApplication());
 		candidate.setCompleteApplication(candidateDto.getCompleteApplication());
 		candidate.setRehire(candidateDto.getRehire());
-		candidate.setScore(0);
 		return candidate;
 	}
 
