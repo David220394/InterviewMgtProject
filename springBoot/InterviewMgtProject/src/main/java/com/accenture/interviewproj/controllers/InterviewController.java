@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.accenture.interviewproj.dtos.AfterAssessmentDto;
 import com.accenture.interviewproj.dtos.AfterInterviewDto;
 import com.accenture.interviewproj.dtos.InterviewDto;
 import com.accenture.interviewproj.dtos.QuizDto;
@@ -90,6 +92,9 @@ public class InterviewController {
 		return ResponseEntity.ok(assessmentQuizService.insertAssessmentQuiz(quizDto));
 	}
 	
-	
+	@PostMapping("/assessmentInterview/")
+	public ResponseEntity<?> calculateAssessmentScore(@RequestBody AfterAssessmentDto afterAssessmentDto){
+		return ResponseEntity.ok(assessmentQuizService.saveAssessmentScore(afterAssessmentDto));
+	}
 
 }

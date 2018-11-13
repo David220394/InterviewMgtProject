@@ -34,13 +34,13 @@ public class AssessmentQuizService {
 		AssessmentQuiz quiz = new AssessmentQuiz();
 		quiz.setQuizName(quizDto.getQuizName());
 		assessmentQuizRepositorty.save(quiz);
-		for (QuestionDto questionDto : quizDto.getQuestionDtos()) {
+		for (QuestionDto questionDto : quizDto.getQuestions()) {
 			QuizQuestion question = new QuizQuestion();
 			question.setQuestion(questionDto.getQuestion());
 			question.setAssessmentQuiz(quiz);
 			question.setCorrectAnswer(questionDto.getCorrectAnswer());
 			question.setMark(questionDto.getMark());
-			question.setPossibleAnswers(questionDto.getPossibleAnswers());
+			question.setPossibleAnswers(questionDto.getAnswers());
 			questionRepository.save(question);
 		}
 		return quiz;
@@ -49,7 +49,7 @@ public class AssessmentQuizService {
 	public Interview saveAssessmentScore(AfterAssessmentDto assessmentDto) {
 		double score = 0;
 		Interview interview = interviewRepository.findByLink(assessmentDto.getInterviewLink());
-		AssessmentQuiz assessmentQuiz = assessmentQuizRepositorty.getOne(assessmentDto.getQuizId());
+		AssessmentQuiz assessmentQuiz = assessmentQuizRepositorty.findByQuizName(assessmentDto.getQuizName());
 		for (AfterAssessmentQuestionDto questionDto : assessmentDto.getAfterAssessmentQuestionDtos()) {
 			for(QuizQuestion question : assessmentQuiz.getQuizQuestions()) {
 				if(question.getQuestion().equals(questionDto.getQuestion()) && question.getCorrectAnswer().equals(questionDto.getAnswer())) {
@@ -58,6 +58,7 @@ public class AssessmentQuizService {
 			}
 		}
 		interview.setScore(score);
+		interview.setMaxScore(assessmentDto.getMaxScore());
 		interview.setCompleted(true);
 		interviewRepository.save(interview);
 		return interview;

@@ -16,9 +16,10 @@
   <div class="header1">
     <img mat-card-avatar src="../../../assets/img/profile-circle-3.png" />
     <h3>{{candidate?.name | uppercase}} </h3>
-    {{candidate?.jobName}}
-    <div *ngIf="interviewScore">
-      <bar-rating *ngIf="interviewFlag && is_job" [(rate)]="overallScore" [max]="5" class="br-default-theme" [readOnly]="true"></bar-rating><br />
+    {{candidate?.jobName}}<br/>
+   <small> {{candidate?.status}}</small>
+    <div *ngIf="interviewScore && is_job">
+      <bar-rating *ngIf="interviewFlag" [(rate)]="overallScore" [max]="5" class="br-default-theme" [readOnly]="true"></bar-rating><br />
       {{interviewScore.aveScore}}%
     </div>
   </div>
@@ -27,7 +28,7 @@
       <mat-icon>info_outline</mat-icon> About
     </h2>
     <div><span class="column1">
-        <mat-icon>location_on_outline</mat-icon> Adress
+        <mat-icon>location_on_outline</mat-icon> Address
       </span><span class="column2"> {{candidate?.address}}</span></div>
     <div><span class="column1">
         <mat-icon>school_outline</mat-icon> Education

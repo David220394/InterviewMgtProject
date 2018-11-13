@@ -1,6 +1,7 @@
 package com.accenture.interviewproj.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -30,10 +32,9 @@ public class JobCandidate implements Serializable {
 	@Column(name = "CANDIDATE_SCORE")
 	private Integer score;
 	
-	@OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
-            mappedBy = "jobCandidate")
-	private Status status;
+	@OneToMany(mappedBy="jobCandidate")
+	@JsonIgnore
+	private List<Status> status;
 	
 	
 	@ManyToOne
@@ -62,11 +63,11 @@ public class JobCandidate implements Serializable {
 		this.score = score;
 	}
 
-	public Status getStatus() {
+	public List<Status> getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(List<Status> status) {
 		this.status = status;
 	}
 

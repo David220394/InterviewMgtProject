@@ -4,7 +4,9 @@ import java.util.List;
 
 public class AfterAssessmentDto {
 	
-	private Long quizId;
+	private String quizName;
+	
+	private double maxScore;
 	
 	private String interviewLink;
 	
@@ -27,14 +29,21 @@ public class AfterAssessmentDto {
 		this.interviewLink = interviewLink;
 	}
 
-	public Long getQuizId() {
-		return quizId;
+	public String getQuizName() {
+		return quizName;
 	}
 
-	public void setQuizId(Long quizId) {
-		this.quizId = quizId;
+	public void setQuizName(String quizName) {
+		this.quizName = quizName;
 	}
-	
-	
 
+	public double getMaxScore() {
+		return maxScore;
+	}
+
+	public void setMaxScore(double maxScore) {
+		this.maxScore = maxScore;
+	}
+
+	
 }

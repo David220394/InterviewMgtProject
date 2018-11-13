@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.accenture.interviewproj.dtos.JobDto;
 import com.accenture.interviewproj.dtos.JobWithIdDto;
 import com.accenture.interviewproj.dtos.QuestionDto;
+import com.accenture.interviewproj.dtos.QuizDto;
 import com.accenture.interviewproj.entities.Employee;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
@@ -145,8 +146,8 @@ public class JobRestController {
 	@GetMapping("/quiz/{jobId}")
 	public ResponseEntity<?> findQuiz(@PathVariable("jobId") long jobId){
 		try {
-			List<QuestionDto> questionDtos = jobService.findQuiz(jobId);
-			return ResponseEntity.ok(questionDtos);
+			QuizDto quizDto= jobService.findQuiz(jobId);
+			return ResponseEntity.ok(quizDto);
 		} catch (EncryptedDocumentException | InvalidFormatException | JobNotFoundException | IOException e) {
 			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

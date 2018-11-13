@@ -130,5 +130,10 @@ public class CandidateController {
 	public ResponseEntity<?> findAll(){
 		return ResponseEntity.ok(candidateService.findAll());
 	}
+	
+	@GetMapping("/updateStatus/{jobId}/{cid}/{is_change}/{oldStatus}")
+	public ResponseEntity<?> updateStatus(@PathVariable Long jobId,@PathVariable Long cid,@PathVariable String is_change,@PathVariable String oldStatus){
+		return ResponseEntity.ok(candidateService.updateCandidateStatus(cid, jobId, is_change,oldStatus));
+	}
 
 }

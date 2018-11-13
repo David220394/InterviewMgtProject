@@ -226,6 +226,40 @@ public class CandidateService {
 			throw new JobNameAlreadyExistsException("This candidate is already assigned to the job");
 		}
 	}
+	
+	
+	/**
+	 * Change status of candidate
+	 */
+	public Status updateCandidateStatus(long candidateId, long jobId, String is_change, String oldStatus) {
+		List<String> status = new ArrayList<>();
+		Status savedStatus=null;
+		status.add("Applied");
+		status.add("Scheduled Interview");
+		status.add("Interview In progress");
+		status.add("Completed");
+		status.add("Rejected");
+		
+		if(!is_change.equals("NOTHING")) {
+			Candidate candidate = candidateRepository.findById(candidateId).get();
+			Job job = jobRepository.findByJobId(jobId);
+			JobCandidate jobCandidate = jobCandidateRepository.findByCandidateAndJob(candidate, job);
+			String newStatus;
+			if(is_change.equals("CHANGE")) {
+				newStatus = status.get(status.indexOf(oldStatus)+1);
+			}else {
+				newStatus = "Rejected";
+			}
+			savedStatus = new Status();
+			savedStatus.setStatusName(newStatus);
+			savedStatus.setCandidate(jobCandidate);
+			return statusRepository.save(savedStatus);
+		}
+		return savedStatus;
+	}
+	
+	
+	
 		
 	/**
 	 * Details for job and candidate
@@ -257,7 +291,7 @@ public class CandidateService {
 			List<QuestionDto> dtos = JobUtility.convertExcelToQuestionDto(file);
 			QuizDto quizDto = new QuizDto();
 			quizDto.setQuizName("Test1");
-			quizDto.setQuestionDtos(dtos);
+			quizDto.setQuestions(dtos);
 			assessmentQuiz = assessmentQuizService.insertAssessmentQuiz(quizDto);
 		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
 			
@@ -267,7 +301,6 @@ public class CandidateService {
 		job.setActiveJob(true);
 		job.setJobName("Accenture Academy");
 		job.setLocation("NexTracom");
-		//job.setAssessmentFile("Test1.xlsx");
 		job.setAssessmentQuiz(assessmentQuiz);
 		job.setPosition("Java Developer");
 		job.setRequirements(requirements);
@@ -277,7 +310,6 @@ public class CandidateService {
 		job1.setActiveJob(true);
 		job1.setJobName("SAP Development");
 		job1.setLocation("NexTracom");
-		//job1.setAssessmentFile("Test1.xlsx");
 		job1.setAssessmentQuiz(assessmentQuiz);
 		job1.setPosition("SAP Developer");
 		job1.setRequirements(requirements1);

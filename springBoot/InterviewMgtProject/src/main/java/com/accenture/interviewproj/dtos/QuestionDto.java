@@ -6,7 +6,7 @@ public class QuestionDto {
 
 	private String question;
 	
-	private List<String> possibleAnswers;
+	private List<String> answers;
 	
 	private String correctAnswer;
 	
@@ -28,12 +28,12 @@ public class QuestionDto {
 		this.question = question;
 	}
 
-	public List<String> getPossibleAnswers() {
-		return possibleAnswers;
+	public List<String> getAnswers() {
+		return answers;
 	}
 
-	public void setPossibleAnswers(List<String> possibleAnswers) {
-		this.possibleAnswers = possibleAnswers;
+	public void setAnswers(List<String> answers) {
+		this.answers = answers;
 	}
 
 	public String getCorrectAnswer() {

@@ -65,10 +65,10 @@ public class JobService {
 	 *             Insert a job
 	 */
 	public Job insertJob(JobDto jobDto) throws JobNameAlreadyExistsException {
-		if (jobRepository.findByJobName(jobDto.getJobName()) == null) {
+		if (jobRepository.findByJobName(jobDto.getProjectName()) == null) {
 			Job job = JobUtility.convertJobDtoToJob(jobDto);
 			List<Employee> employees = new ArrayList<>();
-			for (String employee : jobDto.getAssignTo()) {
+			for (String employee : jobDto.getAssignTos()) {
 				if (employeeRepository.findByEmployeeName(employee) != null) {
 					employees.add(employeeRepository.findByEmployeeName(employee));
 				}
@@ -148,7 +148,7 @@ public class JobService {
 			List<QuestionDto> questionDtos = JobUtility.convertExcelToQuestionDto(file.getInputStream());
 			QuizDto quizDto = new QuizDto();
 			quizDto.setQuizName(file.getName());
-			quizDto.setQuestionDtos(questionDtos);
+			quizDto.setQuestions(questionDtos);
 			AssessmentQuiz quiz = assessmentQuizService.insertAssessmentQuiz(quizDto);
 			searchJob.setAssessmentQuiz(quiz);
 			return jobRepository.save(searchJob);
@@ -157,8 +157,9 @@ public class JobService {
 		}
 	}
 
-	public List<QuestionDto> findQuiz(long jobId)
+	public QuizDto findQuiz(long jobId)
 			throws JobNotFoundException, EncryptedDocumentException, InvalidFormatException, IOException {
+		QuizDto quizDto = new QuizDto();
 		List<QuestionDto> questionDtos = new ArrayList<>();
 		Job searchJob = jobRepository.findByJobId(jobId);
 		if (searchJob != null) {
@@ -168,11 +169,12 @@ public class JobService {
 				questionDto.setQuestion(quizQuestion.getQuestion());
 				questionDto.setCorrectAnswer(quizQuestion.getCorrectAnswer());
 				questionDto.setMark(quizQuestion.getMark());
-				questionDto.setPossibleAnswers(quizQuestion.getPossibleAnswers());
+				questionDto.setAnswers(quizQuestion.getPossibleAnswers());
 				questionDtos.add(questionDto);
 			}
-
-			return questionDtos;
+			quizDto.setQuizName(searchJob.getAssessmentQuiz().getQuizName());
+			quizDto.setQuestions(questionDtos);
+			return quizDto;
 		} else {
 			throw new JobNotFoundException("Failed to update job");
 		}

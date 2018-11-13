@@ -5,6 +5,8 @@ public class AfterAssessmentQuestionDto {
 	private String question;
 	
 	private String answer;
+	
+	private int mark;
 
 	public String getQuestion() {
 		return question;
@@ -22,4 +24,11 @@ public class AfterAssessmentQuestionDto {
 		this.answer = answer;
 	}
 
+	public int getMark() {
+		return mark;
+	}
+
+	public void setMark(int mark) {
+		this.mark = mark;
+	}
 }

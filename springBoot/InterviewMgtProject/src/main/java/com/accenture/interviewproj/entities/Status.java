@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -33,10 +34,8 @@ public class Status implements Serializable{
 	@Column(name="STATUS_CHANGE_DATE")
 	private LocalDateTime creationDate;
 	
-
-	@OneToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "CANDIDATE_ID")
-	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name="JOB_CANDIDATE_ID")
 	private JobCandidate jobCandidate;
 
 	public String getStatusName() {

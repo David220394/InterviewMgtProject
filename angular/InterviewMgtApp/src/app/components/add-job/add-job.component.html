@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Create a new Job</title>
-</head>
-<body>
+<!--
   <form #createJobForm="ngForm" (ngSubmit)="createJob(createJobForm)" class="example-form">
     <h2 class="mb-3">Create a new job</h2>
 
@@ -52,7 +44,73 @@
     <input ngModel type="file" accept=".xlsx" name="file" (change)="onUpload($event)"><br><br>
     <input type="submit" class="btn btn-primary" value="submit">
     </div>
+    </form>-->
 
-    </form>
-</body>
-</html>
+<form [formGroup]="myForm" novalidate (ngSubmit)="createJob(myForm)">
+  <mat-form-field class="form-group">
+    <input matInput type="text" placeholder="Project Name" formControlName="projectName">
+    <mat-error *ngIf="!myForm.controls.projectName.valid && myForm.controls.projectName.touched" class="text-danger">
+      Field is required (minimum 5 characters).
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="form-group">
+    <input matInput type="text" placeholder="Position" formControlName="position">
+    <mat-error *ngIf="!myForm.controls.position.valid && myForm.controls.position.touched" class="text-danger">
+      Field is required (minimum 5 characters).
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="form-group">
+    <input matInput type="text" placeholder="Location" formControlName="location">
+    <mat-error *ngIf="!myForm.controls.location.valid && myForm.controls.location.touched" class="text-danger">
+      Field is required (minimum 5 characters).
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="form-group">
+    <input matInput [matDatepicker]="picker" placeholder="Creation Date" formControlName="creationDate">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="!myForm.controls.creationDate.valid && myForm.controls.creationDate.touched" class="text-danger">
+      Field is required
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="form-group">
+    <input matInput [matDatepicker]="picker1" placeholder="Closing Date" formControlName="closingDate">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+    <mat-error *ngIf="!myForm.controls.closingDate.valid && myForm.controls.closingDate.touched" class="text-danger">
+      Field is required
+    </mat-error>
+  </mat-form-field>
+  <div formArrayName="assignTos" *ngFor="let assignee of myForm.controls.assignTos.controls; let j=index" class="col-md-6">
+    <div [formGroupName]="j">
+      <mat-form-field class="form-group" style="padding-right:0px">
+        <input type="text" matInput placeholder="assignTo" formControlName="assignTo">
+      </mat-form-field>
+
+    </div>
+    <button type="button" class="btn btn-primary" *ngIf="(myForm.controls.assignTos.controls.length > 1) && (j == myForm.controls.assignTos.controls.length-1)"
+      (click)="removeAssignTo(j)" style="cursor: pointer; float: right">Remove Assignee</button>
+    <button type="button" class="btn btn-primary" (click)="addAssignTo()" *ngIf="j == myForm.controls.assignTos.controls.length-1"
+      style="float: right">Add Assignee</button>
+  </div>
+  <br/><br/>
+  <div formArrayName="requirements" *ngFor="let req of myForm.controls.requirements.controls; let i=index" class="col-md-6">
+    <div [formGroupName]="i">
+      <mat-form-field class="form-group" style="padding-right:0px">
+        <input type="text" matInput placeholder="Requirement" formControlName="requirement">
+      </mat-form-field>
+
+    </div>
+    <button type="button" class="btn btn-primary" *ngIf="(myForm.controls.requirements.controls.length > 1) && (i == myForm.controls.requirements.controls.length-1)"
+      (click)="removeRequirement(i)" style="cursor: pointer; float: right">Remove Requirement</button>
+    <button type="button" class="btn btn-primary" *ngIf="i == myForm.controls.requirements.controls.length-1" (click)="addRequirement()"
+      style="float: right">Add Requirement</button>
+  </div>
+  <br/><br/>
+  <input type="file" style="display: none" #fileInput accept=".xlsx" name="file" (change)="onUpload($event)">
+  <button mat-stroked-button color="primary" (click)="fileInput.click()">Select Assessment File</button>
+  <button mat-stroked-button color="primary" (click)="uploadCandidate()">Upload!!!</button>
+  <input type="submit" class="btn btn-primary" value="submit">
+</form>-->

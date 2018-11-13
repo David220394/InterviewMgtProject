@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { InterviewService } from '../candidate-profile/providers/interview.service';
 
 @Component({
   selector: 'app-quiz',
@@ -10,7 +11,7 @@ export class QuizComponent implements OnInit {
 
   myForm: FormGroup;
 
-  constructor(private _fb: FormBuilder) { }
+  constructor(private _fb: FormBuilder, private interviewService : InterviewService) { }
 
   ngOnInit() {
     this.myForm = this._fb.group({
@@ -58,8 +59,19 @@ control.removeAt(j);
 }
 
 save(formData) {
-console.log(formData.value)
-}
+if(formData.valid){
+let quiz = formData.value;
 
+quiz.questions.forEach(question => {
+    let answers :string[] =[];
+    question.answers.forEach(element => {
+      answers.push(element.answer);
+    });
+    question.answers = answers;
+});
+console.log(quiz);
+this.interviewService.createQuiz(quiz);
+}
+}
 
 }

@@ -6,7 +6,7 @@ public class QuizDto {
 	
 	String quizName;
 	
-	List<QuestionDto> questionDtos;
+	List<QuestionDto> questions;
 
 	public String getQuizName() {
 		return quizName;
@@ -16,13 +16,15 @@ public class QuizDto {
 		this.quizName = quizName;
 	}
 
-	public List<QuestionDto> getQuestionDtos() {
-		return questionDtos;
+	public List<QuestionDto> getQuestions() {
+		return questions;
 	}
 
-	public void setQuestionDtos(List<QuestionDto> questionDtos) {
-		this.questionDtos = questionDtos;
+	public void setQuestions(List<QuestionDto> questions) {
+		this.questions = questions;
 	}
+
+	
 	
 	
 

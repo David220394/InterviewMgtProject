@@ -68,14 +68,15 @@ export class InterviewService {
     });
   }
 
-  public quizQuestions(jobId : number):Observable<Question[]>{
+  public quizQuestions(jobId : number):Observable<any>{
     return new Observable(observable =>{
       this.http.get(environment.url + '/api/jobs/quiz/'+jobId)
       .pipe( finalize(() => { observable.complete(); }))
       .subscribe( (data: any) => {
+        console.log(data)
           let questions : Question[]=[];
 
-          data.forEach(element => {
+          data.questionDtos.forEach(element => {
             let possibleAns : string[]=[];
             element.possibleAnswers.forEach(ans => {
               possibleAns.push(ans)
@@ -87,7 +88,11 @@ export class InterviewService {
               mark : element.mark
             })
           });
-          observable.next(questions);
+          let quiz ={
+            quizName : data.quizName,
+            questions : questions
+          }
+          observable.next(quiz);
         },
         error =>{
           observable.error(error);
@@ -172,6 +177,43 @@ export class InterviewService {
       });
     })
 
+  }
+
+  public updateAssessmentInterview(quizName, quizForm,link)  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        // 'Authorization': 'my-auth-token'
+      })
+    };
+    let maxScore : number = 0;
+    quizForm.questions.forEach(element => {
+      maxScore += element.mark;
+    });
+    let afterInterview = {
+        quizName : quizName,
+        maxScore : maxScore,
+        afterAssessmentQuestionDtos : quizForm.questions,
+        interviewLink : link
+
+    }
+    console.log(afterInterview);
+    this.http.post<AfterInterview>(environment.url + '/interview/assessmentInterview/',afterInterview, httpOptions).subscribe((data : any)=>{
+        console.log(data);
+    }
+    );
+  }
+
+  public createQuiz(quiz){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        // 'Authorization': 'my-auth-token'
+      })
+    };
+    this.http.post(environment.url + '/interview/createQuiz/',quiz, httpOptions).subscribe((data : any)=>{
+      console.log(data);
+  });
   }
 
 }

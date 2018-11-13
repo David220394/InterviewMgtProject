@@ -21,15 +21,15 @@ Job Title: &nbsp; &nbsp; &nbsp;
 
   </mat-tab>
   <mat-tab label="Schedule Interview">
-      <app-pipeline-candidate [candidate]="candidate" *ngFor="let candidate of candidatesInterviewScheduled"></app-pipeline-candidate>
+      <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesInterviewScheduled"></app-pipeline-candidate>
 
   </mat-tab>
   <mat-tab label="Interview in Progress">
-      <app-pipeline-candidate [candidate]="candidate" *ngFor="let candidate of candidatesInterviewInProgress"></app-pipeline-candidate>
+      <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesInterviewInProgress"></app-pipeline-candidate>
 
   </mat-tab>
   <mat-tab label="Completed">
-      <app-pipeline-candidate [candidate]="candidate" *ngFor="let candidate of candidatesCompleted"></app-pipeline-candidate>
+      <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesCompleted"></app-pipeline-candidate>
   </mat-tab>
   <mat-tab label="Rejected">
       <app-pipeline-candidate [candidate]="candidate" *ngFor="let candidate of candidatesRejected"></app-pipeline-candidate>

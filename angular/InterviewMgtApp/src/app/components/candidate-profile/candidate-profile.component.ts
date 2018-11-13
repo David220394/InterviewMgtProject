@@ -149,6 +149,9 @@ export class CandidateProfileComponent implements OnInit {
           trackingType: result.type
         };
         this.trackingService.insertTracking(contact);
+        this.trackingService.changeCandidateStatus(parseInt(this.sharePreference.getJobId()),
+        parseInt(this.sharePreference.getCandidateId()),
+        result.changeStatus,this.candidate.status).subscribe();
       }
     })
   }

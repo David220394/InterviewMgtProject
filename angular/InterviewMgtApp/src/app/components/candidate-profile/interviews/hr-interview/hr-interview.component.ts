@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Interview } from '../../dtos/interview';
 import { Candidate } from '../../dtos/candidate';
 import { FormGroup, FormBuilder, FormArray, FormControl, ValidatorFn, Validators } from '@angular/forms';
+import { AfterInterview } from '../../dtos/afterInterview';
+import { InterviewService } from '../../providers/interview.service';
 
 export interface Question {
   number : number;
@@ -36,7 +38,7 @@ export class HrInterviewComponent implements OnInit {
 
   candidate : Candidate;
 
-  constructor(private fb : FormBuilder) {
+  constructor(private fb : FormBuilder,private  interviewService : InterviewService) {
    }
 
 
@@ -65,6 +67,24 @@ export class HrInterviewComponent implements OnInit {
 
   save(questionForm){
     console.log("Reactive Form submitted: ", this.questionForm);
+    let afterInterview : AfterInterview;
+    let score : number =0;
+    let maxScore = (this.questions.length * 10);
+    for(var i=0; i < this.questions.length; i++ ){
+      this.questions[i].point = parseInt(questionForm.value.questions[i].point);
+      score += parseInt(questionForm.value.questions[i].point);
+      this.questions[i].comment = questionForm.value.questions[i].comment;
+    }
+    afterInterview ={
+      link : this.interview.link,
+      type : this.interview.type,
+      feedback : questionForm.value.feedback,
+      maxScore : maxScore,
+      questions : this.questions,
+      score : score
+    }
+      this.interviewService.updateInterview(afterInterview);
+
   }
 
 }

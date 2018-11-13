@@ -19,6 +19,7 @@ export interface Quiz{
 export class IqAssessmentComponent implements OnInit {
 
   questions : Question[];
+  quizName : string;
 
   questionForm : FormGroup;
   @Input() interview : Interview;
@@ -32,11 +33,9 @@ export class IqAssessmentComponent implements OnInit {
       ])
     });
     this.interviewService.quizQuestions(this.interview.jobId).subscribe(data =>{
-      this.questions = data;
+      this.questions = data.questions;
+      this.quizName = data.quizName;
       console.log(data);
-
-
-
       this.questions.forEach((question)=>{
         const control = <FormArray>this.questionForm.controls['questions'];
         control.push(this.initQuestions(question));
@@ -54,6 +53,7 @@ export class IqAssessmentComponent implements OnInit {
   }
 
   save(questionForm){
+    this.interviewService.updateAssessmentInterview(this.quizName,questionForm.value,this.interview.link);
     console.log("Reactive Form submitted: ", this.questionForm);
   }
 

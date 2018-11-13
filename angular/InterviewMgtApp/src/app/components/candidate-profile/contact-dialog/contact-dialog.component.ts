@@ -39,7 +39,7 @@ export class ContactDialogComponent implements OnInit {
   suggestedDateTimes: suggestedDateTime[];
   selectedDate : suggestedDateTime;
   is_meeting : boolean;
-
+  changeStatus : string;
 
 
 
@@ -61,7 +61,7 @@ export class ContactDialogComponent implements OnInit {
 
   onContactSubmit(){
     if(this.comment != null){
-      this.dialogRef.close({comment : this.comment,type : 'CALL',});
+      this.dialogRef.close({comment : this.comment,type : 'CALL', changeStatus : this.changeStatus});
     }
   }
 
@@ -71,7 +71,7 @@ export class ContactDialogComponent implements OnInit {
       this.trackingService.sentMail(this.comment,this.type,this.email,this.selectedDate).subscribe((data:any)=>{
         console.log(data)
       });
-      this.dialogRef.close({comment : this.comment,type : this.type,});
+      this.dialogRef.close({comment : this.comment,type : this.type, changeStatus : this.changeStatus});
     }
   }
   }

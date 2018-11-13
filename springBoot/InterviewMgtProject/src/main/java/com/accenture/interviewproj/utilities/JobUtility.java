@@ -29,13 +29,13 @@ public class JobUtility {
 	 */
 	public static Job convertJobDtoToJob(JobDto jobDto) {
 		Job job = new Job();
-		job.setJobName(jobDto.getJobName());
+		job.setJobName(jobDto.getProjectName());
 		job.setPosition(jobDto.getPosition());
 		job.setLocation(jobDto.getLocation());
 		job.setClosingDate(jobDto.getClosingDate());
 		job.setCreationDate(jobDto.getCreationDate());
 		job.setActiveJob(true);
-		job.setAssignTo(jobDto.getAssignTo());
+		job.setAssignTo(jobDto.getAssignTos());
 		return job;
 	}
 	
@@ -81,7 +81,7 @@ public class JobUtility {
 			for(int i=3;i<row.getLastCellNum();i++) {	
 				possibleAns.add(formatter.formatCellValue(row.getCell(i)));
 			}
-			questionDto.setPossibleAnswers(possibleAns);
+			questionDto.setAnswers(possibleAns);
 			questionDtos.add(questionDto);
 		}
 		return questionDtos;

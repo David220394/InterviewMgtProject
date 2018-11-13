@@ -55,6 +55,19 @@ export class TrackingService {
     });
   }
 
+  public changeCandidateStatus(jobId: number, candidateId: number, changeStatus : string,oldStatus : string): Observable<any>{
+
+    return new Observable(observer => {
+      this.http.get(environment.url + '/candidate/updateStatus/' + jobId + '/' + candidateId+ '/' +changeStatus+ '/' +oldStatus)
+        .pipe(finalize(() => { observer.complete(); }))
+        .subscribe((data: any) => {
+            console.log(data);
+        },(err:any)=>{
+          console.log(err);
+        })
+      });
+  }
+
   public sentMail(comment: string, type: string, email: string, time : suggestedDateTime): Observable<any> {
     return new Observable(observer => {
       if(type == 'INTERVIEW'){

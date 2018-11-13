@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AddJobService } from './providers/add-job.service';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-add-job',
@@ -10,14 +11,58 @@ import { Router } from '@angular/router';
 })
 export class AddJobComponent implements OnInit {
 
-  constructor(private addJobService: AddJobService, private http: HttpClient, private router : Router) { }
+  myForm: FormGroup;
+
+  constructor(private _fb: FormBuilder,private addJobService: AddJobService, private http: HttpClient, private router : Router) { }
 
   file: File;
   err : string;
 
   ngOnInit() {
+    this.myForm = this._fb.group({
+      projectName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]],
+      position: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]],
+      location: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]],
+      creationDate: ['', [Validators.required]],
+      closingDate : ['', [Validators.required]],
+      assignTos: this._fb.array([this.initAssignTo(),]),
+      requirements : this._fb.array([this.initRequirement(),]),
+      file: ['', ],
+  });
   }
 
+  initAssignTo() {
+    return this._fb.group({
+      assignTo : ['', Validators.required],
+    });
+  }
+
+  initRequirement() {
+    return this._fb.group({
+      requirement : ['', Validators.required],
+    });
+  }
+
+  addAssignTo() {
+    console.log("assigne")
+    const control = <FormArray>this.myForm.controls['assignTos'];
+    control.push(this.initAssignTo());
+    }
+
+    removeAssignTo(i: number) {
+    const control = <FormArray>this.myForm.controls['assignTos'];
+    control.removeAt(i);
+    }
+
+    addRequirement() {
+      const control = <FormArray>this.myForm.controls['requirements'];
+      control.push(this.initRequirement());
+      }
+
+      removeRequirement(i: number) {
+      const control = <FormArray>this.myForm.controls['requirements'];
+      control.removeAt(i);
+      }
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -30,10 +75,18 @@ export class AddJobComponent implements OnInit {
 
     if (this.file != null) {
       const job = createJobForm.value;
+      let assignTos : string[] = [];
+      let requirements : string[] = [];
 
-    //convert to array
-    job.assignTo = job.assignTo.split(",");
+      job.assignTos.forEach(element => {
+        assignTos.push(element.assignTo);
+      });
+    job.requirements.forEach(element => {
+      requirements.push(element.requirement);
+    });
 
+    job.assignTos = assignTos;
+    job.requirements = requirements;
     //delete file field
     delete job.file;
 
@@ -64,5 +117,7 @@ export class AddJobComponent implements OnInit {
     this.file = $event.target.files[0];
   }
 
-
+  createJobs(myForm){
+    console.log(myForm.value);
+  }
 }
