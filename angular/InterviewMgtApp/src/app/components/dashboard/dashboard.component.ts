@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DashboardService } from './providers/dashboard.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Interview } from './dto/interview';
+import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +15,13 @@ export class DashboardComponent implements OnInit {
   noOfCandidate : number;
   todaysInterview : number = 0;
   interviews : Interview[];
+
+  dataSource: MatTableDataSource<Interview>;
+  displayedColumns: string[] = ['jobName', 'candidateName','startDateTime','endDateTime','responseStatus'];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(private router : Router, private dashboardService : DashboardService) { }
 
   ngOnInit() {
@@ -26,9 +34,20 @@ export class DashboardComponent implements OnInit {
           this.todaysInterview++;
         }
       })
+      this.dataSource = new MatTableDataSource(this.interviews);
 
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       console.log(data)
     });
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 
@@ -42,5 +61,9 @@ export class DashboardComponent implements OnInit {
 
   onClickRedirect(): void{
     this.router.navigateByUrl('/jobList');
+  }
+
+  OnClickGoToCandidate(): void{
+    this.router.navigateByUrl('/candidateList');
   }
 }
