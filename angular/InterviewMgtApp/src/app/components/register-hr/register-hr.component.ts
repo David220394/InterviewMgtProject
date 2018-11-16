@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RegisterHrService } from './providers/register-hr.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register-hr',
@@ -8,7 +9,7 @@ import { RegisterHrService } from './providers/register-hr.service';
 })
 export class RegisterHrComponent implements OnInit {
 
-  constructor(private registerHRService: RegisterHrService) { }
+  constructor(private _fb: FormBuilder,private registerHRService: RegisterHrService) { }
 
   ngOnInit() {
   }

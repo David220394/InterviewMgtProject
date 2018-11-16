@@ -1,20 +1,22 @@
-<div class="jobsearch">
+
+<mat-card style="background-color: rgba(160, 187, 206, 0.596);">
+<div class="jobsearch" style="color: #801638; font-weight: bold">
 Job Title: &nbsp; &nbsp; &nbsp;
 
 <mat-form-field name = "pipeline">
     <mat-select  [(ngModel)]="selected" (ngModelChange)="changeView()">
-      <mat-option *ngFor="let job of jobs" [value]="job.id">{{ job.id }} &nbsp; {{job.name}}</mat-option>
+      <mat-option style="color: #801638; font-weight: bold" *ngFor="let job of jobs" [value]="job.id">{{ job.id }} &nbsp; {{job.name}}</mat-option>
     </mat-select>
   </mat-form-field>
 
-<p>You selected: {{selected}}</p>
+<p style="color: #801638; font-weight: bold">You selected: {{selected}}</p>
 
 
 
 <br><br>
 </div>
 
-<mat-tab-group>
+<mat-tab-group class="group1">
   <mat-tab label="Applied">
 
     <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesApplied"></app-pipeline-candidate>
@@ -36,3 +38,4 @@ Job Title: &nbsp; &nbsp; &nbsp;
 
   </mat-tab>
 </mat-tab-group>
+</mat-card>

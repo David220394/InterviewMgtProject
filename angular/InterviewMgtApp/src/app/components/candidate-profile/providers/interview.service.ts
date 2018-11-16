@@ -76,9 +76,9 @@ export class InterviewService {
         console.log(data)
           let questions : Question[]=[];
 
-          data.questionDtos.forEach(element => {
+          data.questions.forEach(element => {
             let possibleAns : string[]=[];
-            element.possibleAnswers.forEach(ans => {
+            element.answers.forEach(ans => {
               possibleAns.push(ans)
             });
             questions.push( {

@@ -5,13 +5,18 @@
 .main-nav a{
   padding: 20px;
   margin-left: 20px;
-  color: aliceblue;
+  color: white;
 }
 
 .main-nav mat-list-item {
     display: inline-block;
 }
 
+.content{
+  background-image: url("../../assets/img/background.jpg");
+  background-size: cover;
+  background-color: black;
+}
 
 .sidenav {
   width: 200px;
@@ -24,4 +29,8 @@
 
 .hidden{
   display: none;
+}
+
+mat-card{
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1), 0 0 16px 0 rgba(0, 0, 0, 0.05);
 }

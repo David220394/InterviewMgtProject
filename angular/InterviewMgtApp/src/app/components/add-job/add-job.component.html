@@ -45,25 +45,26 @@
     <input type="submit" class="btn btn-primary" value="submit">
     </div>
     </form>-->
-
+<mat-card style="background-color: rgba(160, 187, 206, 0.596);">
+<h2 class="mb-3" style="-webkit-text-fill-color: #801638">Add a job</h2>
 <form [formGroup]="myForm" novalidate (ngSubmit)="createJob(myForm)">
   <mat-form-field class="form-group">
     <input matInput type="text" placeholder="Project Name" formControlName="projectName">
     <mat-error *ngIf="!myForm.controls.projectName.valid && myForm.controls.projectName.touched" class="text-danger">
-      Field is required (minimum 5 characters).
+      Field is required (characters should be between 5 and 20).
     </mat-error>
   </mat-form-field>
   <mat-form-field class="form-group">
     <input matInput type="text" placeholder="Position" formControlName="position">
     <mat-error *ngIf="!myForm.controls.position.valid && myForm.controls.position.touched" class="text-danger">
-      Field is required (minimum 5 characters).
+      Field is required (characters should be between 5 and 20).
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group">
     <input matInput type="text" placeholder="Location" formControlName="location">
     <mat-error *ngIf="!myForm.controls.location.valid && myForm.controls.location.touched" class="text-danger">
-      Field is required (minimum 5 characters).
+      Field is required (characters should be between 5 and 20).
     </mat-error>
   </mat-form-field>
 
@@ -76,7 +77,7 @@
     </mat-error>
   </mat-form-field>
   <mat-form-field class="form-group">
-    <input matInput [matDatepicker]="picker1" placeholder="Closing Date" formControlName="closingDate">
+    <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" placeholder="Closing Date" formControlName="closingDate">
     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
     <mat-datepicker #picker1></mat-datepicker>
     <mat-error *ngIf="!myForm.controls.closingDate.valid && myForm.controls.closingDate.touched" class="text-danger">
@@ -100,6 +101,9 @@
     <div [formGroupName]="i">
       <mat-form-field class="form-group" style="padding-right:0px">
         <input type="text" matInput placeholder="Requirement" formControlName="requirement">
+        <mat-error *ngIf="!myForm.controls.requirements.valid && myForm.controls.requirements.touched" class="text-danger">
+          Field is required (characters should be between 5 and 20).
+        </mat-error>
       </mat-form-field>
 
     </div>
@@ -113,4 +117,5 @@
   <button mat-stroked-button color="primary" (click)="fileInput.click()">Select Assessment File</button>
   <button mat-stroked-button color="primary" (click)="uploadCandidate()">Upload!!!</button>
   <input type="submit" class="btn btn-primary" value="submit">
-</form>-->
+</form>
+</mat-card>

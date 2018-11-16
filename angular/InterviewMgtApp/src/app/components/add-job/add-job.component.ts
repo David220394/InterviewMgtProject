@@ -12,7 +12,11 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 export class AddJobComponent implements OnInit {
 
   myForm: FormGroup;
+  minDate = new Date(new Date().setDate(new Date().getDate()-1))
 
+
+  //maxDate = new Date();
+  maxDate =   new Date(2200, 0, 1);
   constructor(private _fb: FormBuilder,private addJobService: AddJobService, private http: HttpClient, private router : Router) { }
 
   file: File;
@@ -20,26 +24,26 @@ export class AddJobComponent implements OnInit {
 
   ngOnInit() {
     this.myForm = this._fb.group({
-      projectName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]],
-      position: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]],
-      location: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]],
+      projectName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
+      position: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
+      location: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
       creationDate: ['', [Validators.required]],
       closingDate : ['', [Validators.required]],
       assignTos: this._fb.array([this.initAssignTo(),]),
-      requirements : this._fb.array([this.initRequirement(),]),
+      requirements : this._fb.array([this.initRequirement(),[Validators.minLength(5), Validators.maxLength(20)]]),
       file: ['', ],
   });
   }
 
   initAssignTo() {
     return this._fb.group({
-      assignTo : ['', Validators.required],
+      assignTo : ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
     });
   }
 
   initRequirement() {
     return this._fb.group({
-      requirement : ['', Validators.required],
+      requirement : ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
     });
   }
 
@@ -59,7 +63,7 @@ export class AddJobComponent implements OnInit {
       control.push(this.initRequirement());
       }
 
-      removeRequirement(i: number) {
+    removeRequirement(i: number) {
       const control = <FormArray>this.myForm.controls['requirements'];
       control.removeAt(i);
       }

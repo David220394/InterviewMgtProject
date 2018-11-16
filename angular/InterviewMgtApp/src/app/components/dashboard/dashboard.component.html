@@ -1,58 +1,73 @@
-<div>
-  <button mat-fab class="button-row" (click)="onClickRedirect()" color="primary" matBadge="8" matBadgePosition="before"
-    matBadgeColor="accent">Active Jobs</button>
+<!--<img src="../../../assets/img/background.jpg"/>-->
+<mat-card style="background-color: rgba(160, 187, 206, 0.596);">
+  <div class="container">
+    <div class="row">
+      <mat-card mat-fab class="form-group col-md-5" (click)="onClickRedirect()" color="primary" matBadge="8"
+        matBadgePosition="before" matBadgeColor="accent">Active Jobs</mat-card>
 
-  <button mat-fab color="primary" class="button-row1" (click)="OnClickGoTo()" matBadge="{{todaysInterview}}" matBadgePosition="before"
-    matBadgeColor="accent">Today's Interview</button>
-</div>
+      <mat-card mat-fab color="primary" class="form-group col-md-5" (click)="OnClickGoTo()" matBadge="{{todaysInterview}}"
+        matBadgePosition="before" matBadgeColor="accent">Today's Interview</mat-card>
+    </div>
 
-<div>
-  <button mat-fab color="primary" class="button-row2" (click)="OnClickGoToCandidate()" matBadge="{{noOfCandidate}}"
-    matBadgePosition="before" matBadgeColor="accent">No. of Candidate</button>
+    <div class="row">
+      <mat-card mat-fab color="primary" class="form-group col-md-5" (click)="OnClickGoToCandidate()" matBadge="{{noOfCandidate}}"
+        matBadgePosition="before" matBadgeColor="accent">No. of Candidate</mat-card>
 
 
-  <button mat-fab color="primary" class="button-row3" (click)="OnClickGoTo()" matBadge="8" matBadgePosition="before"
-    matBadgeColor="accent">Work Completion</button>
-</div>
+      <mat-card id="work-completion" class="form-group col-md-5" style="background-color: brown">
+        <mat-card-title>
+          <h6>IQ Test</h6>
+        </mat-card-title>
+        <mat-divider [inset]="true"></mat-divider>
+        <mat-card-content *ngIf="interviewScore">
+          <mat-progress-spinner [color]="'accent'" [mode]="'determinate'" [value]="interviewScore.iqScore" [diameter]="'75'">
+          </mat-progress-spinner>
+          <span>{{interviewScore.iqScore}}%</span>
+        </mat-card-content>
+      </mat-card>
 
-<div>
-  <mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-  </mat-form-field>
+    </div>
+  </div>
 
-  <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort>
+  <div>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
 
-    <ng-container matColumnDef="jobName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Project Name </th>
-      <td mat-cell *matCellDef="let row"> {{row.jobName}} </td>
-    </ng-container>
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" matSort>
 
-    <ng-container matColumnDef="candidateName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Candidate Name </th>
-      <td mat-cell *matCellDef="let row"> {{row.candidateName}} </td>
-    </ng-container>
+        <ng-container matColumnDef="jobName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Project Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.jobName}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="startDateTime">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>  Start DateTime  </th>
-      <td mat-cell *matCellDef="let row"> {{row.startDateTime}} </td>
-    </ng-container>
+        <ng-container matColumnDef="candidateName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Candidate Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.candidateName}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="endDateTime">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> End DateTime  </th>
-      <td mat-cell *matCellDef="let row"> {{row.endDateTime}} </td>
-    </ng-container>
+        <ng-container matColumnDef="startDateTime">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Start DateTime </th>
+          <td mat-cell *matCellDef="let row"> {{row.startDateTime}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="responseStatus">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Response Status </th>
-      <td mat-cell *matCellDef="let row"> {{row.responseStatus}} </td>
-    </ng-container>
+        <ng-container matColumnDef="endDateTime">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> End DateTime </th>
+          <td mat-cell *matCellDef="let row"> {{row.endDateTime}} </td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  <mat-paginator [length]="mat-header-row" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        <ng-container matColumnDef="responseStatus">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Response Status </th>
+          <td mat-cell *matCellDef="let row"> {{row.responseStatus}} </td>
+        </ng-container>
 
-</div>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [length]="mat-header-row" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 
-</div>
+    </div>
+
+  </div>
+</mat-card>
