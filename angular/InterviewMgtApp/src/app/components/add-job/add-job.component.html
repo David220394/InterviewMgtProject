@@ -1,93 +1,49 @@
-<!--
-  <form #createJobForm="ngForm" (ngSubmit)="createJob(createJobForm)" class="example-form">
-    <h2 class="mb-3">Create a new job</h2>
 
-    <mat-form-field class="form-group">
-        <input matInput placeholder="Project Name" required ngModel name="jobName" #jobName="ngModel"  type="text" class="form-control"/>
-        <div class="alert alert-danger" *ngIf="jobName.touched && !jobName.valid">Project Name is required</div>
-    </mat-form-field>
-
-    <mat-form-field class="form-group">
-        <input matInput placeholder="Position" required ngModel name="position" #position="ngModel"  id="position" type="text" class="form-control"/>
-        <div class="alert alert-danger" *ngIf="position.touched && !position.valid">Position of job is required</div>
-      </mat-form-field>
-
-    <mat-form-field class="form-group">
-        <input matInput placeholder="Location" required ngModel name="location" #location="ngModel"  id="location" type="text" class="form-control"/>
-        <div class="alert alert-danger" *ngIf="location.touched && !location.valid">Location of job is required</div>
-      </mat-form-field>
-
-    <mat-form-field class="form-group">
-      <input matInput [matDatepicker]="picker1" ngModel name="creationDate" placeholder="Choose a Creation Date">
-      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-      <mat-datepicker #picker1></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field class="form-group">
-      <input matInput [matDatepicker]="picker" ngModel name="closingDate" placeholder="Choose a Closing Date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field class="form-group">
-        <input matInput placeholder="Assign To" required ngModel name="assignTo" #assignTo="ngModel"  id="assignTo" type="text" class="form-control"/>
-        <div class="alert alert-danger" *ngIf="assignTo.touched && !assignTo.valid">Assigning Job is required</div>
-    </mat-form-field>
-
-    <mat-form-field class="form-group">
-        <input matInput placeholder="Requirements" required ngModel name="requirements" #requirements="ngModel"  id="requirements" type="text" class="form-control"/>
-        <div class="alert alert-danger" *ngIf="requirements.touched && !requirements.valid">Requirements of Job is required</div>
-    </mat-form-field>
-
-    <div class="center-button">
-    <label>Assessment File: </label>
-    <input ngModel type="file" accept=".xlsx" name="file" (change)="onUpload($event)"><br><br>
-    <input type="submit" class="btn btn-primary" value="submit">
-    </div>
-    </form>-->
 <mat-card style="background-color: rgba(160, 187, 206, 0.596);">
 <h2 class="mb-3" style="-webkit-text-fill-color: #801638">Add a job</h2>
 <form [formGroup]="myForm" novalidate (ngSubmit)="createJob(myForm)">
   <mat-form-field class="form-group">
-    <input matInput type="text" placeholder="Project Name" formControlName="projectName">
+    <input style="font-family: Georgia, serif;" matInput type="text" placeholder="Project Name" formControlName="projectName">
     <mat-error *ngIf="!myForm.controls.projectName.valid && myForm.controls.projectName.touched" class="text-danger">
       Field is required (characters should be between 5 and 20).
     </mat-error>
   </mat-form-field>
   <mat-form-field class="form-group">
-    <input matInput type="text" placeholder="Position" formControlName="position">
+    <input style="font-family: Georgia, serif;" matInput type="text" placeholder="Position" formControlName="position">
     <mat-error *ngIf="!myForm.controls.position.valid && myForm.controls.position.touched" class="text-danger">
       Field is required (characters should be between 5 and 20).
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group">
-    <input matInput type="text" placeholder="Location" formControlName="location">
+    <input style="font-family: Georgia, serif;" matInput type="text" placeholder="Location" formControlName="location">
     <mat-error *ngIf="!myForm.controls.location.valid && myForm.controls.location.touched" class="text-danger">
       Field is required (characters should be between 5 and 20).
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group">
-    <input matInput [matDatepicker]="picker" placeholder="Creation Date" formControlName="creationDate">
+    <input style="font-family: Georgia, serif;" matInput [matDatepicker]="picker" placeholder="Creation Date" formControlName="creationDate">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
     <mat-error *ngIf="!myForm.controls.creationDate.valid && myForm.controls.creationDate.touched" class="text-danger">
       Field is required
     </mat-error>
   </mat-form-field>
+
   <mat-form-field class="form-group">
-    <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" placeholder="Closing Date" formControlName="closingDate">
+    <input style="font-family: Georgia, serif;" matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" placeholder="Closing Date" formControlName="closingDate">
     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
     <mat-datepicker #picker1></mat-datepicker>
     <mat-error *ngIf="!myForm.controls.closingDate.valid && myForm.controls.closingDate.touched" class="text-danger">
       Field is required
     </mat-error>
   </mat-form-field>
+
   <div formArrayName="assignTos" *ngFor="let assignee of myForm.controls.assignTos.controls; let j=index" class="col-md-6">
     <div [formGroupName]="j">
       <mat-form-field class="form-group" style="padding-right:0px">
-        <input type="text" matInput placeholder="assignTo" formControlName="assignTo">
+        <input style="font-family: Georgia, serif;" type="text" matInput placeholder="assignTo" formControlName="assignTo">
       </mat-form-field>
 
     </div>
@@ -100,7 +56,7 @@
   <div formArrayName="requirements" *ngFor="let req of myForm.controls.requirements.controls; let i=index" class="col-md-6">
     <div [formGroupName]="i">
       <mat-form-field class="form-group" style="padding-right:0px">
-        <input type="text" matInput placeholder="Requirement" formControlName="requirement">
+        <input style="font-family: Georgia, serif;" type="text" matInput placeholder="Requirement" formControlName="requirement">
         <mat-error *ngIf="!myForm.controls.requirements.valid && myForm.controls.requirements.touched" class="text-danger">
           Field is required (characters should be between 5 and 20).
         </mat-error>
@@ -116,6 +72,6 @@
   <input type="file" style="display: none" #fileInput accept=".xlsx" name="file" (change)="onUpload($event)">
   <button mat-stroked-button color="primary" (click)="fileInput.click()">Select Assessment File</button>
   <button mat-stroked-button color="primary" (click)="uploadCandidate()">Upload!!!</button>
-  <input type="submit" class="btn btn-primary" value="submit">
+  <input style="font-family: Georgia, serif;" type="submit" class="btn btn-primary" value="submit">
 </form>
 </mat-card>

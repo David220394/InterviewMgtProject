@@ -4,7 +4,7 @@
           <input matInput placeholder="Add to Job" [matAutocomplete]="jobList" [formControl]="jobCtrl">
           <mat-autocomplete #jobList="matAutocomplete">
             <mat-option *ngFor="let job of filteredJobs | async" [value]="job.name" (onSelectionChange)="selectedJob(job)">
-              <span>{{job.name}}</span>
+              <span style="font-family: Georgia, serif;">{{job.name}}</span>
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
@@ -59,7 +59,7 @@
   <div id="content1">
     <mat-card id="coverLetter">
       <mat-card-title>
-        <h2>Cover Letter</h2>
+        <h2 style="font-family: Georgia, serif;">Cover Letter</h2>
       </mat-card-title>
       <mat-divider [inset]="true"></mat-divider>
       <mat-card-content>
@@ -69,7 +69,7 @@
     <div *ngIf="interviewFlag && is_job" id="rating">
       <mat-card id="hr-int">
         <mat-card-title>
-          <h4>HR Interview</h4>
+          <h4 style="font-family: Georgia, serif;">HR Interview</h4>
         </mat-card-title>
         <mat-divider [inset]="true"></mat-divider>
         <mat-card-content *ngIf="interviewScore">
@@ -81,7 +81,7 @@
       </mat-card>
       <mat-card id="tec-int">
         <mat-card-title>
-          <h4>Technical Interview</h4>
+          <h4 style="font-family: Georgia, serif;">Technical Interview</h4>
         </mat-card-title>
         <mat-divider [inset]="true"></mat-divider>
         <mat-card-content *ngIf="interviewScore">
@@ -93,7 +93,7 @@
       </mat-card>
       <mat-card id="iq-int">
         <mat-card-title>
-          <h4>IQ Test</h4>
+          <h4 style="font-family: Georgia, serif;">IQ Test</h4>
         </mat-card-title>
         <mat-divider [inset]="true"></mat-divider>
         <mat-card-content *ngIf="interviewScore">
@@ -108,7 +108,7 @@
 
   <mat-card *ngIf="interviewFlag && is_job" id="feedback">
     <mat-card-title>
-      <h2>Feedback</h2>
+      <h2 style="font-family: Georgia, serif;">Feedback</h2>
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
     <div *ngIf="afterInterviews">

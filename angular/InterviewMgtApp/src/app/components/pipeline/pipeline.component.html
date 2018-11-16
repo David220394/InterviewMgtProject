@@ -1,15 +1,15 @@
 
 <mat-card style="background-color: rgba(160, 187, 206, 0.596);">
 <div class="jobsearch" style="color: #801638; font-weight: bold">
-Job Title: &nbsp; &nbsp; &nbsp;
+<h6 style="font-family: Georgia, serif;">Job Title:</h6> &nbsp; &nbsp; &nbsp;
 
 <mat-form-field name = "pipeline">
     <mat-select  [(ngModel)]="selected" (ngModelChange)="changeView()">
-      <mat-option style="color: #801638; font-weight: bold" *ngFor="let job of jobs" [value]="job.id">{{ job.id }} &nbsp; {{job.name}}</mat-option>
+      <mat-option style="color: #801638; font-weight: bold;font-family: Georgia, serif;" *ngFor="let job of jobs" [value]="job.id">{{ job.id }} &nbsp; {{job.name}}</mat-option>
     </mat-select>
   </mat-form-field>
 
-<p style="color: #801638; font-weight: bold">You selected: {{selected}}</p>
+<p style="color: #801638; font-weight: bold;font-family: Georgia, serif;">You selected: {{selected}}</p>
 
 
 
@@ -17,23 +17,23 @@ Job Title: &nbsp; &nbsp; &nbsp;
 </div>
 
 <mat-tab-group class="group1">
-  <mat-tab label="Applied">
+  <mat-tab style="font-family: Georgia, serif;" label="Applied">
 
     <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesApplied"></app-pipeline-candidate>
 
   </mat-tab>
-  <mat-tab label="Schedule Interview">
+  <mat-tab style="font-family: Georgia, serif;" label="Schedule Interview">
       <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesInterviewScheduled"></app-pipeline-candidate>
 
   </mat-tab>
-  <mat-tab label="Interview in Progress">
+  <mat-tab style="font-family: Georgia, serif;" label="Interview in Progress">
       <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesInterviewInProgress"></app-pipeline-candidate>
 
   </mat-tab>
-  <mat-tab label="Completed">
+  <mat-tab style="font-family: Georgia, serif;" label="Completed">
       <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesCompleted"></app-pipeline-candidate>
   </mat-tab>
-  <mat-tab label="Rejected">
+  <mat-tab style="font-family: Georgia, serif;" label="Rejected">
       <app-pipeline-candidate [candidate]="candidate" *ngFor="let candidate of candidatesRejected"></app-pipeline-candidate>
 
   </mat-tab>

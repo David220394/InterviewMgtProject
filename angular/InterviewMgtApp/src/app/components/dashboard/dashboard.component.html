@@ -2,21 +2,30 @@
 <mat-card style="background-color: rgba(160, 187, 206, 0.596);">
   <div class="container">
     <div class="row">
-      <mat-card mat-fab class="form-group col-md-5" (click)="onClickRedirect()" color="primary" matBadge="8"
-        matBadgePosition="before" matBadgeColor="accent">Active Jobs</mat-card>
+      <mat-card mat-fab class="form-group col-md-5" (click)="onClickRedirect()" style="background-color: #66CCFF" color="primary" matBadge="8"
+        matBadgePosition="before" matBadgeColor="accent">
+        <h6 style="font-family: Georgia, serif;">Active Jobs <img mat-card-avatar src="../../../assets/img/activejob.png"/></h6>
+        <mat-divider [inset]="true"></mat-divider>
+      </mat-card>
 
-      <mat-card mat-fab color="primary" class="form-group col-md-5" (click)="OnClickGoTo()" matBadge="{{todaysInterview}}"
-        matBadgePosition="before" matBadgeColor="accent">Today's Interview</mat-card>
+      <mat-card mat-fab color="primary" class="form-group col-md-5" style="background-color: #66CCFF" (click)="OnClickGoTo()" matBadge="{{todaysInterview}}"
+        matBadgePosition="before" matBadgeColor="accent">
+        <h6 style="font-family: Georgia, serif;">Today's Interview <img mat-card-avatar src="../../../assets/img/interview.png"/></h6>
+        <mat-divider [inset]="true"></mat-divider>
+      </mat-card>
     </div>
 
     <div class="row">
-      <mat-card mat-fab color="primary" class="form-group col-md-5" (click)="OnClickGoToCandidate()" matBadge="{{noOfCandidate}}"
-        matBadgePosition="before" matBadgeColor="accent">No. of Candidate</mat-card>
+      <mat-card mat-fab color="primary" class="form-group col-md-5" style="background-color: #66CCFF" (click)="OnClickGoToCandidate()" matBadge="{{noOfCandidate}}"
+        matBadgePosition="before" matBadgeColor="accent">
+        <h6 style="font-family: Georgia, serif;">No. of Candidate <img mat-card-avatar src="../../../assets/img/group.png"/></h6>
+        <mat-divider [inset]="true"></mat-divider>
+      </mat-card>
 
 
-      <mat-card id="work-completion" class="form-group col-md-5" style="background-color: brown">
+      <mat-card id="work-completion" class="form-group col-md-5" style="background-color: #66CCFF">
         <mat-card-title>
-          <h6>IQ Test</h6>
+          <h6 style="font-family: Georgia, serif;">IQ Test <img mat-card-avatar src="../../../assets/img/test.png"/></h6>
         </mat-card-title>
         <mat-divider [inset]="true"></mat-divider>
         <mat-card-content *ngIf="interviewScore">
