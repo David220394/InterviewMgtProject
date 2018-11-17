@@ -1,28 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Register HR</title>
-</head>
-<body>
+<mat-card style="background-color: rgba(160, 187, 206, 0.596);">
   <form #register="ngForm" (ngSubmit)="registerHR(register)" class="example-form">
-    <h2 class="mb-3">Register HR</h2>
+    <h2 class="mb-3" style="-webkit-text-fill-color: #801638; font-weight: bold">Register HR</h2>
 
     <mat-form-field class="form-group">
-        <input matInput placeholder="Employee Id:" required ngModel name="employeeId" #employeeId="ngModel"  type="text" class="form-control"/>
-        <div class="alert alert-danger" *ngIf="employeeId.touched && !employeeId.valid">Employee Id is required</div>
+        <input style="font-family: Georgia, serif;" matInput type="text" placeholder="Employee Id:" minlength="5" maxlength="20" required ngModel  name="employeeId" #employeeId="ngModel"/>
+        <mat-error *ngIf="employeeId.touched && !employeeId.valid" class="text-danger">
+          Field is required (characters should be between 5 and 20).
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field class="form-group">
-      <input matInput placeholder="Employee Name:" required ngModel name="employeeName" #employeeName="ngModel"  type="text" class="form-control"/>
-      <div class="alert alert-danger" *ngIf="employeeName.touched && !employeeName.valid">Employee Name is required</div>
+      <input style="font-family: Georgia, serif;" matInput type="text" placeholder="Employee Name:" minlength="5" maxlength="20" required ngModel  name="employeeName" #employeeName="ngModel"/>
+      <mat-error *ngIf="employeeId.touched && !employeeId.valid" class="text-danger">
+        Field is required (characters should be between 5 and 20).
+      </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group">
-    <input matInput placeholder="Employee Password:" required ngModel name="employeePassword" #employeePassword="ngModel"  type="text" class="form-control"/>
-    <div class="alert alert-danger" *ngIf="employeePassword.touched && !employeePassword.valid">Employee Password is required</div>
+    <input style="font-family: Georgia, serif;" matInput type="text" placeholder="Employee Password:" minlength="5" maxlength="20" required ngModel  name="employeePassword" #employeePassword="ngModel"/>
+    <mat-error *ngIf="employeeId.touched && !employeeId.valid" class="text-danger">
+      Field is required (characters should be between 5 and 20).
+    </mat-error>
 </mat-form-field>
 
   <div class="center-button">
@@ -30,6 +28,6 @@
   </div>
 
   </form>
-</body>
-</html>
+</mat-card>
+
 

@@ -4,13 +4,21 @@
 </div>
 <form [formGroup]="questionForm"  (ngSubmit)="save(questionForm)">
  <div formArrayName="questions">
-  <div  *ngFor="let question of questionForm.controls.questions.controls; let i = index" [formGroupName]="i">
-<span>Question {{i+1}}</span>
-<span>{{questions[i].question}}</span>
+  <mat-card  *ngFor="let question of questionForm.controls.questions.controls; let i = index" [formGroupName]="i">
+  <mat-card-title class="panel-heading ">
+  <span style="font-size: 20px; font-weight: bold">Question {{i+1}}</span>
+</mat-card-title>
+<mat-card-content>
+    <span>{{questions[i].question}}</span>
+  <div class="row">
 <div *ngFor="let ans of questions[i].possibleAnswer">
-  <span>{{ans}}<input type="radio" [value]="ans" formControlName="answer"></span>
+  <span class="col-md-6">{{ans}}
+    <input type="radio" [value]="ans" formControlName="answer">
+  </span>
 </div>
+  </div>
+</mat-card-content>
+</mat-card>
  </div>
-</div>
 <button type="submit">Submit</button>
 </form>

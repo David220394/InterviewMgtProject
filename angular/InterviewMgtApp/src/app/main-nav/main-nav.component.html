@@ -17,24 +17,24 @@
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
         <mat-icon>menu</mat-icon>
       </button>
-      <span>InterviewMgtApp</span>
+      <span style="font-family: Georgia, serif;">Interview Management</span>
       <mat-nav-list class="main-nav" [ngClass]="{hidden: (isHandset$ | async)}">
-        <a routerLink="/dashboard">Dashboard</a>
-        <a routerLink="/pipeline">Pipeline</a>
-        <a routerLink="/jobList">Job List</a>
-        <a routerLink="/candidateList">Candidate List</a>
-        <a routerLink="/addJob">Add Job</a>
-        <a routerLink="/regPage">Register</a>
-        <a href="" (click)="logout()">Logout</a>
+        <a style="font-family: Georgia, serif;" routerLink="/dashboard">Dashboard</a>
+        <a style="font-family: Georgia, serif;" routerLink="/pipeline">Pipeline</a>
+        <a style="font-family: Georgia, serif;" routerLink="/jobList">Job List</a>
+        <a style="font-family: Georgia, serif;" routerLink="/candidateList">Candidate List</a>
+        <a style="font-family: Georgia, serif;" routerLink="/addJob">Add Job</a>
+        <a style="font-family: Georgia, serif;" routerLink="/regPage">Register</a>
+        <a style="font-family: Georgia, serif;" href="" (click)="logout()">Logout</a>
       </mat-nav-list>
     </mat-toolbar>
 
-    <div class="container content">
+    <div class="content">
       <div class="row">
         <!-- responsive row has 12 columns by default -->
         <div class="col-md-12">
           <!-- uses 6 columns on medium and larger screens... -->
-          <div class="jumbotron">
+          <div class="content">
 
             <router-outlet></router-outlet>
           </div>
