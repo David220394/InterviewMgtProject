@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.accenture.interviewproj.dtos.EmployeeLoginDTO;
 import com.accenture.interviewproj.security.AuthenticationToken;
-import com.accenture.interviewproj.security.TokenProvider;
+import com.accenture.interviewproj.security.JwtService;
 import com.accenture.interviewproj.services.EmployeeService;
 
 @CrossOrigin("*")
@@ -28,7 +28,7 @@ public class AuthenticationController {
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-    private TokenProvider jwtTokenUtil;
+    private JwtService jwtTokenUtil;
 
     @Autowired
     private EmployeeService employeeService;

@@ -12,13 +12,19 @@ import { Candidate } from '../dtos/candidate';
 export class InterviewsComponent implements OnInit {
   link : string;
   interview : Interview;
+  expire : boolean;
 
   constructor(private interviewService : InterviewService, private route : ActivatedRoute) { }
 
   ngOnInit() {
     this.link = this.route.snapshot.paramMap.get('link');
     this.interviewService.accessInterviewPage(this.link).subscribe((data:any)=>{
+      this.expire = false;
       this.interview = data;
+    },(err:any)=>{
+     if( err.status == 410){
+      this.expire = true;
+      }
     });
 
   }

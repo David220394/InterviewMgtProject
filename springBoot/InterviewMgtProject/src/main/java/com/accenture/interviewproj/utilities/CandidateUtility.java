@@ -3,6 +3,8 @@ package com.accenture.interviewproj.utilities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Row;
 
@@ -39,8 +41,9 @@ public class CandidateUtility {
 	}
 	
 	public static CandidateDto getCandidateFromExcel(Row row) {
+		List<String> skills = new ArrayList<>();
 		CandidateDto candidateDto = new CandidateDto();
-		candidateDto.setJobId((long) row.getCell(0).getNumericCellValue());
+		candidateDto.setJobName(row.getCell(0).getStringCellValue());
 		candidateDto.setCandidateName(row.getCell(1).getStringCellValue());
 		candidateDto.setCandidateAddress(row.getCell(2).getStringCellValue()+" "+row.getCell(3).getStringCellValue());
 		candidateDto.setGender(Gender.valueOf(row.getCell(4).getStringCellValue().toUpperCase()));
@@ -59,6 +62,8 @@ public class CandidateUtility {
 		candidateDto.setInstitution(row.getCell(17).getStringCellValue());
 		candidateDto.setProgramStudy(row.getCell(18).getStringCellValue());
 		candidateDto.setGrade(row.getCell(19).getNumericCellValue());
+		skills.add(row.getCell(20).getStringCellValue());
+		candidateDto.setSkills(skills);
 		return candidateDto;
 	}
 	

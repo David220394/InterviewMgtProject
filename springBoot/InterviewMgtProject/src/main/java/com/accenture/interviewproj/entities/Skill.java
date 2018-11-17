@@ -33,7 +33,7 @@ public class Skill implements Serializable {
 	@Column(name="SKILL_DESCRIPTION")
 	private String description;
 	
-	@ManyToMany(mappedBy = "skills", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "skills", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<Candidate> candidates;
 

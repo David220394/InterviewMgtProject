@@ -108,7 +108,7 @@ public class InterviewService {
 
 	public Interview updateInterview(AfterInterviewDto afterInterviewDto) throws TypeNotFoundException {
 		if (afterInterviewDto.getType() != null) {
-			if ("hr".equals(afterInterviewDto.getType())) {
+			if ("HR".equals(afterInterviewDto.getType())) {
 				HRInterview interview = hrInterviewRepository.findByLink(afterInterviewDto.getLink());
 				interview.setScore(afterInterviewDto.getScore());
 				interview.setFeedback(afterInterviewDto.getFeedback());

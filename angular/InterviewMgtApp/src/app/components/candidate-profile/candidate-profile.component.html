@@ -112,8 +112,10 @@
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
     <div *ngIf="afterInterviews">
-      <mat-card-content *ngFor="let afterInterview of afterInterviews">
-        <app-feedback [afterInterview]="afterInterview"></app-feedback>
+      <mat-card-content>
+        <div *ngFor="let afterInterview of afterInterviews">
+            <app-feedback [afterInterview]="afterInterview"></app-feedback>
+        </div>
       </mat-card-content>
     </div>
   </mat-card>

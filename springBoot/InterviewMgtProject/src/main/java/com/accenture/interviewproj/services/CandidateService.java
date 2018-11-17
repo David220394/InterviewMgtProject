@@ -31,6 +31,7 @@ import com.accenture.interviewproj.dtos.QuizDto;
 import com.accenture.interviewproj.entities.AssessmentQuiz;
 import com.accenture.interviewproj.entities.Candidate;
 import com.accenture.interviewproj.entities.CandidateExperience;
+import com.accenture.interviewproj.entities.CandidateSkillScore;
 import com.accenture.interviewproj.entities.Education;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.entities.JobCandidate;
@@ -42,6 +43,7 @@ import com.accenture.interviewproj.exceptions.IdNotFoundException;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.repositories.CandidateExperienceRepository;
 import com.accenture.interviewproj.repositories.CandidateRepository;
+import com.accenture.interviewproj.repositories.CandidateSkillScoreRepository;
 import com.accenture.interviewproj.repositories.EducationRepository;
 import com.accenture.interviewproj.repositories.JobCandidateRepository;
 import com.accenture.interviewproj.repositories.JobsRepository;
@@ -81,6 +83,9 @@ public class CandidateService {
 	@Autowired
 	private AssessmentQuizService assessmentQuizService;
 	
+	@Autowired
+	private CandidateSkillScoreRepository candidateSkillScoreRepository;
+	
 
 	public Candidate createCandidate(MultipartFile candidateFile) {
 		try {
@@ -107,9 +112,22 @@ public class CandidateService {
 		Job job =null;
 		
 		if(candidateRepository.findByCandidateName(candidateDto.getCandidateName()) == null) {
-			candidate = candidateRepository.save(CandidateUtility.convertCandidateDtoToCandidate(candidateDto));
-			if(candidateDto.getJobId() != null) {
-				job = jobRepository.findByJobId(candidateDto.getJobId());
+			Set<Skill> skills = new HashSet<>();
+			for (String skillValue : candidateDto.getSkills()) {
+				Skill skill = skillRepository.findByDescription(skillValue);
+				if(skill == null) {
+					skill = new Skill();
+					skill.setDescription(skillValue);
+					skillRepository.save(skill);
+				}
+				skills.add(skill);
+			}
+			
+			candidate = CandidateUtility.convertCandidateDtoToCandidate(candidateDto);
+			candidate.setSkills(skills);
+			candidateRepository.save(candidate);
+			if(candidateDto.getJobName() != null) {
+				job = jobRepository.findByJobName(candidateDto.getJobName());
 				
 				JobCandidate jobCandidate = new JobCandidate();
 				jobCandidate.setCandidate(candidate);
@@ -135,6 +153,14 @@ public class CandidateService {
 			candidateExperience.setLocation(candidateDto.getEmployer());
 			candidateExperience.setCandidate(candidate);
 			candidateExperienceRepository.save(candidateExperience);
+			
+			List <Job> jobs = jobRepository.findAll();
+			for (Job job2 : jobs) {
+				CandidateSkillScore candidateSkillScore = new CandidateSkillScore();
+				candidateSkillScore.setCandidate(candidate);
+				candidateSkillScore.setJob(job2);
+				candidateSkillScoreRepository.save(candidateSkillScore);
+			}
 		}
 		return candidate;
 	}
@@ -177,6 +203,7 @@ public class CandidateService {
 				candidateDto.setStatus(jobCandidateRepository.findStatusByCandidateIdAndJobId(cid, jobId).get(0));
 				candidateDto.setScore(jobCandidateRepository.findScoreByCandidateIdAndJobId(cid, jobId).get(0));
 				candidateDto.setJobName(jobCandidateRepository.findJobNameByCandidateIdAndJobId(cid, jobId));
+				candidateDto.setSkillScore(candidateSkillScoreRepository.findCandidateSkillScoreByJobIdAndCandidateId(jobId, cid));
 		return candidateDto;
 		}else {
 			throw new IdNotFoundException("Candidate ID not Found For this Job");
@@ -196,6 +223,7 @@ public class CandidateService {
 			candidateDto.setStatus(jobCandidateRepository.findStatusByCandidateIdAndJobId(candidate.getCandidateId(), jobId).get(0));
 			candidateDto.setScore(jobCandidateRepository.findScoreByCandidateIdAndJobId(candidate.getCandidateId(), jobId).get(0));
 			candidateDto.setJobName(jobCandidateRepository.findJobNameByCandidateIdAndJobId(candidate.getCandidateId(), jobId));
+			candidateDto.setSkillScore(candidateSkillScoreRepository.findCandidateSkillScoreByJobIdAndCandidateId(jobId, candidate.getCandidateId()));
 			candidateDtos.add(candidateDto);
 		}
 		return candidateDtos;
@@ -369,11 +397,20 @@ public class CandidateService {
 		candidate2.setRehire(false);
 		candidateRepository.save(candidate2);
 		
+		List <Job> jobs = jobRepository.findAll();
+		
 		JobCandidate jobCandidate = new JobCandidate();
 		jobCandidate.setCandidate(candidate);
 		jobCandidate.setJob(job);
 		jobCandidate.setScore(0);
 		jobCandidateRepository.save(jobCandidate);
+		
+		for (Job job2 : jobs) {
+			CandidateSkillScore candidateSkillScore = new CandidateSkillScore();
+			candidateSkillScore.setCandidate(candidate);
+			candidateSkillScore.setJob(job2);
+			candidateSkillScoreRepository.save(candidateSkillScore);
+		}
 		
 		JobCandidate jobCandidate1 = new JobCandidate();
 		jobCandidate1.setCandidate(candidate1);
@@ -381,11 +418,25 @@ public class CandidateService {
 		jobCandidate1.setScore(0);
 		jobCandidateRepository.save(jobCandidate1);
 		
+		for (Job job2 : jobs) {
+			CandidateSkillScore candidateSkillScore = new CandidateSkillScore();
+			candidateSkillScore.setCandidate(candidate1);
+			candidateSkillScore.setJob(job2);
+			candidateSkillScoreRepository.save(candidateSkillScore);
+		}
+		
 		JobCandidate jobCandidate2 = new JobCandidate();
 		jobCandidate2.setCandidate(candidate2);
 		jobCandidate2.setJob(job1);
 		jobCandidate2.setScore(0);
 		jobCandidateRepository.save(jobCandidate2);
+
+		for (Job job2 : jobs) {
+			CandidateSkillScore candidateSkillScore = new CandidateSkillScore();
+			candidateSkillScore.setCandidate(candidate2);
+			candidateSkillScore.setJob(job2);
+			candidateSkillScoreRepository.save(candidateSkillScore);
+		}
 		
 		Status status = new Status();
 		status.setStatusName("Applied");

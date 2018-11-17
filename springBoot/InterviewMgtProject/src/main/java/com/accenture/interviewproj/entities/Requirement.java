@@ -30,7 +30,7 @@ public class Requirement implements Serializable {
 	@Column(name = "NAME")
 	private String name;
 
-	@ManyToMany(mappedBy = "requirements", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "requirements", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private List<Job> jobs;
 	

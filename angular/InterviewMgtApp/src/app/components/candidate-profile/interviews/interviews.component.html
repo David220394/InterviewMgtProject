@@ -1,3 +1,4 @@
+<div *ngIf="!expire">
 <header>
   <h1>Interview Form</h1>
 </header>
@@ -9,4 +10,10 @@
 </div>
 <div *ngIf="interview?.type === 'ASSESSMENT'">
   <app-iq-assessment [interview]="interview"></app-iq-assessment>
+</div>
+</div>
+<div>
+  <mat-card  *ngIf="expire" class="expire">
+    <h1>Submition Completed</h1>
+  </mat-card>
 </div>

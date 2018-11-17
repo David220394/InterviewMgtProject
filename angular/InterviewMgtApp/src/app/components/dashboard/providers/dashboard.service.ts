@@ -63,4 +63,132 @@ public getInterviewDate():Observable<any>{
   })
 }
 
+/**
+ * Example on how to make a simple GET request
+ * Observable wait to received the response
+ * before sending result. (For async call).
+ */
+getExample():Observable<any>{
+  return new Observable(observer => {
+    this.http.get('https://localhost:8082/getExample')
+    .pipe( finalize(() => { observer.complete(); }))
+    .subscribe( (data: any) => {
+      /*
+        data object represent the response received from the API
+        if the status is Okay (status between 200 and 299)
+      */
+     observer.next(data);
+    },(err:any)=>{
+      /*
+        err object represent the response received from the API
+        if the status is not Okay (status between 300 and above)
+      */
+     observer.error(err);
+    })
+  });
+}
+
+/**
+ * Example on how to make a simple POST request
+ */
+postExample():Observable<any>{
+  //Represent the data to send via the post request.
+  //It can be values entered from a form for example
+  let resquestBody : any;
+
+  return new Observable(observer => {
+    this.http.post('https://localhost:8082/postExample',resquestBody)
+    .pipe( finalize(() => { observer.complete(); }))
+    .subscribe( (data: any) => {
+      /*
+        data object represent the response received from the API
+        if the status is Okay (status between 200 and 299)
+      */
+     observer.next(data);
+    },(err:any)=>{
+      /*
+        err object represent the response received from the API
+        if the status is not Okay (status between 300 and above)
+      */
+     observer.error(err);
+    })
+  });
+}
+
+/**
+ * Example on how to make a simple PUT request
+ */
+putExample():Observable<any>{
+  //Represent the data to send via the post request.
+  //It can be values entered from a form for example
+  let resquestBody : any;
+
+  return new Observable(observer => {
+    this.http.put('https://localhost:8082/putExample',resquestBody)
+    .pipe( finalize(() => { observer.complete(); }))
+    .subscribe( (data: any) => {
+      /*
+        data object represent the response received from the API
+        if the status is Okay (status between 200 and 299)
+      */
+     observer.next(data);
+    },(err:any)=>{
+      /*
+        err object represent the response received from the API
+        if the status is not Okay (status between 300 and above)
+      */
+     observer.error(err);
+    })
+  });
+}
+
+/**
+ * Example on how to make a simple DELETE request
+ */
+deleteExample():Observable<any>{
+  //Represent the data to send via the post request.
+  //It can be values entered from a form for example
+  let resquestBody : any;
+
+  return new Observable(observer => {
+    this.http.delete('https://localhost:8082/deleteExample',resquestBody)
+    .pipe( finalize(() => { observer.complete(); }))
+    .subscribe( (data: any) => {
+      /*
+        data object represent the response received from the API
+        if the status is Okay (status between 200 and 299)
+      */
+     observer.next(data);
+    },(err:any)=>{
+      /*
+        err object represent the response received from the API
+        if the status is not Okay (status between 300 and above)
+      */
+     observer.error(err);
+    })
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

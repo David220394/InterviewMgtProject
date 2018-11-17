@@ -3,6 +3,7 @@ package com.accenture.interviewproj.dtos;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import com.accenture.interviewproj.entities.CandidateExperience;
@@ -54,7 +55,9 @@ public class CandidateDto {
 	
 	private Double grade;
 
-	private Long jobId;
+	private String jobName;
+	
+	private List<String> skills;
 
 	public String getCandidateName() {
 		return candidateName;
@@ -210,13 +213,22 @@ public class CandidateDto {
 		this.grade = grade;
 	}
 
-	public Long getJobId() {
-		return jobId;
+	public String getJobName() {
+		return jobName;
 	}
 
-	public void setJobId(Long jobId) {
-		this.jobId = jobId;
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
 	}
+
+	public List<String> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<String> skills) {
+		this.skills = skills;
+	}
+
 
 	
 

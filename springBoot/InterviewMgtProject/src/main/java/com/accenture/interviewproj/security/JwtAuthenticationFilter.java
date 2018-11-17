@@ -19,14 +19,19 @@ import com.accenture.interviewproj.utilities.Constants;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
-
+/**
+ * This class is to check all the request 
+ * made to the API
+ * It is used to verify if the Jwt Token 
+ * in the header of the request is valid
+ */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
 	@Autowired
-	private TokenProvider jwtTokenUtil;
+	private JwtService jwtTokenUtil;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

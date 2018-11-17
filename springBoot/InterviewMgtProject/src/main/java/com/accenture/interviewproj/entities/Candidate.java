@@ -91,7 +91,7 @@ public class Candidate implements Serializable {
             mappedBy = "candidate")
 	private Education education;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "TABLE_SKILL_CANDIDATE", 
 	joinColumns = { @JoinColumn(name = "CANDIDATE_ID")},
 	inverseJoinColumns = { @JoinColumn(name = "SKILL_ID")})
@@ -109,6 +109,9 @@ public class Candidate implements Serializable {
 	@JsonIgnore
 	private List<JobCandidate> jobCandidates;
 	
+	@OneToMany(mappedBy = "candidate")
+	@JsonIgnore
+	private List<CandidateSkillScore> candidateSkillScores;
 	
 	public void setCandidatePhone(Long candidatePhone) {
 		this.candidatePhone = candidatePhone;
@@ -273,6 +276,16 @@ public class Candidate implements Serializable {
 		this.skills = skills;
 	}
 	
+	
+	
+	public List<CandidateSkillScore> getCandidateSkillScores() {
+		return candidateSkillScores;
+	}
+
+	public void setCandidateSkillScores(List<CandidateSkillScore> candidateSkillScores) {
+		this.candidateSkillScores = candidateSkillScores;
+	}
+
 	@PrePersist
 	public void initCreatedDate() {
 		this.applicationDate = LocalDateTime.now();

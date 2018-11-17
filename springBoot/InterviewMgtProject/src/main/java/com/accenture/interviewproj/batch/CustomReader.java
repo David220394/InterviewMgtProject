@@ -16,7 +16,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.support.IteratorItemReader;
-
+/**
+ *Custom Reader class 
+ * To read input from batch process
+ */
 public class CustomReader implements ItemReader<Row> {
 	
 	private ItemReader<Row> delegate;
@@ -27,7 +30,6 @@ public class CustomReader implements ItemReader<Row> {
 		this.path = path;
 	}
 
-	
 	@Override
 	public Row read()
 			throws Exception {
@@ -37,20 +39,29 @@ public class CustomReader implements ItemReader<Row> {
 		return delegate.read();
 	}
 	
-	private List<Row> candidates() throws EncryptedDocumentException, InvalidFormatException, IOException{
+	/**
+	 * Method to obtain every row from every excel files
+	 */
+	private List<Row> candidates() throws EncryptedDocumentException, 
+	InvalidFormatException, IOException{
 		List<Row> rows = new ArrayList<>();
 		File folder = new File(this.path);
 		if(folder.isDirectory()) {
 			File[] files = folder.listFiles();
 			for (File file : files) {
-				if(!(file.isDirectory()) && FilenameUtils.getExtension(file.getName()).equals("xlsx")) {
+				if(!(file.isDirectory()) && 
+						FilenameUtils.
+						getExtension(file.getName()).equals("xlsx")) {
 					rows.addAll(candidateInfo(file));
 				}
 			}
 		}
 		return rows;
 	}
-	
+	/**
+	 * Method to extract each row from each excel files
+	 * 
+	 */
 	private List<Row> candidateInfo(File file) throws EncryptedDocumentException, InvalidFormatException, IOException{
 		List<Row> rows = new ArrayList<>();
 		Workbook workbook =  WorkbookFactory.create(file);

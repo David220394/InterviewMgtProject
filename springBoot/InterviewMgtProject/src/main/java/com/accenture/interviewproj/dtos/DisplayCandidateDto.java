@@ -69,6 +69,8 @@ public class DisplayCandidateDto {
 	private String status;
 	
 	private Integer score;
+	
+	private Integer skillScore;
 
 	public Long getCandidateId() {
 		return candidateId;
@@ -228,6 +230,14 @@ public class DisplayCandidateDto {
 
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
+	}
+
+	public Integer getSkillScore() {
+		return skillScore;
+	}
+
+	public void setSkillScore(Integer skillScore) {
+		this.skillScore = skillScore;
 	}
 
 	

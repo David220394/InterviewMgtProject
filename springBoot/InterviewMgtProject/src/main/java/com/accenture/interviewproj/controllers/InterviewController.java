@@ -52,7 +52,7 @@ public class InterviewController {
 			if(interview.getCreationDateTime() == null) {
 				return ResponseEntity.ok(interviewService.updateTime(interview));
 			}
-			else if(interview.getEndDateTime().isAfter(LocalDateTime.now())) {
+			else if(interview.getEndDateTime().isAfter(LocalDateTime.now()) && !interview.getCompleted()) {
 				return ResponseEntity.ok(interview);
 			}
 		} catch (ExpiredLinkException e) {

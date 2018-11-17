@@ -57,7 +57,7 @@ public class Job implements Serializable {
 	@Column(name = "ACTIVE_JOB")
 	private Boolean activeJob;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "TABLE_JOB_REQUIREMENT", 
 	joinColumns = { @JoinColumn(name = "JOB_ID")},
 	inverseJoinColumns = { @JoinColumn(name = "REQUIREMENT_ID")})
@@ -76,6 +76,10 @@ public class Job implements Serializable {
 	@OneToMany(mappedBy = "job")
 	@JsonIgnore
 	private List<JobCandidate> jobCandidates;
+	
+	@OneToMany(mappedBy = "job")
+	@JsonIgnore
+	private List<CandidateSkillScore> candidateSkillScores;
 	
 	@OneToMany(mappedBy = "job")
 	@JsonIgnore
@@ -187,12 +191,6 @@ public class Job implements Serializable {
 		this.assessmentQuiz = assessmentQuiz;
 	}
 
-	@PrePersist
-	public void initCreatedDate() {
-		this.creationDate = LocalDateTime.now();
-		this.closingDate = LocalDateTime.now().plusMonths(2);
-	}
-
 	public List<String> getAssignTo() {
 		return assignTo;
 	}
@@ -200,5 +198,25 @@ public class Job implements Serializable {
 	public void setAssignTo(List<String> assignTo) {
 		this.assignTo = assignTo;
 	}
+
+	public List<CandidateSkillScore> getCandidateSkillScores() {
+		return candidateSkillScores;
+	}
+
+	public void setCandidateSkillScores(List<CandidateSkillScore> candidateSkillScores) {
+		this.candidateSkillScores = candidateSkillScores;
+	}
+
+	@PrePersist
+	public void initCreatedDate() {
+		this.creationDate = LocalDateTime.now();
+		if(this.closingDate == null) {
+			this.closingDate = LocalDateTime.now().plusMonths(2);
+		}
+	}
+
+
+	
+	
 
 }
