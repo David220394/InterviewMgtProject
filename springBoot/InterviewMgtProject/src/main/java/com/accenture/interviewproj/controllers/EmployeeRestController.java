@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,7 @@ public class EmployeeRestController {
 	 * Insert Employee
 	 */
 	@PostMapping("/insertEmployee")
+	@Secured(value="ROLE_ADMIN")
 	public ResponseEntity<?> insertEmployee(@RequestBody EmployeeDto employeeDto) {
 		try {
 			
@@ -114,9 +116,9 @@ public class EmployeeRestController {
 	 * Update an employee
 	 */
 	@PutMapping("/")
-	public ResponseEntity<?> updateEmployee(@RequestBody Employee employee) {
+	public ResponseEntity<?> updateEmployeeRole(@RequestBody String employeeId) {
 		try {
-			employeeService.updateEmployee(employee);
+			employeeService.updateEmployeeRole(employeeId);
 			return ResponseEntity.ok("Updated");
 		} catch (EmployeeNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

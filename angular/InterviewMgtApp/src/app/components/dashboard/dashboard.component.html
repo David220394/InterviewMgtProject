@@ -2,41 +2,46 @@
 <mat-card style="background-color: rgba(160, 187, 206, 0.596);">
   <div class="container">
     <div class="row">
-      <mat-card mat-fab class="form-group col-md-5" (click)="onClickRedirect()" style="background-color: #66CCFF" color="primary" matBadge="8"
+      <mat-card mat-fab class="form-group col-md-3" (click)="onClickRedirect()" style="background-color: #66CCFF" color="primary" matBadge="{{totalActiveJobs}}"
         matBadgePosition="before" matBadgeColor="accent">
-        <h6 style="font-family: Georgia, serif;">Active Jobs <img mat-card-avatar src="../../../assets/img/activejob.png"/></h6>
+        <h6 style="font-family: Georgia, serif;">Total Active Jobs <img mat-card-avatar src="../../../assets/img/activejob.png"/></h6>
         <mat-divider [inset]="true"></mat-divider>
       </mat-card>
 
-      <mat-card mat-fab color="primary" class="form-group col-md-5" style="background-color: #66CCFF" (click)="OnClickGoTo()" matBadge="{{todaysInterview}}"
+      <mat-card mat-fab color="primary" class="form-group col-md-3" style="background-color: #66CCFF" (click)="OnClickGoTo()" matBadge="{{totalInterview}}"
         matBadgePosition="before" matBadgeColor="accent">
-        <h6 style="font-family: Georgia, serif;">Today's Interview <img mat-card-avatar src="../../../assets/img/interview.png"/></h6>
-        <mat-divider [inset]="true"></mat-divider>
-      </mat-card>
-    </div>
-
-    <div class="row">
-      <mat-card mat-fab color="primary" class="form-group col-md-5" style="background-color: #66CCFF" (click)="OnClickGoToCandidate()" matBadge="{{noOfCandidate}}"
-        matBadgePosition="before" matBadgeColor="accent">
-        <h6 style="font-family: Georgia, serif;">No. of Candidate <img mat-card-avatar src="../../../assets/img/group.png"/></h6>
+        <h6 style="font-family: Georgia, serif;">Total Interview <img mat-card-avatar src="../../../assets/img/interview.png"/></h6>
         <mat-divider [inset]="true"></mat-divider>
       </mat-card>
 
-
-      <mat-card id="work-completion" class="form-group col-md-5" style="background-color: #66CCFF">
-        <mat-card-title>
-          <h6 style="font-family: Georgia, serif;">IQ Test <img mat-card-avatar src="../../../assets/img/test.png"/></h6>
-        </mat-card-title>
+      <mat-card mat-fab color="primary" class="form-group col-md-3" style="background-color: #66CCFF" (click)="OnClickGoToCandidate()" matBadge="{{totalCandidates}}"
+        matBadgePosition="before" matBadgeColor="accent">
+        <h6 style="font-family: Georgia, serif;">Total No. of Candidate <img mat-card-avatar src="../../../assets/img/group.png"/></h6>
         <mat-divider [inset]="true"></mat-divider>
-        <mat-card-content *ngIf="interviewScore">
-          <mat-progress-spinner [color]="'accent'" [mode]="'determinate'" [value]="interviewScore.iqScore" [diameter]="'75'">
-          </mat-progress-spinner>
-          <span>{{interviewScore.iqScore}}%</span>
-        </mat-card-content>
       </mat-card>
 
     </div>
   </div>
+
+  <mat-card id="candidateStat">
+      <div id="donutChart" *ngIf="isDoughnutChart">
+          <canvas baseChart
+                      [data]="doughnutChartData"
+                      [labels]="doughnutChartLabels"
+                      [chartType]="doughnutChartType"
+                      (chartHover)="chartHovered($event)"
+                      (chartClick)="chartClicked($event)"></canvas>
+        </div>
+        <div id="progressbar">
+    <div  *ngFor="let jobStat of jobStats">
+      <mat-progress-bar mode="determinate" value="{{jobStat.candidatePercentage}}"></mat-progress-bar>
+      <span>{{jobStat.candidatePercentage}} %</span>
+      <span>{{jobStat.jobName}}</span>
+    </div>
+    </div>
+  </mat-card>
+
+
 
   <div>
     <mat-form-field>

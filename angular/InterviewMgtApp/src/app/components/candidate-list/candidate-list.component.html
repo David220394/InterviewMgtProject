@@ -1,2 +1,23 @@
-<app-pipeline-candidate [candidate]="candidate" *ngFor="let candidate of candidates"></app-pipeline-candidate>
+<div class="row">
+    <mat-form-field>
+        <mat-select [(value)]="selected">
+          <mat-option>None</mat-option>
+          <mat-option value="name">Name</mat-option>
+          <mat-option value="skill">Skill</mat-option>
+          <mat-option value="location">Location</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <form [formGroup]="myForm" novalidate (ngSubmit)="search(myForm)">
+      <mat-form-field>
+          <input matInput placeholder="Search" formControlName="search"/>
+        </mat-form-field>
+        <input type="submit" class="btn btn-primary" value="submit">
+      </form>
+</div>
 
+<div class="row" *ngIf="filteredCandidates !=null">
+  <app-pipeline-candidate class="col-md-5" [candidate]="candidate" *ngFor="let candidate of filteredCandidates"></app-pipeline-candidate>
+</div>
+<div class="row">
+    <h1 id="error">{{errMsg}}</h1>
+</div>

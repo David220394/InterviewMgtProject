@@ -1,0 +1,50 @@
+*{
+  font-family: 'Times New Roman', Times, serif;
+}
+
+mat-card{
+  margin-top:5px;
+}
+#interviewer{
+display: block;
+font-weight: 700;
+}
+
+.score{
+  font-family: 'Newton', Times, serif;
+  font-weight: 700;
+float: right;
+padding: 7%;
+color: white;
+font-size: 15px;
+transform: translateY(-25px);
+background-size : contain;
+background-repeat:   no-repeat;
+background-position: center center;
+}
+
+#low{
+  background-image: url('../../../../assets/img/feedback/redScoreRibbon.png');
+}
+#mid{
+  background-image: url('../../../../assets/img/feedback/yellowScoreRibbon.png');
+}
+#high{
+  background-image: url('../../../../assets/img/feedback/greenScoreRibbon.png');
+}
+
+#type{
+display: block;
+font-size: 10px;
+font-weight : 400;
+color: rgb(100, 98, 98)
+}
+#comment{
+
+}
+#endDate{
+font-size: 10px;
+font-weight : 400;
+color: rgb(100, 98, 98);
+float: right;
+}

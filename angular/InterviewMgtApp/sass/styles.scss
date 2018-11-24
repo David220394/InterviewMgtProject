@@ -21,3 +21,8 @@ body{
 mat-card{
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1), 0 0 16px 0 rgba(0, 0, 0, 0.05);
 }
+
+.login-backdrop{
+  background-image: url("../src/assets/img/login/login3.jpg");
+  background-size: cover;
+}

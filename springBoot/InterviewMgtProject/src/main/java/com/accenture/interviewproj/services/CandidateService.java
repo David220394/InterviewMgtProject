@@ -4,6 +4,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -110,10 +113,9 @@ public class CandidateService {
 	public Candidate createCandidateFromDto(CandidateDto candidateDto) {
 		Candidate candidate = null;
 		Job job =null;
-		
-		if(candidateRepository.findByCandidateName(candidateDto.getCandidateName()) == null) {
+		if(candidateRepository.findByCandidateName(candidateDto.getCandidateName()) == null) {//Check if candidate already exist
 			Set<Skill> skills = new HashSet<>();
-			for (String skillValue : candidateDto.getSkills()) {
+			for (String skillValue : candidateDto.getSkills()) {//Stored each skill if does not already exist 
 				Skill skill = skillRepository.findByDescription(skillValue);
 				if(skill == null) {
 					skill = new Skill();
@@ -125,37 +127,41 @@ public class CandidateService {
 			
 			candidate = CandidateUtility.convertCandidateDtoToCandidate(candidateDto);
 			candidate.setSkills(skills);
-			candidateRepository.save(candidate);
-			if(candidateDto.getJobName() != null) {
+			candidateRepository.save(candidate);// Save Candidate
+			if(candidateDto.getJobName() != null) {// Check if Job Name exist
 				job = jobRepository.findByJobName(candidateDto.getJobName());
 				
-				JobCandidate jobCandidate = new JobCandidate();
+				JobCandidate jobCandidate = new JobCandidate(); //Link Candidate to Job
 				jobCandidate.setCandidate(candidate);
 				jobCandidate.setJob(job);
 				jobCandidate.setScore(0);
-				jobCandidateRepository.save(jobCandidate);
+				jobCandidateRepository.save(jobCandidate);// Save CandidateJob
 				
 				Status status = new Status();
 				status.setStatusName(candidateDto.getStatus());
 				status.setCandidate(jobCandidate);
-				statusRepository.save(status);
+				statusRepository.save(status);// Save CandidateJob Status
 			}
 			Education education = new Education();
 			education.setInstitutionName(candidateDto.getInstitution());
 			education.setProgramStudy(candidateDto.getProgramStudy());
 			education.setGrade(candidateDto.getGrade());
 			education.setCandidate(candidate);
-			educationRepository.save(education);
+			educationRepository.save(education);//Save Education 
 			
 			CandidateExperience candidateExperience = new CandidateExperience();
 			candidateExperience.setExperienceName(candidateDto.getLastJobRole());
 			candidateExperience.setSpecialty(candidateDto.getSpecialty());
 			candidateExperience.setLocation(candidateDto.getEmployer());
 			candidateExperience.setCandidate(candidate);
-			candidateExperienceRepository.save(candidateExperience);
+			candidateExperienceRepository.save(candidateExperience);//Save Candidate Exp
 			
+			/**
+			 * For All job, Calculate and save score obtained by comparing candidate
+			 * skill the job requirement
+			 */
 			List <Job> jobs = jobRepository.findAll();
-			for (Job job2 : jobs) {
+			for (Job job2 : jobs) { 
 				CandidateSkillScore candidateSkillScore = new CandidateSkillScore();
 				candidateSkillScore.setCandidate(candidate);
 				candidateSkillScore.setJob(job2);
@@ -164,6 +170,8 @@ public class CandidateService {
 		}
 		return candidate;
 	}
+	
+	
 	
 	/**
 	 * 
@@ -229,6 +237,25 @@ public class CandidateService {
 		return candidateDtos;
 	}
 	
+	/**
+	 * 
+	 * @param jobId
+	 * Find suggested candidate for a specific job
+	 */
+	public List<DisplayCandidateDto> findSuggestedCandidateByJobId(Long jobId){
+		List<DisplayCandidateDto> candidateDtos = new ArrayList<>();
+		List<Candidate> suggested = candidateRepository.findSuggestedCandidateByJobId(jobId);
+		List<Candidate> candidates = candidateRepository.findByJobId(jobId);
+		suggested.removeAll(candidates);
+		for (Candidate candidate : suggested) {
+			DisplayCandidateDto candidateDto = CandidateUtility.convertCandidateToDto(candidate);
+			candidateDto.setJobName(jobCandidateRepository.findJobNameByCandidateIdAndJobId(candidate.getCandidateId(), jobId));
+			candidateDto.setSkillScore(candidateSkillScoreRepository.findCandidateSkillScoreByJobIdAndCandidateId(jobId, candidate.getCandidateId()));
+			candidateDtos.add(candidateDto);
+		}
+		return candidateDtos;
+	}
+	
 	
 	public Candidate addJobToCandidate(Long cid, Long jobId) throws JobNameAlreadyExistsException {
 		if(candidateRepository.findByJobIdAndCandidateId(jobId, cid) == null) {	
@@ -280,224 +307,6 @@ public class CandidateService {
 			return statusRepository.save(savedStatus);
 		}
 		return savedStatus;
-	}
-	
-	
-	
-		
-	/**
-	 * Details for job and candidate
-	 */
-	@PostConstruct
-	public void init() {
-		if(candidateRepository.findAll().isEmpty()) {
-			
-		Set<Requirement> requirements = new HashSet<>();	
-		Set<Requirement> requirements1 = new HashSet<>();
-		Requirement requirement = new Requirement();
-		requirement.setName("Java");
-		requirementRepository.save(requirement);
-		requirements.add(requirement);
-		requirements1.add(requirement);
-		
-		Requirement requirement1 = new Requirement();
-		requirement1.setName(".NET");
-		requirementRepository.save(requirement1);
-		requirements.add(requirement1);
-		
-		Requirement requirement2 = new Requirement();
-		requirement2.setName("Shell Scripting");
-		requirementRepository.save(requirement2);
-		requirements1.add(requirement2);
-		AssessmentQuiz assessmentQuiz = null;
-		try {
-			FileInputStream file = new FileInputStream("Test1.xlsx");
-			List<QuestionDto> dtos = JobUtility.convertExcelToQuestionDto(file);
-			QuizDto quizDto = new QuizDto();
-			quizDto.setQuizName("Test1");
-			quizDto.setQuestions(dtos);
-			assessmentQuiz = assessmentQuizService.insertAssessmentQuiz(quizDto);
-		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
-			
-		}
-
-		Job job = new Job();
-		job.setActiveJob(true);
-		job.setJobName("Accenture Academy");
-		job.setLocation("NexTracom");
-		job.setAssessmentQuiz(assessmentQuiz);
-		job.setPosition("Java Developer");
-		job.setRequirements(requirements);
-		jobRepository.save(job);
-
-		Job job1 = new Job();
-		job1.setActiveJob(true);
-		job1.setJobName("SAP Development");
-		job1.setLocation("NexTracom");
-		job1.setAssessmentQuiz(assessmentQuiz);
-		job1.setPosition("SAP Developer");
-		job1.setRequirements(requirements1);
-		jobRepository.save(job1);
-		
-		Set<Skill> skills = new HashSet<>();
-		Set<Skill> skills1 = new HashSet<>();
-		Skill skill = new Skill();
-		skill.setDescription("Java");
-		skillRepository.save(skill);
-		skills.add(skill);
-		skills1.add(skill);
-		
-		Skill skill1 = new Skill();
-		skill1.setDescription(".NET");
-		skillRepository.save(skill1);
-		skills.add(skill1);
-		
-		Candidate candidate = new Candidate();
-		candidate.setCandidateName("Brandon");
-		candidate.setCandidateAddress("Beau Bassin");
-		candidate.setAvailability(true);
-		candidate.setEmail("brandondavid220394@gmail.com");
-		candidate.setCoverLetter("Dear .. . .");
-		candidate.setCandidatePhone((long) 57565279);
-		candidate.setSkills(skills);
-		candidate.setDob(LocalDate.of(1994, 3, 22));
-		candidate.setGender(Gender.MALE);
-		candidate.setCompleteApplication(false);
-		candidate.setInternalApplication(false);
-		candidate.setRehire(false);
-		candidateRepository.save(candidate);
-		
-		Candidate candidate1 = new Candidate();
-		candidate1.setCandidateName("Hemanta");
-		candidate1.setCandidateAddress("Triolet");
-		candidate1.setAvailability(true);
-		candidate1.setEmail("hemantahuril220394@gmail.com");
-		candidate1.setCoverLetter("Hi .. . .");
-		candidate1.setSkills(skills);
-		candidate1.setCandidatePhone((long) 5754363);
-		candidate1.setDob(LocalDate.of(1994, 3, 22));
-		candidate1.setGender(Gender.FEMALE);
-		candidate1.setCompleteApplication(true);
-		candidate1.setInternalApplication(false);
-		candidate1.setRehire(true);
-		candidateRepository.save(candidate1);
-		
-		Candidate candidate2 = new Candidate();
-		candidate2.setCandidateName("Khaushik");
-		candidate2.setCandidateAddress("Pheonix");
-		candidate2.setAvailability(true);
-		candidate2.setEmail("l.jankee@gmail.com");
-		candidate2.setCoverLetter("Dear .. . .");
-		candidate2.setSkills(skills1);
-		candidate2.setCandidatePhone((long) 5723452);
-		candidate2.setDob(LocalDate.of(1994, 3, 22));
-		candidate2.setGender(Gender.MALE);
-		candidate2.setCompleteApplication(true);
-		candidate2.setInternalApplication(true);
-		candidate2.setRehire(false);
-		candidateRepository.save(candidate2);
-		
-		List <Job> jobs = jobRepository.findAll();
-		
-		JobCandidate jobCandidate = new JobCandidate();
-		jobCandidate.setCandidate(candidate);
-		jobCandidate.setJob(job);
-		jobCandidate.setScore(0);
-		jobCandidateRepository.save(jobCandidate);
-		
-		for (Job job2 : jobs) {
-			CandidateSkillScore candidateSkillScore = new CandidateSkillScore();
-			candidateSkillScore.setCandidate(candidate);
-			candidateSkillScore.setJob(job2);
-			candidateSkillScoreRepository.save(candidateSkillScore);
-		}
-		
-		JobCandidate jobCandidate1 = new JobCandidate();
-		jobCandidate1.setCandidate(candidate1);
-		jobCandidate1.setJob(job);
-		jobCandidate1.setScore(0);
-		jobCandidateRepository.save(jobCandidate1);
-		
-		for (Job job2 : jobs) {
-			CandidateSkillScore candidateSkillScore = new CandidateSkillScore();
-			candidateSkillScore.setCandidate(candidate1);
-			candidateSkillScore.setJob(job2);
-			candidateSkillScoreRepository.save(candidateSkillScore);
-		}
-		
-		JobCandidate jobCandidate2 = new JobCandidate();
-		jobCandidate2.setCandidate(candidate2);
-		jobCandidate2.setJob(job1);
-		jobCandidate2.setScore(0);
-		jobCandidateRepository.save(jobCandidate2);
-
-		for (Job job2 : jobs) {
-			CandidateSkillScore candidateSkillScore = new CandidateSkillScore();
-			candidateSkillScore.setCandidate(candidate2);
-			candidateSkillScore.setJob(job2);
-			candidateSkillScoreRepository.save(candidateSkillScore);
-		}
-		
-		Status status = new Status();
-		status.setStatusName("Applied");
-		status.setCandidate(jobCandidate);
-		statusRepository.save(status);
-		
-		Status status1 = new Status();
-		status1.setStatusName("Applied");
-		status1.setCandidate(jobCandidate1);
-		statusRepository.save(status1);
-		
-		Status status2 = new Status();
-		status2.setStatusName("Applied");
-		status2.setCandidate(jobCandidate2);
-		statusRepository.save(status2);
-		
-		Education education = new Education();
-		education.setInstitutionName("UOM");
-		education.setProgramStudy("Mtx");
-		education.setGrade(69.7);
-		education.setCandidate(candidate);
-		educationRepository.save(education);
-		
-		Education education1 = new Education();
-		education1.setInstitutionName("Pune");
-		education1.setProgramStudy("BSc Electronics");
-		education1.setGrade(69.7);
-		education1.setCandidate(candidate1);
-		educationRepository.save(education1);
-		
-		Education education2 = new Education();
-		education2.setInstitutionName("China Unicersity");
-		education2.setProgramStudy("MBa");
-		education2.setGrade(69.7);
-		education2.setCandidate(candidate2);
-		educationRepository.save(education2);
-		
-		CandidateExperience candidateExperience = new CandidateExperience();
-		candidateExperience.setExperienceName("Trainee Engineer");
-		candidateExperience.setSpecialty("Mechanical And Electronics");
-		candidateExperience.setLocation("CMT");
-		candidateExperience.setCandidate(candidate);
-		candidateExperienceRepository.save(candidateExperience);
-		
-		CandidateExperience candidateExperience1 = new CandidateExperience();
-		candidateExperience1.setExperienceName("Trainee");
-		candidateExperience1.setSpecialty("Electronics");
-		candidateExperience1.setLocation("Linkopia");
-		candidateExperience1.setCandidate(candidate1);
-		candidateExperienceRepository.save(candidateExperience1);
-		
-		CandidateExperience candidateExperience2 = new CandidateExperience();
-		candidateExperience2.setExperienceName("Trainee");
-		candidateExperience2.setSpecialty("Aviation");
-		candidateExperience2.setLocation("SSR Airport");
-		candidateExperience2.setCandidate(candidate2);
-		candidateExperienceRepository.save(candidateExperience2);
-
-		
-		}
-		
 	}
 
 }

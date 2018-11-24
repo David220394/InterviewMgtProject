@@ -1,0 +1,71 @@
+<mat-card class="quizSearch" style="color: #801638; font-weight: bold">
+    <h6 style="font-family: Georgia, serif;">Quiz Name:</h6>
+
+    <mat-form-field name = "quizes">
+        <mat-select  [(ngModel)]="selected" (ngModelChange)="changeView()">
+          <mat-option style="color: #801638; font-weight: bold;font-family: Georgia, serif;" *ngFor="let quiz of updateQuizs" [value]="quiz.quizId">{{quiz.quizName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+</mat-card>
+
+<div *ngIf="selected" class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="margin-20">
+          <h4>Update Quiz</h4>
+        </div>
+        <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
+
+          <!--questions-->
+          <div formArrayName="questions">
+            <mat-card *ngFor="let ques of myForm.controls.questions.controls; let i=index" class="panel panel-default">
+              <mat-card-title class="panel-heading ">
+                <span>Question {{i + 1}}</span>
+              </mat-card-title>
+              <mat-card-content [formGroupName]="i" class="col-md-12 border">
+                <div class="row">
+                <mat-form-field class="form-group col-md-6">
+                  <input type="text" matInput formControlName="question" placeholder="Question">
+                </mat-form-field>
+              </div>
+              <div class="row">
+                  <mat-form-field class="form-group col-md-6">
+                    <input matInput type="text" placeholder="Correct Answer" formControlName="correctAnswer">
+                  </mat-form-field>
+                </div>
+              <div class="row">
+                <div formArrayName="answers" *ngFor="let ans of myForm.controls.questions.controls[i].controls.answers.controls; let j=index" class="col-md-6">
+                  <div [formGroupName]="j" >
+                    <mat-form-field  class="form-group" style="padding-right:0px">
+                       <input type="text" matInput  placeholder="Answer" formControlName="answer">
+                    </mat-form-field>
+
+                </div>
+                <button type="button"  class="btn btn-primary" *ngIf="(ques.controls.answers.controls.length > 1) && (j == ques.controls.answers.controls.length-1)" (click)="removeAnswer(ques, j)" style="cursor: pointer; float: right">Remove Answer</button>
+                <button type="button"  class="btn btn-primary" *ngIf="j == ques.controls.answers.controls.length-1" (click)="addAnswer(ques)" style="float: right">Add Answer</button>
+                </div>
+
+              </div>
+              <div>
+                      </div>
+              </mat-card-content>
+            </mat-card>
+            <button type="button" class="btn btn-primary" *ngIf="myForm.controls.questions.controls.length > 1" (click)="removeQuestion(i)" style="cursor: pointer; float: right">
+                Remove Question
+            </button>
+          </div>
+
+          <div>
+            <button type="button" class="btn btn-primary" (click)="addQuestion()" style="cursor: default; float: center">
+              Add Question
+            </button>
+          </div>
+
+          <div class="row">
+            <button type="submit" class="btn btn-primary">Update</button>
+          </div>
+          <div class="clearfix"></div>
+        </form>
+      </div>
+    </div>
+  </div>

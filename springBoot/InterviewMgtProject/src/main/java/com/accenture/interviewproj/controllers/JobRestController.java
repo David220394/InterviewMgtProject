@@ -9,6 +9,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +56,7 @@ public class JobRestController {
 	 * checks if job already exist in database
 	 */
 	@PostMapping("/createJob")
+	@Secured(value="ROLE_ADMIN")
 	public ResponseEntity<?> createJob(@RequestBody JobDto jobDto) {
 		try {
 			Job job = jobService.insertJob(jobDto);
@@ -95,7 +97,7 @@ public class JobRestController {
 	 */
 	@GetMapping("/")
 	public ResponseEntity<List<?>> getAllJobs() {
-		return ResponseEntity.ok(jobService.findAll());
+		return ResponseEntity.ok(jobService.findAllActiveJob());
 	}
 	
 	/**
@@ -103,7 +105,7 @@ public class JobRestController {
 	 */
 	@GetMapping("/getAll")
 	public ResponseEntity<List<?>> getAllJobsWithId(){
-		List <Job> jobs = jobService.findAll();
+		List <Job> jobs = jobService.findAllActiveJob();
 		List<JobWithIdDto> jobDto = new ArrayList<>();
 		
 		for(Job job : jobs) {

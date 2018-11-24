@@ -18,23 +18,27 @@ import { SharePreferencesService } from '../components/providers/share-preferenc
 })
 export class MainNavComponent {
 
+  isAdmin : boolean;
+  selected: boolean=false;
+
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
     );
 
-  constructor(private http : HttpClient, public dialog: MatDialog, private breakpointObserver: BreakpointObserver, private authenticationService: LoginService,private activeRoute: ActivatedRoute, private test : TrackingService, private sharePref : SharePreferencesService) {
-
-    if (!authenticationService.isLoggedIn()) {
+  constructor(private loginService : LoginService, private http : HttpClient, public dialog: MatDialog, private breakpointObserver: BreakpointObserver, private authenticationService: LoginService,private activeRoute: ActivatedRoute, private test : TrackingService, private sharePref : SharePreferencesService) {
+      if (!authenticationService.isLoggedIn()) {
       const dialogRef = this.dialog.open
         (LoginDialogComponent, {
-          width: '50%'
+          width: '50%',backdropClass : 'login-backdrop'
         });
 
       dialogRef.afterClosed().subscribe(result => {
         console.log("Closed")
       })
     }
+
+    this.isAdmin = loginService.isAdmin();
 
     let code;
     this.activeRoute.queryParamMap
@@ -52,6 +56,11 @@ export class MainNavComponent {
         this.authenticationService.setOutlookToken(code).subscribe();
       }
     })
+  }
+
+
+  onSelect(){
+    this.selected=true;
   }
 
   logout(){

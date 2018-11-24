@@ -1,5 +1,18 @@
-<div>
-  Interviewer: {{afterInterview.interviewer}}  Score: {{afterInterview.score}}<br/>
-  Comments: {{afterInterview.feedback}}<br/>
-  Type: {{afterInterview.type}}
-</div>
+<mat-card>
+  <mat-card-title>
+      <span *ngIf="score <50" id="low" class="score">{{score | number:0}}%</span>
+      <span *ngIf="score <75 && score >=50" id="mid" class="score">{{score | number:0}}%</span>
+      <span *ngIf="score >=75" id="high" class="score">{{score | number:0}}%</span>
+      <div>
+          <img style="display: inline-block; margin-bottom:15px;" mat-card-avatar src="../../../../assets/img/icon/interviewer.png"/>
+      <div style="display: inline-block;">
+          <span id="interviewer">{{afterInterview.interviewer}}</span>
+          <span id="type">{{type}}</span>
+      </div>
+    </div>
+  </mat-card-title>
+  <mat-card-content>
+    <span id="comment">{{afterInterview.feedback}}</span>
+  </mat-card-content>
+  <span id="endDate">{{afterInterview.endDate |  date:'medium'}}</span>
+</mat-card>

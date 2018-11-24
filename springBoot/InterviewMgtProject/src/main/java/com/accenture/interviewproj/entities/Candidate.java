@@ -69,8 +69,7 @@ public class Candidate implements Serializable {
 	private Boolean rehire;
 
 	@Column(name = "CANDIDATE_CV")
-	@Lob
-	private File candidateCv;
+	private String candidateCv;
 
 	@Column(name = "CANDIDATE_AVAILABILITY")
 	private Boolean availability;
@@ -222,11 +221,11 @@ public class Candidate implements Serializable {
 		this.candidateAddress = candidateAddress;
 	}
 
-	public File getCandidateCv() {
+	public String getCandidateCv() {
 		return candidateCv;
 	}
 
-	public void setCandidateCv(File candidateCv) {
+	public void setCandidateCv(String candidateCv) {
 		this.candidateCv = candidateCv;
 	}
 

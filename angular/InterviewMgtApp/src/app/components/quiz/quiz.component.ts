@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { InterviewService } from '../candidate-profile/providers/interview.service';
+import { LoginService } from '../login-dialog/providers/login.service';
 
 @Component({
   selector: 'app-quiz',
@@ -11,9 +12,10 @@ export class QuizComponent implements OnInit {
 
   myForm: FormGroup;
 
-  constructor(private _fb: FormBuilder, private interviewService : InterviewService) { }
+  constructor(private loginService: LoginService,private _fb: FormBuilder, private interviewService : InterviewService) { }
 
   ngOnInit() {
+    this.loginService.isValidUser();
     this.myForm = this._fb.group({
       quizName: ['', [Validators.required, Validators.minLength(5)]],
       questions: this._fb.array([

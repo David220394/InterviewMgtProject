@@ -9,9 +9,13 @@ import org.springframework.stereotype.Component;
 import com.accenture.interviewproj.dtos.CandidateDto;
 import com.accenture.interviewproj.services.CandidateService;
 
+/**
+ * Custom Writer class To read the output(CandidateDto) from processor Stored
+ * the candidate in the database.
+ */
 @Component
 public class CustomWriter implements ItemWriter<CandidateDto> {
-	
+
 	@Autowired
 	private CandidateService candidateService;
 
@@ -21,6 +25,5 @@ public class CustomWriter implements ItemWriter<CandidateDto> {
 			candidateService.createCandidateFromDto(candidateDto);
 		}
 	}
-	
 
 }

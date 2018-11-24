@@ -18,6 +18,8 @@ import { Observable } from 'rxjs';
 import { Job } from '../pipeline/dto/job';
 import { PipelineCandidateService } from '../pipeline/providers/pipeline-candidate.service';
 import { startWith, map } from 'rxjs/operators';
+import { DomSanitizer } from '@angular/platform-browser';
+import { LoginService } from '../login-dialog/providers/login.service';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -28,7 +30,6 @@ export class CandidateProfileComponent implements OnInit {
 
   @Input() candidate: Candidate = null;
   skills: Skill[];
-  user: string = "sylvio.brandon.david";
   availability: string;
   features: string[];
   interviewFlag: boolean = false;
@@ -41,8 +42,11 @@ export class CandidateProfileComponent implements OnInit {
   jobs : Job[];
   jobSelected : Job;
   errMsg: string;
+  cvContent : any;
+  cvContent1 : any;
+  pdf: File;
 
-  constructor(private pipelineService:PipelineCandidateService,private route: ActivatedRoute, private interviewService: InterviewService, private trackingService: TrackingService, private candidatePageService: CandidatePageService, public dialog: MatDialog, private sharePreference: SharePreferencesService) { }
+  constructor(private loginService : LoginService, private domSanitizer : DomSanitizer,private pipelineService:PipelineCandidateService,private route: ActivatedRoute, private interviewService: InterviewService, private trackingService: TrackingService, private candidatePageService: CandidatePageService, public dialog: MatDialog, private sharePreference: SharePreferencesService) { }
 
   ngOnInit() {
     let jobId: string = this.route.snapshot.paramMap.get('jobId');
@@ -118,7 +122,7 @@ export class CandidateProfileComponent implements OnInit {
     const dialogRef = this.dialog.open
       (TrackDialogComponent, {
         width: '50%',
-        data: { user: this.user, name: this.candidate.name }
+        data: { user: this.loginService.getUsernameFromLocalStorage(), name: this.candidate.name }
       });
 
     dialogRef.backdropClick().subscribe(_ => {
@@ -134,7 +138,7 @@ export class CandidateProfileComponent implements OnInit {
     const dialogRef = this.dialog.open
       (ContactDialogComponent, {
         width: '50%',
-        data: { user: this.user, phone: this.candidate.phone, email: this.candidate.email }
+        data: { user: this.loginService.getUsernameFromLocalStorage(), phone: this.candidate.phone, email: this.candidate.email }
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -144,7 +148,7 @@ export class CandidateProfileComponent implements OnInit {
         let contact: Contact = {
           candidateId: parseInt(this.sharePreference.getCandidateId()),
           jobId: parseInt(this.sharePreference.getJobId()),
-          employeeId: this.user,
+          employeeId: this.loginService.getUsernameFromLocalStorage(),
           comment: result.comment,
           trackingType: result.type
         };
@@ -179,4 +183,33 @@ export class CandidateProfileComponent implements OnInit {
       console.log(err);
     })
   }
+
+  getCandidateCV(){
+    this.candidatePageService.getCVByCandidateId(this.sharePreference.getCandidateId()).subscribe((data:any)=>{
+     var file = new Blob([data], {type: 'application/pdf'});
+     this.pdf = new File([file], "x.pdf");
+     console.log(this.pdf);
+      var fileURL = URL.createObjectURL(file);
+      this.cvContent = this.domSanitizer.bypassSecurityTrustResourceUrl(fileURL);
+      console.log(this.cvContent);
+    });
+  }
+
+  createImageFromBlob(image: Blob) {
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+       this.cvContent1 = reader.result;
+    }, false);
+    if (image) {
+       reader.readAsDataURL(image);
+    }
+   }
+
+   getImageFromService() {
+       this.candidatePageService.getCVByCandidateId(this.sharePreference.getCandidateId()).subscribe((data:any)=>{
+         this.createImageFromBlob(data);
+       });
+   }
+
+
 }

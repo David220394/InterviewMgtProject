@@ -2,6 +2,7 @@
   <mat-card  (click)="onClickRedirect()">
       <img mat-card-avatar src="../../../assets/img/profile-circle-3.png"/>
       <h6 style="font-family: Georgia, serif;">{{candidate?.name}} </h6>
+      <img class="skillScore" mat-card-avatar src="../../../../assets/img/icon/skill.png"/><span class="skillScore">{{candidate.skillScore}}</span>
       <span style="font-family: Georgia, serif;">{{candidate.title}}</span>
       <span style="font-family: Georgia, serif;">{{candidate.education}}</span>
       <div *ngIf="!candidate.completeApplication" class="tag" style="background-color: red;font-family: Georgia, serif;">Imcomplete</div>

@@ -1,5 +1,9 @@
 package com.accenture.interviewproj.utilities;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -7,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Row;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.accenture.interviewproj.dtos.CandidateDto;
 import com.accenture.interviewproj.dtos.DisplayCandidateDto;
@@ -15,13 +20,15 @@ import com.accenture.interviewproj.enums.Gender;
 
 public class CandidateUtility {
 	
+	private static String uploadCVFolder = System.getProperty("user.dir")
+			+ "/src/main/resources/CandidateCv";
+	
 	private CandidateUtility() {}
 	
 	public static DisplayCandidateDto convertCandidateToDto(Candidate candidate) {
 		DisplayCandidateDto candidateDto = new DisplayCandidateDto();
 		candidateDto.setCandidateId(candidate.getCandidateId());
 		candidateDto.setCandidateAddress(candidate.getCandidateAddress());
-		candidateDto.setCandidateCv(candidate.getCandidateCv());
 		candidateDto.setCandidateExperience(candidate.getCandidateExperience());
 		candidateDto.setCandidateName(candidate.getCandidateName());
 		candidateDto.setCandidatePhone(candidate.getCandidatePhone());
@@ -76,6 +83,7 @@ public class CandidateUtility {
 		candidate.setCoverLetter("Dear .. . .");
 		candidate.setCandidatePhone(candidateDto.getCandidatePhone());
 		candidate.setDob(candidateDto.getDob());
+		candidate.setCandidateCv(candidateDto.getCandidateCv());
 		candidate.setGender(candidateDto.getGender());
 		candidate.setInternalApplication(candidateDto.getInternalApplication());
 		candidate.setCompleteApplication(candidateDto.getCompleteApplication());
@@ -83,4 +91,8 @@ public class CandidateUtility {
 		return candidate;
 	}
 
+	public static void uploadCandidateCv(byte[] bytesprerequisiteProofOfcompletion,String filename) throws IOException{
+		Path path = Paths.get(uploadCVFolder, filename);
+		Files.write(path, bytesprerequisiteProofOfcompletion);
+	}
 }

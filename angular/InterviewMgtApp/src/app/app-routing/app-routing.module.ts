@@ -12,6 +12,9 @@ import { InterviewsComponent } from '../components/candidate-profile/interviews/
 import { MainNavComponent } from '../main-nav/main-nav.component';
 import { CandidateListComponent } from '../components/candidate-list/candidate-list.component';
 import { QuizComponent } from '../components/quiz/quiz.component';
+import { ErrorPageComponent } from '../components/error-page/error-page.component';
+import { UserListComponent } from '../components/user-list/user-list.component';
+import { UpdateQuizComponent } from '../components/update-quiz/update-quiz.component';
 
 const routes: Routes = [
   {path: '', component: MainNavComponent,children:[
@@ -21,13 +24,16 @@ const routes: Routes = [
   { path: 'candidate/:id', component: CandidateProfileComponent },
   { path: 'addJob', component: AddJobComponent },
   { path: 'jobList', component: JobListComponent },
+  { path: 'employeeList', component: UserListComponent },
   { path: 'candidateList', component: CandidateListComponent },
   { path: 'candidatePage', component : CandidateProfileComponent },
   { path: 'candidatePage/:jobId', component : CandidateProfileComponent },
   { path: 'createQuiz', component: QuizComponent },
+  { path: 'updateQuiz', component: UpdateQuizComponent },
   { path: 'regPage', component: RegisterHrComponent },
   ]},
-  { path: 'interview/:link', component: InterviewsComponent }
+  { path: 'interview/:link', component: InterviewsComponent },
+  { path: 'error/:code', component: ErrorPageComponent}
 ];
 
 

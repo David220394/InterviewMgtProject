@@ -24,7 +24,10 @@ import { MatButtonModule,
         MatRadioModule,
         MatBadge,
         MatBadgeModule,
-        MatAutocompleteModule} from '@angular/material';
+        MatExpansionModule,
+        MatAutocompleteModule,
+        MatMenuModule,
+        MatProgressBarModule} from '@angular/material';
 
 @NgModule({
   imports: [
@@ -52,7 +55,10 @@ import { MatButtonModule,
     MatNativeDateModule,
     MatRadioModule,
     MatBadgeModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatExpansionModule,
+    MatMenuModule,
+    MatProgressBarModule
   ],
   exports: [
     MatToolbarModule,
@@ -78,7 +84,10 @@ import { MatButtonModule,
     MatNativeDateModule,
     MatRadioModule,
     MatBadgeModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatExpansionModule,
+    MatMenuModule,
+    MatProgressBarModule
   ],
   declarations: []
 })

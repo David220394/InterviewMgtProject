@@ -6,23 +6,26 @@ import { map, finalize } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { Job } from '../dto/job';
 import { element } from 'protractor';
+import { LoginService } from '../../login-dialog/providers/login.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PipelineCandidateService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,private loginService : LoginService) { }
   candidates: Candidate[];
+  pipelineCandidate : Candidate[];
   candidatesApplied: Candidate[];
   candidatesInterviewScheduled: Candidate[];
   candidatesInterviewInProgress: Candidate[];
   candidatesCompleted: Candidate[];
   candidatesRejected: Candidate[];
+  suggestedCandidates : Candidate[];
 
   public getAlljob(): Observable<any> {
     return new Observable(observer => {
-      this.httpClient.get(environment.url + '/api/jobs/')
+      this.httpClient.get(environment.url + '/api/jobs/activeJob/'+this.loginService.getUsernameFromLocalStorage())
         .pipe(finalize(() => { observer.complete(); }))
         .subscribe((data: any) => {
           let jobs: Job[] = [];
@@ -43,25 +46,42 @@ export class PipelineCandidateService {
   }
 
 
-  /*public getallcandidates():Observable<any>{
-    return this.httpClient.get(environment.url+"/candidate/job/all/")
+  public getSuggestedcandidatesbyJob(jobId: number):Observable<any>{
+    return this.httpClient.get(environment.url+"/candidate/suggest/"+jobId)
     .pipe(map((contents:any):void => {
-      contents.forEach((element:any)=> {
-        this.candidates.push({
-          rating:element.rating,
-          name: element.name,
-          picture:element.picture,
-          title:element.title,
-          education:element.education
-        })
-      });
+        this.suggestedCandidates =[];
+          let candidates: Candidate[] = [];
+        contents.forEach((element: any) => {
+          let skills : string[] = []
+            element.skills.forEach(skill => {
+              skills.push(skill.description)
+            });
+            candidates.push({
+              id: element.candidateId,
+              rating: element.score,
+              name: element.candidateName,
+              address : element.candidateAddress,
+              picture: null,
+              title: element.candidateExperience.experienceName,
+              education: element.education.programStudy + " at " + element.education.institutionName,
+              completeApplication: element.completeApplication,
+              internalApplication: element.internalApplication,
+              rehire: element.rehire,
+              skills : skills,
+              skillScore : element.skillScore,
+              status: element.status
+            })
+        });
+        this.suggestedCandidates=candidates;
     }))
-  }*/
+  }
 
 
   public getallcandidatesbyjob(jobid: number): Observable<any> {
     return this.httpClient.get(environment.url + "/candidate/" + jobid)
       .pipe(map((contents: any): void => {
+        console.log(contents);
+        this.pipelineCandidate = [];
         this.candidatesApplied = [];
         this.candidatesInterviewScheduled = [];
         this.candidatesInterviewInProgress = [];
@@ -69,20 +89,27 @@ export class PipelineCandidateService {
         this.candidatesRejected = [];
         let candidates: Candidate[] = [];
         contents.forEach((element: any) => {
-          candidates.push({
-            id: element.candidateId,
-            rating: element.score,
-            name: element.candidateName,
-            picture: null,
-            title: element.candidateExperience.experienceName,
-            education: element.education.programStudy + " at " + element.education.institutionName,
-            completeApplication: element.completeApplication,
-            internalApplication: element.internalApplication,
-            rehire: element.rehire,
-            status: element.status
-          })
+          let skills : string[] = []
+            element.skills.forEach(skill => {
+              skills.push(skill.description)
+            });
+            candidates.push({
+              id: element.candidateId,
+              rating: element.score,
+              name: element.candidateName,
+              address : element.candidateAddress,
+              picture: null,
+              title: element.candidateExperience.experienceName,
+              education: element.education.programStudy + " at " + element.education.institutionName,
+              completeApplication: element.completeApplication,
+              internalApplication: element.internalApplication,
+              rehire: element.rehire,
+              skills : skills,
+              skillScore : element.skillScore,
+              status: element.status
+            })
         });
-
+        this.pipelineCandidate = candidates;
         candidates.forEach((element: Candidate) => {
           switch (element.status) {
             case "Applied": {
@@ -117,18 +144,26 @@ export class PipelineCandidateService {
       this.httpClient.get(environment.url + '/candidate/')
         .pipe(finalize(() => { observer.complete(); }))
         .subscribe((data: any) => {
+          console.log(data);
           this.candidates = [];
           data.forEach((element: any) => {
+            let skills : string[] = []
+            element.skills.forEach(skill => {
+              skills.push(skill.description)
+            });
             this.candidates.push({
               id: element.candidateId,
               rating: element.score,
               name: element.candidateName,
+              address : element.candidateAddress,
               picture: null,
               title: element.candidateExperience.experienceName,
               education: element.education.programStudy + " at " + element.education.institutionName,
               completeApplication: element.completeApplication,
               internalApplication: element.internalApplication,
-              rehire: element.rehire
+              rehire: element.rehire,
+              skills : skills,
+              skillScore : element.skillScore
             })
           });
           observer.next(this.candidates);

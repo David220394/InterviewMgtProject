@@ -67,13 +67,6 @@ public class JobService {
 	public Job insertJob(JobDto jobDto) throws JobNameAlreadyExistsException {
 		if (jobRepository.findByJobName(jobDto.getProjectName()) == null) {
 			Job job = JobUtility.convertJobDtoToJob(jobDto);
-			List<Employee> employees = new ArrayList<>();
-			for (String employee : jobDto.getAssignTos()) {
-				if (employeeRepository.findByEmployeeName(employee) != null) {
-					employees.add(employeeRepository.findByEmployeeName(employee));
-				}
-			}
-			job.setEmployee(employees);
 			Set<Requirement> requirements = new HashSet<>();
 			for (String requirement : jobDto.getRequirements()) {
 				if (requirementRepository.findByName(requirement) != null) {
@@ -86,8 +79,15 @@ public class JobService {
 				}
 			}
 			job.setRequirements(requirements);
-
-			return jobRepository.save(job);
+			job = jobRepository.save(job);
+			for (String assignTo : jobDto.getAssignTos()) {
+				if (employeeRepository.findByEmployeeName(assignTo) != null) {
+					Employee employee = employeeRepository.findByEmployeeName(assignTo);
+					employee.getJobs().add(job);
+					employeeRepository.save(employee);
+				}
+			}
+			return job;
 		} else {
 			throw new JobNameAlreadyExistsException("This job name already exists");
 		}
@@ -115,8 +115,8 @@ public class JobService {
 	 * 
 	 * Find all jobs
 	 */
-	public List<Job> findAll() {
-		return jobRepository.findAll();
+	public List<Job> findAllActiveJob() {
+		return jobRepository.findByActiveJob(true);
 	}
 
 	/**

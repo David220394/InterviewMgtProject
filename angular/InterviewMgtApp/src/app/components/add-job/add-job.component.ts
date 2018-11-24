@@ -3,6 +3,7 @@ import { AddJobService } from './providers/add-job.service';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { LoginService } from '../login-dialog/providers/login.service';
 
 @Component({
   selector: 'app-add-job',
@@ -17,12 +18,13 @@ export class AddJobComponent implements OnInit {
 
   //maxDate = new Date();
   maxDate =   new Date(2200, 0, 1);
-  constructor(private _fb: FormBuilder,private addJobService: AddJobService, private http: HttpClient, private router : Router) { }
+  constructor(private loginService: LoginService, private _fb: FormBuilder,private addJobService: AddJobService, private http: HttpClient, private router : Router) { }
 
   file: File;
   err : string;
 
   ngOnInit() {
+    this.loginService.isValidUser();
     this.myForm = this._fb.group({
       projectName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
       position: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
@@ -30,7 +32,7 @@ export class AddJobComponent implements OnInit {
       creationDate: ['', [Validators.required]],
       closingDate : ['', [Validators.required]],
       assignTos: this._fb.array([this.initAssignTo(),]),
-      requirements : this._fb.array([this.initRequirement(),[Validators.minLength(5), Validators.maxLength(20)]]),
+      requirements : this._fb.array([this.initRequirement()]),
       file: ['', ],
   });
   }

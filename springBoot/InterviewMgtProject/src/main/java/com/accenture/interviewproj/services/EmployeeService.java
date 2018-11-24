@@ -60,6 +60,7 @@ public class EmployeeService implements UserDetailsService {
 	 */
 	public Employee insertHR(Employee employee) throws EmployeeAlreadyExistsException {
 		if (employeeRepository.findByEmployeeName(employee.getEmployeeName()) == null) {
+			employee.setEmployeePassword(bcryptEncoder.encode(employee.getEmployeePassword()));
 			return employeeRepository.save(employee);
 		} else {
 			throw new EmployeeAlreadyExistsException("This job name already exists");
@@ -106,10 +107,11 @@ public class EmployeeService implements UserDetailsService {
 	 * @return updated employee
 	 * @throws EmployeeNotFoundException
 	 */
-	public Employee updateEmployee(Employee employee) throws EmployeeNotFoundException {
-		Employee searchEmployee = employeeRepository.findByEmployeeName(employee.getEmployeeName());
+	public Employee updateEmployeeRole(String employeeId) throws EmployeeNotFoundException {
+		Employee searchEmployee = employeeRepository.findByEmployeeId(employeeId);
 		if (searchEmployee != null) {
-			return employeeRepository.save(employee);
+			searchEmployee.setRole(Role.ADMIN);
+			return employeeRepository.save(searchEmployee);
 		} else {
 			throw new EmployeeNotFoundException("Failed to update Employee Details");
 		}
@@ -121,21 +123,6 @@ public class EmployeeService implements UserDetailsService {
 		jobs.add(job);
 		employee.setJobs(jobs);
 		employeeRepository.save(employee);
-	}
-
-	/**
-	 * Insert employee details
-	 */
-	@PostConstruct
-	public void init() {
-		if (!employeeRepository.findById("sylvio.brandon.david").isPresent()) {
-			Employee employee = new Employee();
-			employee.setEmployeeId("sylvio.brandon.david");
-			employee.setEmployeeName("David");
-			employee.setEmployeePassword(bcryptEncoder.encode("12345"));
-			employee.setRole(Role.ADMIN);
-			createEmployee(employee);
-		}
 	}
 
 	/******
@@ -159,6 +146,7 @@ public class EmployeeService implements UserDetailsService {
 		// Check if employee is an Admin
 		if (employee.getRole() == Role.ADMIN) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_" + Role.ADMIN.toString()));
+			System.out.println(authorities);
 		}
 		// Check if employee is a HR
 		if (employee.getRole() == Role.HR) {

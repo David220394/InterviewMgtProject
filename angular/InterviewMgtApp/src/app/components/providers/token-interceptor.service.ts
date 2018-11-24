@@ -19,11 +19,20 @@ export class TokenInterceptorService implements HttpInterceptor {
       if (token != null) {
 
         // Clone the request
-        const reqClone = req.clone({
+        let reqClone = req.clone({
           setHeaders: {
-            Authorization: 'Bearer ' + token
+            Authorization: 'Bearer ' + token,
           }
         });
+        if(req['url'].includes("createPdf/")){
+          reqClone = req.clone({
+            setHeaders: {
+              Authorization: 'Bearer ' + token,
+              Accept : 'application/pdf'
+            }
+          });
+        }
+
 
         console.log(reqClone);
 

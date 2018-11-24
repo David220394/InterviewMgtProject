@@ -25,6 +25,7 @@ export class PipelineComponent implements OnInit {
     candidatesInterviewInProgress: Candidate[];
     candidatesCompleted: Candidate[];
     candidatesRejected: Candidate[];
+    suggestedCandidates : Candidate[];
 
 
 
@@ -50,11 +51,15 @@ export class PipelineComponent implements OnInit {
     })
     this.service.getallcandidatesbyjob(this.selected).subscribe(
       () => {
+        this.service.getSuggestedcandidatesbyJob(this.selected).subscribe(()=>{
+          this.suggestedCandidates = this.service.suggestedCandidates;
         this.candidatesApplied = this.service.candidatesApplied,
         this.candidatesInterviewScheduled = this.service.candidatesInterviewScheduled,
         this.candidatesInterviewInProgress = this.service.candidatesInterviewInProgress,
         this.candidatesCompleted = this.service.candidatesCompleted,
         this.candidatesRejected = this.service.candidatesRejected
+
+        });
         },error => {console.error(error)}
     );
   }

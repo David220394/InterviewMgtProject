@@ -92,6 +92,21 @@ public class InterviewController {
 		return ResponseEntity.ok(assessmentQuizService.insertAssessmentQuiz(quizDto));
 	}
 	
+	@PostMapping("/updateQuiz/")
+	public ResponseEntity<?> updateAssessmentQuiz(@RequestBody QuizDto quizDto){
+		return ResponseEntity.ok(assessmentQuizService.updateAssessmentQuiz(quizDto));
+	}
+	
+	@GetMapping("/findAllQuiz/")
+	public ResponseEntity<?> getAllAssessmentQuiz(){
+		return ResponseEntity.ok(assessmentQuizService.getAllAssessmentQuizs());
+	}
+	
+	@GetMapping("/findQuiz/{id}")
+	public ResponseEntity<?> getAllAssessmentQuiz(@PathVariable("id") long quizId){
+		return ResponseEntity.ok(assessmentQuizService.findQuizById(quizId));
+	}
+	
 	@PostMapping("/assessmentInterview/")
 	public ResponseEntity<?> calculateAssessmentScore(@RequestBody AfterAssessmentDto afterAssessmentDto){
 		return ResponseEntity.ok(assessmentQuizService.saveAssessmentScore(afterAssessmentDto));

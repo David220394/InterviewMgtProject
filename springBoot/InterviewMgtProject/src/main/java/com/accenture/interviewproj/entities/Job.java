@@ -64,9 +64,11 @@ public class Job implements Serializable {
 	private Set<Requirement> requirements;
 
 	@ElementCollection
+	@JsonIgnore
 	private List<String> assignTo = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "jobs", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnore
 	private List<Employee> employee;
 	
 	@OneToMany(mappedBy = "job")
@@ -74,7 +76,7 @@ public class Job implements Serializable {
 	private Set<Interview> interviews;
 	
 	@OneToMany(mappedBy = "job")
-	@JsonIgnore
+
 	private List<JobCandidate> jobCandidates;
 	
 	@OneToMany(mappedBy = "job")

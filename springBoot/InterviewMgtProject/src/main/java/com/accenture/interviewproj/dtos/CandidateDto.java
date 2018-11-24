@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.accenture.interviewproj.entities.CandidateExperience;
 import com.accenture.interviewproj.entities.Education;
 import com.accenture.interviewproj.entities.Interview;
@@ -35,7 +37,7 @@ public class CandidateDto {
 
 	private Boolean rehire;
 
-	private File candidateCv;
+	private String candidateCv;
 
 	private String status;
 
@@ -131,13 +133,12 @@ public class CandidateDto {
 		this.rehire = rehire;
 	}
 
-
-
-	public File getCandidateCv() {
+	
+	public String getCandidateCv() {
 		return candidateCv;
 	}
 
-	public void setCandidateCv(File candidateCv) {
+	public void setCandidateCv(String candidateCv) {
 		this.candidateCv = candidateCv;
 	}
 

@@ -4,11 +4,15 @@ import { HttpEventType, HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { Interview } from '../dto/interview';
+import { JobStat } from '../dto/jobStat';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
+
+  public totalCandidate : number;
+  public jobStats : JobStat[];
 
   constructor(private http : HttpClient) { }
 
@@ -62,6 +66,59 @@ public getInterviewDate():Observable<any>{
     })
   })
 }
+
+
+
+public getAllCandidates():Observable<any>{
+return new Observable(observer => { this.http.get(environment.url + '/candidate/')
+.pipe( finalize(() => { observer.complete(); }))
+.subscribe( (candidates: any) => {
+  console.log(candidates);
+  this.totalCandidate = candidates.length;
+  observer.next(candidates);
+})});
+}
+
+public getAllJobs():Observable<any>{
+  return new Observable(observer => {
+    this.http.get(environment.url + '/api/jobs/')
+    .pipe( finalize(() => { observer.complete(); }))
+    .subscribe( (data: any) => {
+     console.log(data);
+     this.jobStats = [];
+    data.forEach(element => {
+      let candidateNumber = element.jobCandidates.length;
+      let candidatePercentage = ((candidateNumber/this.totalCandidate)*100);
+      this.jobStats.push({
+        jobName : element.jobName,
+        candidatePercentage : candidatePercentage,
+        candidateNumber : candidateNumber
+      })
+    });
+     observer.next(data);
+    },(err:any)=>{
+     observer.error(err);
+    })
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Example on how to make a simple GET request

@@ -51,7 +51,7 @@
     <button *ngIf="interviewFlag && is_job" mat-stroked-button color="primary" id="contact" (click)="openContact()">Contact</button>
     <button *ngIf="interviewFlag && is_job" mat-stroked-button color="primary" id="track" (click)="openTracking()">Track
       Progress</button>
-    <button *ngIf="interviewFlag && is_job" mat-stroked-button color="primary" id="resume">Resume</button>
+    <button *ngIf="interviewFlag && is_job" mat-stroked-button color="primary" id="resume" (click)="getCandidateCV()">Resume</button>
   </div>
 </mat-card>
 
@@ -59,11 +59,13 @@
   <div id="content1">
     <mat-card id="coverLetter">
       <mat-card-title>
-        <h2 style="font-family: Georgia, serif;">Cover Letter</h2>
+        <h2 style="font-family: Georgia, serif;">Skill</h2>
       </mat-card-title>
       <mat-divider [inset]="true"></mat-divider>
-      <mat-card-content>
-        {{candidate?.cover}}
+      <mat-card-content >
+        <div style="float: left;margin: 10px;" *ngFor="let skill of skills">
+        <app-skill  [skill]="skill"></app-skill>
+        </div>
       </mat-card-content>
     </mat-card>
     <div *ngIf="interviewFlag && is_job" id="rating">
@@ -108,7 +110,7 @@
 
   <mat-card *ngIf="interviewFlag && is_job" id="feedback">
     <mat-card-title>
-      <h2 style="font-family: Georgia, serif;">Feedback</h2>
+      <h2>Feedback</h2>
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
     <div *ngIf="afterInterviews">
@@ -119,4 +121,8 @@
       </mat-card-content>
     </div>
   </mat-card>
+</div>
+<div *ngIf="cvContent">
+<embed [src]="pdf" width="500px" height="700px"/>
+<a [href]="cvContent">Test</a>
 </div>

@@ -30,6 +30,7 @@ export class CandidatePageService {
       .subscribe( (data: any) => {
 
         let candidate : Candidate;
+        let skills : Skill[]=[];
         const experience: Experience  = {
           name : data.candidateExperience.experienceName,
           specialty : data.candidateExperience.specialty,
@@ -40,6 +41,14 @@ export class CandidatePageService {
           grade : data.education.grade,
           programStudy : data.education.programStudy
         };
+
+        data.skills.forEach(skill => {
+          skills.push({
+            description : skill.description,
+            grade : null,
+            location : null
+          })
+        });
 
         candidate ={
           name : data.candidateName,
@@ -58,7 +67,7 @@ export class CandidatePageService {
           phone : data.candidatePhone,
           status : data.status,
           experience : experience,
-          skills : null,
+          skills : skills,
           jobName : data.jobName
         }
         observer.next(candidate);
@@ -82,6 +91,7 @@ export class CandidatePageService {
       .subscribe( (data: any) => {
         console.log(data)
         let candidate : Candidate;
+        let skills : Skill[] = [];
         const experience: Experience  = {
           name : data.candidateExperience.experienceName,
           specialty : data.candidateExperience.specialty,
@@ -92,6 +102,14 @@ export class CandidatePageService {
           grade : data.education.grade,
           programStudy : data.education.programStudy
         };
+
+        data.skills.forEach(skill => {
+          skills.push({
+            description : skill.description,
+            grade : null,
+            location : null
+          })
+        });
 
         candidate ={
           name : data.candidateName,
@@ -108,7 +126,7 @@ export class CandidatePageService {
           cover : data.coverLetter,
           phone : data.candidatePhone,
           experience : experience,
-          skills : null
+          skills : skills
         }
         observer.next(candidate);
       },
@@ -129,4 +147,18 @@ export class CandidatePageService {
       })
     });
   }
+
+  public getCVByCandidateId(cid : string): Observable<any> {
+    console.log(cid);
+    return new Observable( observer => {
+      this.http.get(environment.url+'/candidate/createPdf/'+cid,{responseType : 'blob'})
+      .pipe( finalize(() => { observer.complete(); }))
+      .subscribe( (data: any) => {
+        observer.next(data);
+      },(err:any)=>{
+        console.log(err);
+      })
+    });
+  }
+
 }

@@ -5,10 +5,35 @@
     <mat-nav-list>
       <a mat-list-item routerLink="/dashboard">Dashboard</a>
       <a mat-list-item routerLink="/pipeline">Pipeline</a>
-      <a mat-list-item routerLink="/jobList">Job List</a>
       <a mat-list-item routerLink="/candidateList">Candidate List</a>
-      <a mat-list-item routerLink="/addJob">Add Job</a>
-      <a mat-list-item routerLink="/regPage">Register</a>
+      <mat-expansion-panel *ngIf="isAdmin" [expanded]="selected">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Job
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/jobList">Job List</a>
+        <a  mat-list-item routerLink="/addJob">Add Job</a>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="isAdmin" [expanded]="selected">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Employee
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <a mat-list-item routerLink="/regPage">Add User</a>
+          <a  mat-list-item routerLink="/employeeList">User List</a>
+          </mat-expansion-panel>
+          <mat-expansion-panel *ngIf="isAdmin" [expanded]="selected">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Quiz
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink="/createQuiz">Create</a>
+            <a mat-list-item routerLink="/updateQuiz">View/Update</a>
+            </mat-expansion-panel>
+        <a *ngIf="!isAdmin" mat-list-item routerLink="/jobList">Job List</a>
       <a mat-list-item href="" (click)="logout()">Logout</a>
     </mat-nav-list>
   </mat-sidenav>
@@ -21,11 +46,25 @@
       <mat-nav-list class="main-nav" [ngClass]="{hidden: (isHandset$ | async)}">
         <a style="font-family: Georgia, serif;" routerLink="/dashboard">Dashboard</a>
         <a style="font-family: Georgia, serif;" routerLink="/pipeline">Pipeline</a>
-        <a style="font-family: Georgia, serif;" routerLink="/jobList">Job List</a>
+        <a style="font-family: Georgia, serif;" *ngIf="isAdmin" [matMenuTriggerFor]="menu">Job</a>
+          <mat-menu #menu="matMenu">
+            <a style="font-family: Georgia, serif;" mat-menu-item routerLink="/addJob">Add Job</a>
+            <a style="font-family: Georgia, serif;" mat-menu-item routerLink="/jobList">Job List</a>
+          </mat-menu>
+          <a style="font-family: Georgia, serif;" *ngIf="isAdmin" [matMenuTriggerFor]="menu1">Employee</a>
+          <mat-menu #menu1="matMenu">
+            <a style="font-family: Georgia, serif;" mat-menu-item routerLink="/regPage">Add User</a>
+            <a style="font-family: Georgia, serif;" mat-menu-item routerLink="/employeeList">User List</a>
+          </mat-menu>
+          <a style="font-family: Georgia, serif;" *ngIf="isAdmin" [matMenuTriggerFor]="menu2">Quiz</a>
+          <mat-menu #menu2="matMenu">
+            <a style="font-family: Georgia, serif;" mat-menu-item routerLink="/createQuiz">Create</a>
+            <a style="font-family: Georgia, serif;" mat-menu-item routerLink="/updateQuiz">Update/View</a>
+          </mat-menu>
+        <a style="font-family: Georgia, serif;" *ngIf="!isAdmin" routerLink="/jobList">Job List</a>
         <a style="font-family: Georgia, serif;" routerLink="/candidateList">Candidate List</a>
-        <a style="font-family: Georgia, serif;" routerLink="/addJob">Add Job</a>
-        <a style="font-family: Georgia, serif;" routerLink="/regPage">Register</a>
         <a style="font-family: Georgia, serif;" href="" (click)="logout()">Logout</a>
+        <button mat-button (click)="sidenav.toggle()">Config</button>
       </mat-nav-list>
     </mat-toolbar>
 
@@ -35,8 +74,16 @@
         <div class="col-md-12">
           <!-- uses 6 columns on medium and larger screens... -->
           <div class="content">
+              <mat-sidenav-container class="example-container" >
+                  <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+                    Sidenav content
+                  </mat-sidenav>
+                  <mat-sidenav-content>
+                      <router-outlet></router-outlet>
 
-            <router-outlet></router-outlet>
+                  </mat-sidenav-content>
+                </mat-sidenav-container>
+
           </div>
         </div>
       </div>

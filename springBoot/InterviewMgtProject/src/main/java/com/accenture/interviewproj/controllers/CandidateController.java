@@ -1,6 +1,12 @@
 package com.accenture.interviewproj.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,14 +15,18 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +41,9 @@ import com.accenture.interviewproj.services.CandidateService;
 @RestController
 @RequestMapping("/candidate")
 public class CandidateController {
+	
+	private static String uploadCVFolder = System.getProperty("user.dir")
+			+ "/src/main/resources/CandidateCv";
 	
 	@Autowired
 	private CandidateService candidateService;
@@ -64,6 +77,21 @@ public class CandidateController {
 	@GetMapping("/{jobId}")
 	public ResponseEntity<?> findCandidateByJodId(@PathVariable Long jobId){
 		List<DisplayCandidateDto> candidates = candidateService.findCandidateByJobId(jobId);
+		if(candidates != null) {
+		return ResponseEntity.ok(candidates);
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job Id not found");
+		}
+	}
+	
+	/**
+	 * 
+	 * @param jobId
+	 * finding a candidate by its jobId
+	 */
+	@GetMapping("/suggest/{jobId}")
+	public ResponseEntity<?> findSuggestedCandidateByJodId(@PathVariable Long jobId){
+		List<DisplayCandidateDto> candidates = candidateService.findSuggestedCandidateByJobId(jobId);
 		if(candidates != null) {
 		return ResponseEntity.ok(candidates);
 		}else {
@@ -134,6 +162,24 @@ public class CandidateController {
 	@GetMapping("/updateStatus/{jobId}/{cid}/{is_change}/{oldStatus}")
 	public ResponseEntity<?> updateStatus(@PathVariable Long jobId,@PathVariable Long cid,@PathVariable String is_change,@PathVariable String oldStatus){
 		return ResponseEntity.ok(candidateService.updateCandidateStatus(cid, jobId, is_change,oldStatus));
+	}
+	
+	@RequestMapping(value = "createPdf/{cid}", method = RequestMethod.GET, produces = "application/pdf")
+	public ResponseEntity<?> getPdf(@PathVariable Long cid,HttpServletResponse response) {
+
+	    response.setContentType("application/pdf");
+	    Candidate candidate;
+	    byte[] contents =null;
+		try {
+			candidate = candidateService.findCandidateByCandidateId(cid);
+			Path path = Paths.get(uploadCVFolder, candidate.getCandidateCv());
+			contents = Files.readAllBytes(path);
+		} catch (IdNotFoundException | IOException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.parseMediaType("application/pdf"));
+	    return new ResponseEntity<>(contents, headers, HttpStatus.OK);        
 	}
 
 }

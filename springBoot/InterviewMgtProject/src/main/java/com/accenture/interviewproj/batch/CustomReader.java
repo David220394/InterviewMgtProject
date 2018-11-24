@@ -76,7 +76,6 @@ public class CustomReader implements ItemReader<Row> {
 			rows.add(rowIterator.next());
 		}
 		return rows;
-		
 	}
 		
 	

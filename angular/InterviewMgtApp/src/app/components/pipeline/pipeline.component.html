@@ -9,33 +9,39 @@
     </mat-select>
   </mat-form-field>
 
-<p style="color: #801638; font-weight: bold;font-family: Georgia, serif;">You selected: {{selected}}</p>
-
-
-
 <br><br>
 </div>
 
 <mat-tab-group class="group1">
+    <mat-tab style="font-family: Georgia, serif;" label="Suggestion">
+        <div class="row">
+        <app-pipeline-candidate class="col-md-5" [candidate]="candidate" *ngFor="let candidate of suggestedCandidates"></app-pipeline-candidate>
+      </div>
+      </mat-tab>
   <mat-tab style="font-family: Georgia, serif;" label="Applied">
-
-    <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesApplied"></app-pipeline-candidate>
-
+    <div class="row">
+    <app-pipeline-candidate class="col-md-5" [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesApplied"></app-pipeline-candidate>
+  </div>
   </mat-tab>
   <mat-tab style="font-family: Georgia, serif;" label="Schedule Interview">
-      <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesInterviewScheduled"></app-pipeline-candidate>
-
+    <div class="row">
+      <app-pipeline-candidate class="col-md-5" [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesInterviewScheduled"></app-pipeline-candidate>
+    </div>
   </mat-tab>
   <mat-tab style="font-family: Georgia, serif;" label="Interview in Progress">
-      <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesInterviewInProgress"></app-pipeline-candidate>
-
+    <div class="row">
+      <app-pipeline-candidate class="col-md-5" [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesInterviewInProgress"></app-pipeline-candidate>
+    </div>
   </mat-tab>
   <mat-tab style="font-family: Georgia, serif;" label="Completed">
-      <app-pipeline-candidate [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesCompleted"></app-pipeline-candidate>
-  </mat-tab>
+      <div class="row">
+      <app-pipeline-candidate class="col-md-5" [selected]="selected" [candidate]="candidate" *ngFor="let candidate of candidatesCompleted"></app-pipeline-candidate>
+  </div>
+    </mat-tab>
   <mat-tab style="font-family: Georgia, serif;" label="Rejected">
-      <app-pipeline-candidate [candidate]="candidate" *ngFor="let candidate of candidatesRejected"></app-pipeline-candidate>
-
+    <div class="row">
+      <app-pipeline-candidate class="col-md-5" [candidate]="candidate" *ngFor="let candidate of candidatesRejected"></app-pipeline-candidate>
+    </div>
   </mat-tab>
 </mat-tab-group>
 </mat-card>

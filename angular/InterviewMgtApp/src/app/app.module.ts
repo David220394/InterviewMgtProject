@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
@@ -37,7 +37,11 @@ import { TokenInterceptorService } from './components/providers/token-intercepto
 import { DatePipe } from '@angular/common';
 import { CandidateListComponent } from './components/candidate-list/candidate-list.component';
 import { QuizComponent } from './components/quiz/quiz.component';
-
+import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { ChartsModule } from 'ng2-charts';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { UpdateQuizComponent } from './components/update-quiz/update-quiz.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +67,11 @@ import { QuizComponent } from './components/quiz/quiz.component';
     FeedbackComponent,
     LoginDialogComponent,
     CandidateListComponent,
-    QuizComponent
+    QuizComponent,
+    ErrorPageComponent,
+    UserProfileComponent,
+    UserListComponent,
+    UpdateQuizComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +85,9 @@ import { QuizComponent } from './components/quiz/quiz.component';
     FormsModule,
     ReactiveFormsModule,
     BarRatingModule,
-    JwtModule
+    JwtModule,
+    ChartsModule
+
   ],
   entryComponents : [TrackDialogComponent, ContactDialogComponent, InterviewDialogComponent, LoginDialogComponent],
   providers: [{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}},  {

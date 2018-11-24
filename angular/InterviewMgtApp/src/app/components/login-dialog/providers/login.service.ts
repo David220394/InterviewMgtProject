@@ -13,6 +13,8 @@ export class LoginService {
   // LocalStorage token key
   private LOCALSTORAGE_TOKEN_KEY = 'token';
   private LOCALSTORAGE_OUTLOOK_KEY = 'outlook';
+  private LOCALSTORAGE_USER_ROLE = 'role';
+  private LOCALSTORAGE_USER_NAME = 'username'
 
   // Header
   private httpOptions = {
@@ -35,6 +37,14 @@ export class LoginService {
       .pipe(finalize(() => { observer.complete(); } ))
       .subscribe((res: any) => {
         this.storeTokenToLocalStorage(res.token);
+        this.http.post("http://localhost:8082/authentication/token",res.token, this.httpOptions)
+        .pipe(finalize(() => { observer.complete(); } ))
+      .subscribe((employee : any) =>{
+        console.log(employee.role);
+        this.storeRoleToLocalStorage(employee.role);
+        this.storeUsernameToLocalStorage(employee.employeeId);
+      });
+
         observer.next(true);
       }, (err: any) => {
         observer.next(false);
@@ -60,6 +70,7 @@ export class LoginService {
    */
   public logout(): void {
     localStorage.removeItem(this.LOCALSTORAGE_TOKEN_KEY);
+    localStorage.removeItem(this.LOCALSTORAGE_USER_ROLE);
     this.router.navigate(['']);
   }
 
@@ -71,7 +82,6 @@ export class LoginService {
     return localStorage.getItem(this.LOCALSTORAGE_TOKEN_KEY);
   }
 
-
   /**
    * Store token inside localstorage
    */
@@ -79,6 +89,47 @@ export class LoginService {
     localStorage.removeItem(this.LOCALSTORAGE_TOKEN_KEY);
     localStorage.setItem(this.LOCALSTORAGE_TOKEN_KEY, token);
   }
+
+   /**
+   * Get role from localstorage
+   */
+  public getRoleFromLocalStorage(): string {
+    return localStorage.getItem(this.LOCALSTORAGE_USER_ROLE);
+  }
+
+  public isValidUser(){
+    if(localStorage.getItem(this.LOCALSTORAGE_USER_ROLE) != 'ADMIN'){
+      this.router.navigate(['/error/409']);
+    }
+  }
+
+  public isAdmin(){
+      return localStorage.getItem(this.LOCALSTORAGE_USER_ROLE) === 'ADMIN';
+  }
+
+   /**
+   * Store role inside localstorage
+   */
+  private storeRoleToLocalStorage(role): void {
+    localStorage.removeItem(this.LOCALSTORAGE_USER_ROLE);
+    localStorage.setItem(this.LOCALSTORAGE_USER_ROLE, role);
+  }
+
+  /**
+   * Get token from localstorage
+   */
+  public getUsernameFromLocalStorage(): string {
+    return localStorage.getItem(this.LOCALSTORAGE_USER_NAME);
+  }
+
+  /**
+   * Store token inside localstorage
+   */
+  private storeUsernameToLocalStorage(username): void {
+    localStorage.removeItem(this.LOCALSTORAGE_USER_NAME);
+    localStorage.setItem(this.LOCALSTORAGE_USER_NAME, username);
+  }
+
 
 
 
