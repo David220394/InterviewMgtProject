@@ -154,6 +154,60 @@ export class InterviewService {
     });
   }
 
+  public getHRInterview(candidateId : string, jobId : string, user : string): Observable<Interview>{
+    return new Observable(observable =>{
+      this.http.get(environment.url + '/interview/hr/'+jobId+'/'+candidateId+'/'+user)
+      .pipe( finalize(() => { observable.complete(); }))
+      .subscribe( (data: any) => {
+        let candidate : Candidate;
+        const experience: Experience  = {
+          name : data.candidate.candidateExperience.experienceName,
+          specialty : data.candidate.candidateExperience.specialty,
+          location : data.candidate.candidateExperience.location
+        };
+        const education : Education = {
+          institutionName : data.candidate.education.institutionName,
+          grade : data.candidate.education.grade,
+          programStudy : data.candidate.education.programStudy
+        };
+
+        candidate ={
+          name : data.candidate.candidateName,
+          address : data.candidate.candidateAddress,
+          gender : data.candidate.gender,
+          dob : data.candidate.dob,
+          applicationDate : data.candidate.applicationDate,
+          education : education,
+          email : data.candidate.email,
+          completeApplication : data.candidate.completeApplication,
+          internalApplication : data.candidate.internalApplication,
+          rehire : data.candidate.rehire,
+          availability : data.candidate.availability,
+          score : data.candidate.score,
+          cover : data.candidate.coverLetter,
+          phone : data.candidate.candidatePhone,
+          status : data.candidate.status,
+          experience : experience,
+          skills : null
+        }
+        let interview : Interview={
+          candidateId : data.candidate.candidateId,
+          candidate : candidate,
+          interviewer : data.interviewer,
+          jobId : data.job.jobId,
+          jobName : data.job.jobName,
+          link : data.link,
+          type : data.type
+        }
+        observable.next(interview);
+      },
+      error =>{
+        observable.error(error);
+        });
+    });
+  }
+
+
   public getCompletedInterview(jobId : string,cid : string):Observable<AfterInterview[]>{
     return new Observable(observable =>{
       this.http.get(environment.url + '/interview/'+jobId+'/'+cid)

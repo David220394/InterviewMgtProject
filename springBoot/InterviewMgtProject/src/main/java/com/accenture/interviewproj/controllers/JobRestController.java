@@ -26,6 +26,7 @@ import com.accenture.interviewproj.dtos.JobDto;
 import com.accenture.interviewproj.dtos.JobWithIdDto;
 import com.accenture.interviewproj.dtos.QuestionDto;
 import com.accenture.interviewproj.dtos.QuizDto;
+import com.accenture.interviewproj.entities.AssessmentQuiz;
 import com.accenture.interviewproj.entities.Employee;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
@@ -89,6 +90,18 @@ public class JobRestController {
 		} catch (InvalidFormatException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
+	}
+	
+	@PostMapping("/uploadQuiz")
+	public ResponseEntity<?> updateQuiz(@RequestParam("jobId") Long jobId, @RequestParam("quiz") Long quiz){
+		Job updatedJob;
+		try {
+			updatedJob = jobService.updateJobWithQuiz(jobId, quiz);
+			return ResponseEntity.ok(updatedJob);
+		} catch (JobNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+		
 	}
 	
 	/**

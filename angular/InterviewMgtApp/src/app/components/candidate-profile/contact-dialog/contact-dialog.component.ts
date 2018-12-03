@@ -32,6 +32,7 @@ export class ContactDialogComponent implements OnInit {
   user : string;
   comment : string;
   email : string;
+  candidateStatus : string;
   selectedValue: any;
   type : string;
   start : number;
@@ -57,6 +58,7 @@ export class ContactDialogComponent implements OnInit {
     this.email = this.data.email;
     this.user = this.data.user;
     this.is_meeting = false;
+
   }
 
   onContactSubmit(){

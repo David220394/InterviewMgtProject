@@ -18,32 +18,30 @@ export interface Quiz{
 })
 export class IqAssessmentComponent implements OnInit {
 
-  questions : Question[];
+  questions : Question[];//Represent the list of question in the quiz
   quizName : string;
-
-  questionForm : FormGroup;
-  @Input() interview : Interview;
+  questionForm : FormGroup; //Object Representation of the quiz form
+  @Input() interview : Interview;//Interview Object obtain when accessing the link
 
   constructor(private fb : FormBuilder, private interviewService : InterviewService) { }
 
   ngOnInit() {
+    //Initiallize quiz form
     this.questionForm = this.fb.group({
-      questions : this.fb.array([
-
-      ])
+      questions : this.fb.array([])
     });
+    //Obtain the Quiz Question and Quiz name from the REST API
     this.interviewService.quizQuestions(this.interview.jobId).subscribe(data =>{
       this.questions = data.questions;
       this.quizName = data.quizName;
       console.log(data);
-      this.questions.forEach((question)=>{
+      this.questions.forEach((question)=>{ //For each question; Generate a form control object
         const control = <FormArray>this.questionForm.controls['questions'];
         control.push(this.initQuestions(question));
       })
     });
-
   }
-
+  //Initialize the form control obj with a question, the mark and the ans of the candidate
   initQuestions(question : Question){
     return this.fb.group({
       question : question.question,

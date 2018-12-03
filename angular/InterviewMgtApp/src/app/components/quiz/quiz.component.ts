@@ -18,22 +18,26 @@ export class QuizComponent implements OnInit {
     this.loginService.isValidUser();
     this.myForm = this._fb.group({
       quizName: ['', [Validators.required, Validators.minLength(5)]],
-      questions: this._fb.array([
-          this.initQuestion(),
+      questions: this._fb.array([// Initialise a form array
+          this.initQuestion(), //Initialise 1 form group for question in the array
       ])
   });
 }
-
+/**
+ * Create a form group representing a question
+ */
 initQuestion() {
   return this._fb.group({
       question: ['', Validators.required],
       correctAnswer: ['', Validators.required],
       answers: this._fb.array([
-        this.initAnswer()
+        this.initAnswer() //Initialise 1 form group for answer in the array
       ])
   });
 }
-
+/**
+ * Create a form group representing an answer
+ */
 initAnswer() {
 return this._fb.group({
   answer: ['', Validators.required]

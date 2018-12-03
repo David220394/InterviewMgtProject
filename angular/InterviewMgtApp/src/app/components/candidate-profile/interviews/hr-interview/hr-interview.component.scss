@@ -1,6 +1,10 @@
 #interviewInfo{
   width: 50%;
   float: left;
+
+  th,td{
+    justify-content: center;
+  }
 }
 
 #candidateProfile{

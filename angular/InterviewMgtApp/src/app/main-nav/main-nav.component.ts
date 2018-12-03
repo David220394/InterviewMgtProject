@@ -34,7 +34,7 @@ export class MainNavComponent {
         });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log("Closed")
+        window.location.reload();
       })
     }
 

@@ -7,9 +7,12 @@
         <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
             <mat-form-field class="form-group">
               <input matInput type="text" placeholder="Quiz Name" formControlName="quizName">
+              <mat-error *ngIf="!myForm.controls.quizName.valid">
+                Name is required (minimum 5 characters).
+              </mat-error>
             </mat-form-field>
             <small *ngIf="!myForm.controls.quizName.valid" class="text-danger">
-                Name is required (minimum 5 characters).
+
               </small>
           <!--questions-->
           <div formArrayName="questions">
@@ -56,14 +59,10 @@
             </button>
           </div>
 
-          <div class="row">
-            <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="row" style="margin:15px; justify-content: center;">
+            <button type="submit" style="width: 20%;" class="btn btn-primary">Submit</button>
           </div>
           <div class="clearfix"></div>
-
-          <div class="margin-20">
-            <pre>form value: <br>{{myForm.value | json}}</pre>
-          </div>
         </form>
       </div>
     </div>

@@ -4,10 +4,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Interview } from '../dtos/interview';
 import { SharePreferencesService } from '../../providers/share-preferences.service';
 import { InterviewService } from '../providers/interview.service';
+import { Candidate } from '../dtos/candidate';
+import { LoginService } from '../../login-dialog/providers/login.service';
 
 
 export interface DialogData {
   interviewType: string;
+  candidate : Candidate;
 }
 
 @Component({
@@ -20,42 +23,68 @@ export class InterviewDialogComponent implements OnInit {
   linkCode: string;
   link: string;
   type: string;
-  user: string = "sylvio.brandon.david"
   message: string;
   interviewer: string;
   interview: Interview;
+  mailBody: string;
 
-  constructor(private interviewService: InterviewService, private sharedPreferences: SharePreferencesService, public dialogRef: MatDialogRef<CandidateProfileComponent>,
+  constructor(private interviewService: InterviewService,private loginService : LoginService, private sharedPreferences: SharePreferencesService, public dialogRef: MatDialogRef<CandidateProfileComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   ngOnInit() {
     this.linkCode = this.generateLink();
-    this.link = "http://localhost:4200/interview/" + this.linkCode;
+    this.link = "http://localhost:4200/interview/" + this.linkCode;//Generate a new link
     this.type = this.data.interviewType;
     if (this.type === 'hr') {
-      this.interviewer = this.user;
+      this.interviewService.getHRInterview(this.sharedPreferences.getCandidateId(),this.sharedPreferences.getJobId(), this.interviewer).subscribe((data : any)=>{//Check if interview expired
+        this.link = "http://localhost:4200/interview/"+data.link;
+        window.open(this.link);// Open the link in a new tab
+        this.dialogRef.close();
+      },(err:any)=>{
+        console.log(err);
+        if(err.status == 404){
+        this.createInterview();
+        window.open(this.link);// Open the link in a new tab
+        this.dialogRef.close();
+        }
+      });
+
+
+    }else if (this.type === 'iq') {
+      this.createInterview();
+      let emailAdd = this.data.candidate.email;
+    let subject = 'IQ Test for '+this.data.candidate.jobName;
+    let body = 'Hi '+this.data.candidate.name+',%0D%0A'+
+                'Kindly find the link to access the IQ Test below %0D%0A'+
+                this.link;
+    window.location.href='mailto:'+emailAdd+'?subject='+subject+'&body='+body;
+    this.dialogRef.close();
     }
   }
+  //'mailto:'+${userCompletedPrerequisite.user.emailAdd}+'?subject=Registration for certification '+ ${userCompletedPrerequisite.certificationName}+' approved&body=Hi '+${userCompletedPrerequisite.user.firstname}+',%0D%0AYour proofs of completion of prerequisites have been approved. %0D%0AVoucher code: '"
+  sendMailTech(){
+    if(this.interviewer != null){
+      this.createInterview();
+    let emailAdd = this.interviewer + '@accenture.com';
+    let subject = 'Technical Interview for '+this.data.candidate.name;
+    let body = 'Hi '+this.interviewer.replace('.',' ')+',%0D%0A'+
+                'Kindly find the link to access the interview Feedback form below %0D%0A'+
+                this.link;
+    window.location.href='mailto:'+emailAdd+'?subject='+subject+'&body='+body;
+  }else{
+    this.message = 'Please enter an Interviewer';
+  }
+  }
 
-  copyToClickboard(inputElement) {
-    if (this.message != 'Copied!!') {
-      if (this.interviewer != null || this.type === 'iq') {
-        inputElement.select();
-        document.execCommand('copy');
-        inputElement.setSelectionRange(0, 0);
-        this.message = 'Copied!!';
-        this.interview = {
-          candidateId: parseInt(this.sharedPreferences.getCandidateId()),
-          jobId: +this.sharedPreferences.getJobId(),
-          interviewer: this.interviewer,
-          type: this.type,
-          link: this.linkCode
-        }
-        this.interviewService.createInterview(this.interview);
-      } else {
-        this.message = 'Please enter an Interviewer';
-      }
-    }
+ private createInterview() {
+  this.interview = {
+    candidateId: parseInt(this.sharedPreferences.getCandidateId()),
+    jobId: +this.sharedPreferences.getJobId(),
+    interviewer: this.interviewer,
+    type: this.type,
+    link: this.linkCode
+  }
+  this.interviewService.createInterview(this.interview);
   }
 
   generateLink(): string {

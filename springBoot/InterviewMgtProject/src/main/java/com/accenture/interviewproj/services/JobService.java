@@ -59,20 +59,17 @@ public class JobService {
 	}
 
 	/**
-	 * 
-	 * @param job
-	 * @throws JobNameAlreadyExistsException
-	 *             Insert a job
+	 * Insert a job
 	 */
 	public Job insertJob(JobDto jobDto) throws JobNameAlreadyExistsException {
 		if (jobRepository.findByJobName(jobDto.getProjectName()) == null) {
-			Job job = JobUtility.convertJobDtoToJob(jobDto);
+			Job job = JobUtility.convertJobDtoToJob(jobDto); // Convert Dto into a Job Object
 			Set<Requirement> requirements = new HashSet<>();
-			for (String requirement : jobDto.getRequirements()) {
+			for (String requirement : jobDto.getRequirements()) {//Save or update each requirement
 				if (requirementRepository.findByName(requirement) != null) {
-					requirements.add(requirementRepository.findByName(requirement));
+					requirements.add(requirementRepository.findByName(requirement));//Get Requirement if already exist
 				} else {
-					Requirement requirement2 = new Requirement();
+					Requirement requirement2 = new Requirement();//Create a new Requirement record
 					requirement2.setName(requirement);
 					requirementRepository.save(requirement2);
 					requirements.add(requirement2);
@@ -80,7 +77,7 @@ public class JobService {
 			}
 			job.setRequirements(requirements);
 			job = jobRepository.save(job);
-			for (String assignTo : jobDto.getAssignTos()) {
+			for (String assignTo : jobDto.getAssignTos()) {//Assign job to each assignee
 				if (employeeRepository.findByEmployeeName(assignTo) != null) {
 					Employee employee = employeeRepository.findByEmployeeName(assignTo);
 					employee.getJobs().add(job);
@@ -144,7 +141,6 @@ public class JobService {
 			FileOutputStream fos = new FileOutputStream(convFile);
 			fos.write(file.getBytes());
 			fos.close();
-
 			List<QuestionDto> questionDtos = JobUtility.convertExcelToQuestionDto(file.getInputStream());
 			QuizDto quizDto = new QuizDto();
 			quizDto.setQuizName(file.getName());
@@ -155,6 +151,16 @@ public class JobService {
 		} else {
 			throw new JobNotFoundException("Failed to update job");
 		}
+	}
+	
+	public Job updateJobWithQuiz(Long jobId, Long quizId) throws JobNotFoundException {
+		Job searchJob = jobRepository.findByJobId(jobId);
+		if (searchJob != null) {
+			AssessmentQuiz quiz = assessmentQuizService.findById(quizId);
+			searchJob.setAssessmentQuiz(quiz);
+			return jobRepository.save(searchJob);
+		}
+		throw new JobNotFoundException("Failed to update job");
 	}
 
 	public QuizDto findQuiz(long jobId)

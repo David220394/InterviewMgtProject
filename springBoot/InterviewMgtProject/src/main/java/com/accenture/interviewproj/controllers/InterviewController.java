@@ -50,8 +50,10 @@ public class InterviewController {
 		try {
 			Interview interview = interviewService.findByLink(link);
 			if(interview.getCreationDateTime() == null) {
+				//Set creation date and completed date and send the interview object in response.
 				return ResponseEntity.ok(interviewService.updateTime(interview));
 			}
+			//Check if the link is not expired or if the interview have already been completed.
 			else if(interview.getEndDateTime().isAfter(LocalDateTime.now()) && !interview.getCompleted()) {
 				return ResponseEntity.ok(interview);
 			}
@@ -67,6 +69,15 @@ public class InterviewController {
 		} catch (TypeNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());		
 			}
+	}
+	
+	@GetMapping("hr/{jobId}/{candidateId}/{interviewer}")
+	public ResponseEntity<?> findHRInterviewByCandidateAndJob(@PathVariable Long jobId,@PathVariable Long candidateId, @PathVariable String interviewer){
+		try {
+			return ResponseEntity.ok(interviewService.findHRInterviewByCandidateIdAndJobId(candidateId, jobId, interviewer));
+		} catch (IdNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
 	}
 	
 	@GetMapping("/{jobId}/{candidateId}")

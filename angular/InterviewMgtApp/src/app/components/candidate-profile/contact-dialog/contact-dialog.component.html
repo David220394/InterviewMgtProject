@@ -17,7 +17,7 @@
     <br/>
     <button mat-button (click)="onContactSubmit()">Save</button>
   </mat-tab>
-  <mat-tab label="mail">
+  <mat-tab label="Mail">
     From : {{user}} <br />
     To : {{email}} <br />
     <div *ngIf="is_meeting">
@@ -33,7 +33,7 @@
     </mat-form-field>
     <button mat-button (click)="check()">Check</button>
         <mat-radio-group [(ngModel)]="selectedDate" >
-            <mat-radio-button [value]="dateTime"*ngFor="let dateTime of suggestedDateTimes" required>{{dateTime.start}}</mat-radio-button>
+            <mat-radio-button  [value]="dateTime"*ngFor="let dateTime of suggestedDateTimes" required>{{dateTime.start | date:'medium'}}</mat-radio-button>
           </mat-radio-group>
 
   </div>
@@ -54,14 +54,14 @@
     <br/>
     <br/>
     <mat-radio-group class="example-radio-group" [(ngModel)]="changeStatus">
-        <mat-radio-button value="1">Change Status</mat-radio-button>
-        <mat-radio-button value="2">Reject Candidate</mat-radio-button>
-        <mat-radio-button value="3">Do Nothing</mat-radio-button>
+      <mat-radio-button value="CHANGE">Change Status</mat-radio-button>
+      <mat-radio-button value="REJECT">Reject Candidate</mat-radio-button>
+      <mat-radio-button value="NOTHING">Do Nothing</mat-radio-button>
     </mat-radio-group>
     <br />
     <button mat-button (click)="onMailSubmit()">Save</button>
   </mat-tab>
-  <mat-tab label="others">
+  <mat-tab label="Others">
     <mat-form-field>
       <input matInput placeholder="method" [(ngModel)]="method" required minlength="5" maxlength="30"/>
       <mat-error *ngIf="!method" class="text-danger">
@@ -70,7 +70,7 @@
     </mat-form-field>
     <br />
     <mat-form-field>
-      <textarea rows="4" cols="50" matInput [(ngModel)]="comment" required minlength="5" maxlength="70" placeholder="e-mail body" [value]="selectedValue">{{selectedValue}}</textarea>
+      <textarea rows="4" cols="50" matInput [(ngModel)]="comment" required minlength="5" maxlength="70" placeholder="Comment" [value]="selectedValue">{{selectedValue}}</textarea>
       <mat-error *ngIf="!comment" class="text-danger">
         Field is required (characters should be between 5 and 30).
       </mat-error>
@@ -78,9 +78,9 @@
     <br />
     <br/>
     <mat-radio-group class="example-radio-group" [(ngModel)]="changeStatus">
-        <mat-radio-button value="1">Change Status</mat-radio-button>
-        <mat-radio-button value="2">Reject Candidate</mat-radio-button>
-        <mat-radio-button value="3">Do Nothing</mat-radio-button>
+      <mat-radio-button value="CHANGE">Change Status</mat-radio-button>
+      <mat-radio-button value="REJECT">Reject Candidate</mat-radio-button>
+      <mat-radio-button value="NOTHING">Do Nothing</mat-radio-button>
     </mat-radio-group>
     <br/>
     <button mat-button [mat-dialog-close]="other">Save</button>

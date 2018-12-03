@@ -43,7 +43,7 @@ public class AssessmentQuizService {
 			question.setQuestion(questionDto.getQuestion());
 			question.setAssessmentQuiz(quiz);
 			question.setCorrectAnswer(questionDto.getCorrectAnswer());
-			question.setMark(questionDto.getMark());
+			question.setMark(1);
 			question.setPossibleAnswers(questionDto.getAnswers());
 			questionRepository.save(question);
 		}
@@ -61,7 +61,7 @@ public class AssessmentQuizService {
 			question.setQuestion(questionDto.getQuestion());
 			question.setAssessmentQuiz(quiz);
 			question.setCorrectAnswer(questionDto.getCorrectAnswer());
-			question.setMark(questionDto.getMark());
+			question.setMark(1);
 			question.setPossibleAnswers(questionDto.getAnswers());
 			questionRepository.save(question);
 		}
@@ -88,6 +88,10 @@ public class AssessmentQuizService {
 	
 	public List<AssessmentQuiz> getAllAssessmentQuizs(){
 		return assessmentQuizRepositorty.findAll();
+	}
+	
+	public AssessmentQuiz findById(Long quizId) {
+		return assessmentQuizRepositorty.findById(quizId).get();
 	}
 	
 	public Interview saveAssessmentScore(AfterAssessmentDto assessmentDto) {

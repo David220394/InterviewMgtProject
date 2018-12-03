@@ -18,8 +18,8 @@ export class SharePreferencesService {
   private LOCALSTORAGE_CANDIDATE_NAME = 'candidateName';
   private LOCALSTORAGE_JOB_NAME = 'jobName';
   private LOCALSTORAGE_CALENDER = 'calender';
-
-
+  private LOCALSTORAGE_INT_EXPIRE_DATE = 'intExpDate';
+  private LOCALSTORAGE_INT_LINK = 'intLink';
 
   constructor(private http : HttpClient, private authenticationService : LoginService) { }
 
@@ -27,13 +27,33 @@ export class SharePreferencesService {
      localStorage.setItem(this.LOCALSTORAGE_CANDIDATE_ID, candidateId.toString() )
   }
 
+  setIntExpDate(expDate : Date){
+    localStorage.removeItem(this.LOCALSTORAGE_INT_EXPIRE_DATE);
+    localStorage.setItem(this.LOCALSTORAGE_INT_EXPIRE_DATE, expDate.toString())
+ }
+
+ setIntLink(link : string){
+  localStorage.removeItem(this.LOCALSTORAGE_INT_LINK);
+  localStorage.setItem(this.LOCALSTORAGE_INT_LINK, link)
+}
+
   setCandidateName(candidateName : string){
     localStorage.setItem(this.LOCALSTORAGE_CANDIDATE_NAME, candidateName )
  }
 
  getCandidateName(): string{
-  return localStorage.getItem(this.LOCALSTORAGE_CANDIDATE_NAME);
+  return localStorage.getItem(this.LOCALSTORAGE_INT_EXPIRE_DATE);
 }
+
+getIntExpDate(): Date{
+   return new Date(localStorage.getItem(this.LOCALSTORAGE_INT_EXPIRE_DATE));
+}
+
+getIntLink(): string{
+  return localStorage.getItem(this.LOCALSTORAGE_INT_LINK);
+}
+
+
 
   getCandidateId(): string{
     return localStorage.getItem(this.LOCALSTORAGE_CANDIDATE_ID);

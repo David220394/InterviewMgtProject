@@ -36,25 +36,28 @@ export class DashboardService {
     });
 }
 
+/**
+ * Get All interview Date and Time
+ */
 public getInterviewDate():Observable<any>{
   return new Observable(observer => {
     this.http.get('https://graph.microsoft.com/v1.0/me/events?$select=Subject,Body,Start,End,Attendees')
     .pipe( finalize(() => { observer.complete(); }))
-    .subscribe( (data: any) => {
+    .subscribe( (data: any) => {//List of appointments
       let interviews : Interview[]= [];
-      let isInterview : RegExp = new RegExp('Invitation for an Interview for.*');
-      data.value.forEach(element => {
-        if(isInterview.test(element.subject)){
-          let status : string=element.attendees[0].status.reponse;
+      let isInterview : RegExp = new RegExp('Invitation for an Interview for.*');//Regex to check if interview
+      data.value.forEach(element => {//for each appointment
+        if(isInterview.test(element.subject)){//If interview contain match the Regex Expression
+          let status : string=element.attendees[0].status.reponse;//Get the reponse of the candidate
           if(!status){
             status = 'Not Response';
           }
           interviews.push({
             jobId : element.attendees[0].emailAddress.name[0],
-            candidateId : element.attendees[0].emailAddress.name[2],
+            candidateId : element.attendees[0].emailAddress.name[2],//Obtain in the subject of the mail
             responseStatus : status,
-            jobName : element.subject.substring(32),
-            candidateName : element.body.content.match('(?<=Dear )(.*)(?=<br>.*)')[0],
+            jobName : element.subject.substring(32),//Get job Name in the Subject of the mail
+            candidateName : element.body.content.match('(?<=Dear )(.*)(?=<br>.*)')[0],//Get candidate Name using Regex
             startDateTime : new Date(element.start.dateTime),
             endDateTime : new Date(element.end.dateTime)
           })
@@ -78,18 +81,19 @@ return new Observable(observer => { this.http.get(environment.url + '/candidate/
   observer.next(candidates);
 })});
 }
-
+/**
+ * Obtain all Job Statistic
+ */
 public getAllJobs():Observable<any>{
   return new Observable(observer => {
     this.http.get(environment.url + '/api/jobs/')
     .pipe( finalize(() => { observer.complete(); }))
-    .subscribe( (data: any) => {
-     console.log(data);
+    .subscribe( (data: any) => {//Get all job
      this.jobStats = [];
-    data.forEach(element => {
-      let candidateNumber = element.jobCandidates.length;
-      let candidatePercentage = ((candidateNumber/this.totalCandidate)*100);
-      this.jobStats.push({
+    data.forEach(element => { //for each job
+      let candidateNumber = element.jobCandidates.length; //get candidate No.
+      let candidatePercentage = ((candidateNumber/this.totalCandidate)*100); //get percentage candidate
+      this.jobStats.push({//add to list of jobStats
         jobName : element.jobName,
         candidatePercentage : candidatePercentage,
         candidateNumber : candidateNumber

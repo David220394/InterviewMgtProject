@@ -148,6 +148,10 @@ export class CandidatePageService {
     });
   }
 
+  /**
+   * Obtain the candidate resume in form of a blob object
+   *
+   */
   public getCVByCandidateId(cid : string): Observable<any> {
     console.log(cid);
     return new Observable( observer => {

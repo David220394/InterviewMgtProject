@@ -164,16 +164,20 @@ public class CandidateController {
 		return ResponseEntity.ok(candidateService.updateCandidateStatus(cid, jobId, is_change,oldStatus));
 	}
 	
+	/**
+	 * Method to send a candidate CV  
+	 * 
+	 */
 	@RequestMapping(value = "createPdf/{cid}", method = RequestMethod.GET, produces = "application/pdf")
 	public ResponseEntity<?> getPdf(@PathVariable Long cid,HttpServletResponse response) {
 
-	    response.setContentType("application/pdf");
+	    response.setContentType("application/pdf");//Set Response type
 	    Candidate candidate;
 	    byte[] contents =null;
 		try {
-			candidate = candidateService.findCandidateByCandidateId(cid);
-			Path path = Paths.get(uploadCVFolder, candidate.getCandidateCv());
-			contents = Files.readAllBytes(path);
+			candidate = candidateService.findCandidateByCandidateId(cid);//Obtain the Candidate object
+			Path path = Paths.get(uploadCVFolder, candidate.getCandidateCv()); //Get the full path of the CV
+			contents = Files.readAllBytes(path);//Save the CV in an array of bytes
 		} catch (IdNotFoundException | IOException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}

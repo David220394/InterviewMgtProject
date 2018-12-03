@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.getInterviewDate().subscribe((data : any)=>{
       this.interviews = data;
-      var date : Date = new Date('2018-11-08')
+      var date : Date = new Date()
       this.interviews.forEach(element=>{
         if(element.startDateTime.getDate() > date.getDate()){
           this.totalInterview++;

@@ -1,4 +1,4 @@
-<mat-card *ngIf="!is_job">
+<mat-card *ngIf="!is_job && interviewFlag">
     <form class="job-form">
         <mat-form-field>
           <input matInput placeholder="Add to Job" [matAutocomplete]="jobList" [formControl]="jobCtrl">
@@ -20,7 +20,7 @@
    <small> {{candidate?.status}}</small>
     <div *ngIf="interviewScore && is_job">
       <bar-rating *ngIf="interviewFlag" [(rate)]="overallScore" [max]="5" class="br-default-theme" [readOnly]="true"></bar-rating><br />
-      {{interviewScore.aveScore}}%
+      {{interviewScore.aveScore | number:'2.2-2'}}%
     </div>
   </div>
   <div class="header2">
@@ -51,7 +51,7 @@
     <button *ngIf="interviewFlag && is_job" mat-stroked-button color="primary" id="contact" (click)="openContact()">Contact</button>
     <button *ngIf="interviewFlag && is_job" mat-stroked-button color="primary" id="track" (click)="openTracking()">Track
       Progress</button>
-    <button *ngIf="interviewFlag && is_job" mat-stroked-button color="primary" id="resume" (click)="getCandidateCV()">Resume</button>
+    <button mat-stroked-button color="primary" id="resume" (click)="getCandidateCV()">Resume</button>
   </div>
 </mat-card>
 
@@ -77,7 +77,7 @@
         <mat-card-content *ngIf="interviewScore">
           <mat-progress-spinner [color]="'accent'" [mode]="'determinate'" [value]="interviewScore.hrScore" [diameter]="'75'">
           </mat-progress-spinner>
-          <span>{{interviewScore.hrScore}}%</span>
+          <span>{{interviewScore.hrScore | number:'2.1-2'}}%</span>
           <button mat-stroked-button color="primary" (click)="openInterview('hr')">HR Int</button>
         </mat-card-content>
       </mat-card>
@@ -89,7 +89,7 @@
         <mat-card-content *ngIf="interviewScore">
           <mat-progress-spinner [color]="'accent'" [mode]="'determinate'" [value]="interviewScore.techScore" [diameter]="'75'">
           </mat-progress-spinner>
-          <span>{{interviewScore.techScore}}%</span>
+          <span>{{interviewScore.techScore | number:'2.1-2'}}%</span>
           <button mat-stroked-button color="primary" (click)="openInterview('tech')">Tech Int</button>
         </mat-card-content>
       </mat-card>
@@ -101,7 +101,7 @@
         <mat-card-content *ngIf="interviewScore">
           <mat-progress-spinner [color]="'accent'" [mode]="'determinate'" [value]="interviewScore.iqScore" [diameter]="'75'">
           </mat-progress-spinner>
-          <span>{{interviewScore.iqScore}}%</span>
+          <span>{{interviewScore.iqScore | number:'2.1-2'}}%</span>
           <button mat-stroked-button color="primary" (click)="openInterview('iq')">IQ Test</button>
         </mat-card-content>
       </mat-card>
@@ -122,7 +122,4 @@
     </div>
   </mat-card>
 </div>
-<div *ngIf="cvContent">
-<embed [src]="pdf" width="500px" height="700px"/>
-<a [href]="cvContent">Test</a>
-</div>
+

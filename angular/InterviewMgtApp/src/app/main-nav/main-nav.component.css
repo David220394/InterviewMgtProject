@@ -1,3 +1,7 @@
+*{
+  overflow: hidden;
+}
+
 .sidenav-container {
   height: 100%;
 }

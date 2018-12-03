@@ -1,7 +1,13 @@
-<div>
+<div  style="justify-content: center">
     <span *ngIf="type == 'hr'">Interviewer : {{user}}</span>
-    <span *ngIf="type == 'tech'">Interviewer: <input matInput type="text" [(ngModel)]="interviewer"></span>
-    <input matInput type="text" [(ngModel)]="link" #userinput readonly>
-    <button (click)="copyToClickboard(userinput)" value="click to copy" >Copy to Clickboard</button>
+    <span *ngIf="type == 'tech'">
+        <mat-form-field class="form-group">
+      <input matInput type="text" placeholder="Enter Interviewer EID" [(ngModel)]="interviewer">
+      </mat-form-field>
+    </span>
+    <mat-form-field class="form-group" style="display: block;">
+    <input matInput type="text" [(ngModel)]="link" #userinput readonly disabled>
+    </mat-form-field>
+    <button style="display: block; width: 50%; margin-left: 25%; margin-right: 25%" mat-raised-button color="primary"  (click)="sendMailTech()" >Send Mail</button>
     <span>{{message}}</span>
   </div>

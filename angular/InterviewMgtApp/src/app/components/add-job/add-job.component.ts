@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AddJobService } from './providers/add-job.service';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { LoginService } from '../login-dialog/providers/login.service';
+import { UpdateQuiz } from '../update-quiz/dto/update-quiz';
+import { UpdateQuizService } from '../update-quiz/provider/update-quiz.service';
 
 @Component({
   selector: 'app-add-job',
@@ -14,17 +16,23 @@ export class AddJobComponent implements OnInit {
 
   myForm: FormGroup;
   minDate = new Date(new Date().setDate(new Date().getDate()-1))
-
+  updateQuizs : UpdateQuiz[];
+  selected : UpdateQuiz;
 
   //maxDate = new Date();
   maxDate =   new Date(2200, 0, 1);
-  constructor(private loginService: LoginService, private _fb: FormBuilder,private addJobService: AddJobService, private http: HttpClient, private router : Router) { }
+  constructor(private updateQuizService : UpdateQuizService, private loginService: LoginService, private _fb: FormBuilder,private addJobService: AddJobService, private http: HttpClient, private router : Router) { }
 
   file: File;
   err : string;
 
   ngOnInit() {
     this.loginService.isValidUser();
+
+    this.updateQuizService.getAllQuiz().subscribe((data:any)=>{
+      this.updateQuizs=data;
+    });
+
     this.myForm = this._fb.group({
       projectName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
       position: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
@@ -77,9 +85,7 @@ export class AddJobComponent implements OnInit {
   }
 
   createJob(createJobForm) {
-
-
-    if (this.file != null) {
+    if (this.file != null || this.selected != null) {
       const job = createJobForm.value;
       let assignTos : string[] = [];
       let requirements : string[] = [];
@@ -102,6 +108,7 @@ export class AddJobComponent implements OnInit {
     .subscribe((data: any) => {
       console.log(data);
 
+      if(this.file != null){
       const uploadData = new FormData();
       uploadData.append('jobId', data.jobId);
       uploadData.append('file', this.file);
@@ -110,12 +117,22 @@ export class AddJobComponent implements OnInit {
       .subscribe((updatedJob: any) => {
         console.log(updatedJob);
       });
+    }else{
+      const uploadData = new FormData();
+      uploadData.append('jobId', data.jobId);
+      uploadData.append('quiz', this.selected.quizId.toString());
+
+      this.http.post('http://localhost:8082/api/jobs/uploadQuiz', uploadData)
+      .subscribe((updatedJob: any) => {
+        console.log(updatedJob);
+      });
+    }
     })
 
     this.router.navigateByUrl('/dashboard');
 
     }else {
-        this.err = "Insert File";
+        this.err = "Insert File Or Select Quiz";
     }
   }
 

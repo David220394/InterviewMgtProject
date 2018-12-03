@@ -155,7 +155,11 @@ public class InterviewService {
 			interviewQuestionRepository.save(interviewQuestion);
 		}
 	}
-	
+	/**
+	 * Find Interview by link
+	 *if link valid, return Interview Object
+	 * else throws ExpiredLinkException
+	 */
 	public Interview findByLink(String link) throws ExpiredLinkException {
 		Interview interview = interviewRepository.findByLink(link);
 		if (interview != null) {
@@ -164,9 +168,11 @@ public class InterviewService {
 			}
 		}
 		throw new ExpiredLinkException("The Link have already expired");
-
 	}
-	
+	/**
+	 * Update Creation and Completed Interview date
+	 * Depending on the type of interview, Return interview Object
+	 */
 	public Interview updateTime(Interview interview) {
 		interview.setCreationDateTime(LocalDateTime.now());
 		if(interview.getType().equals(IntType.ASSESSMENT)) {
@@ -184,6 +190,18 @@ public class InterviewService {
 		}else {
 			throw new IdNotFoundException("Invalid jodId or candidate Id");
 		}
+	}
+	/**
+	 * Find HR interview by Candidate Id, Job Id and Interviewer
+	 * 
+	 */
+	public Interview findHRInterviewByCandidateIdAndJobId(long candidateId, long jobId, String interviewer) throws IdNotFoundException {
+		List<Interview> interviews = interviewRepository.findInterviewByCandidateIdAndJobId("HR",candidateId, jobId, interviewer);
+		if(!interviews.isEmpty() && interviews.get(0).getEndDateTime().isAfter(LocalDateTime.now())) {
+
+			return interviews.get(0);
+		}
+		throw new IdNotFoundException("No Interview Found");
 	}
 	
 	public ScoreDto findScore(long candidateId, long jobId) throws IdNotFoundException{

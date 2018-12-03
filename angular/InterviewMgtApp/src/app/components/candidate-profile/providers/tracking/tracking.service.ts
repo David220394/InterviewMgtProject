@@ -102,7 +102,6 @@ export class TrackingService {
             })
 
       }else if(type == 'SIGN_CONTRACT'){
-        this.getFreeTimeSlot(1, 2, 3).subscribe((data) => {
           let mail = {
             "subject": "Invitation to Sign Contract for "+this.shrePreferences.getJobName(),
             "body": {
@@ -110,11 +109,11 @@ export class TrackingService {
               "content": "Dear "+this.shrePreferences.getCandidateName()+"<br/><br/> This is an invitation to sign contract <br/><br/>"+comment
             },
             "start": {
-              "dateTime":data.meetingTimeSuggestions[0].meetingTimeSlot.start.dateTime,
+              "dateTime":time.start,
               "timeZone": "UTC"
             },
             "end": {
-              "dateTime": data.meetingTimeSuggestions[0].meetingTimeSlot.end.dateTime,
+              "dateTime": time.end,
               "timeZone": "UTC"
           },
             "attendees": [
@@ -131,7 +130,6 @@ export class TrackingService {
               .subscribe((data: any) => {
                 observer.next(data)
               })
-          })
       }else{
        let mail = {
         "message": {
@@ -157,13 +155,16 @@ export class TrackingService {
       })
   }
 
-
+  /**
+   * Obtain the suggested date and time to make the interview
+   * Input the duration of the interview, the start week and the end week
+   * [The end week is made to be 1 week after the start one]
+   */
   public getFreeTimeSlot(duration: number, start: number, end: number): Observable<any> {
     let date: Date = new Date();
-    let startDate: string = this.addDays(date, start * 7);
-    let endDate: string = this.addDays(date, end * 7);
-
-    console.log(startDate)
+    let startDate: string = this.addDays(date, start * 7);//Convert the week number into datetime
+    let endDate: string = this.addDays(date, end * 7);//Convert the week number into datetime
+    //Define the request body
     let timeslot = {
       "timeConstraint": {
         "activityDomain": "work",
@@ -186,10 +187,11 @@ export class TrackingService {
       this.http.post('https://graph.microsoft.com/beta/me/findMeetingTimes', timeslot)
         .pipe(finalize(() => { observer.complete(); }))
         .subscribe((data: any) => {
+          //Return the response if everytime okay
           observer.next(data)
         },
           (err: any) => {
-            console.log(err)
+            //If any error occur, Set the Outlook token to null and reload the window
             if (err.error.error.code === 'InvalidAuthenticationToken') {
               this.authenticationService.setOutlookNull();
               window.location.reload();
@@ -198,7 +200,11 @@ export class TrackingService {
     })
   }
 
-
+  /**
+   * This method is used to obtain the date after a soecific number of day
+   * input the current date and number of day to offset
+   * Return the date in a specific format [yyyy-MM-dd]
+   */
   private addDays(date, numberOfDays): string {
     var returnDate = new Date(
       date.getFullYear(),

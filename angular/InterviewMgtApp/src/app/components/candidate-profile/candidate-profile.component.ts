@@ -45,6 +45,7 @@ export class CandidateProfileComponent implements OnInit {
   cvContent : any;
   cvContent1 : any;
   pdf: File;
+  interviewLinkMail : string;
 
   constructor(private loginService : LoginService, private domSanitizer : DomSanitizer,private pipelineService:PipelineCandidateService,private route: ActivatedRoute, private interviewService: InterviewService, private trackingService: TrackingService, private candidatePageService: CandidatePageService, public dialog: MatDialog, private sharePreference: SharePreferencesService) { }
 
@@ -106,7 +107,7 @@ export class CandidateProfileComponent implements OnInit {
     } else {
       this.availability = "Currently being employed";
     }
-
+    this.features = [];
     if (!this.candidate.completeApplication && this.candidate.completeApplication != null) {
       this.features.push("Incomplete Application");
     }
@@ -138,7 +139,11 @@ export class CandidateProfileComponent implements OnInit {
     const dialogRef = this.dialog.open
       (ContactDialogComponent, {
         width: '50%',
-        data: { user: this.loginService.getUsernameFromLocalStorage(), phone: this.candidate.phone, email: this.candidate.email }
+        data: { user: this.loginService.getUsernameFromLocalStorage(),
+          phone: this.candidate.phone,
+          email: this.candidate.email,
+          candidateStatus : this.candidate.status,
+         }
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -164,12 +169,16 @@ export class CandidateProfileComponent implements OnInit {
     console.log(interviewType);
     const dialogRef = this.dialog.open(
       InterviewDialogComponent,
-      { width: '75%', data: { interviewType: interviewType } }
+      { width: '75%', data: { interviewType: interviewType, candidate : this.candidate,  } }
     );
   }
 
   selectedJob(job){
     this.jobSelected = job;
+  }
+
+  hrInterview(){
+
   }
 
   addJob(){
@@ -184,14 +193,16 @@ export class CandidateProfileComponent implements OnInit {
     })
   }
 
+  /**
+   * Get candidate Resume opened in a new tab
+   */
   getCandidateCV(){
-    this.candidatePageService.getCVByCandidateId(this.sharePreference.getCandidateId()).subscribe((data:any)=>{
-     var file = new Blob([data], {type: 'application/pdf'});
-     this.pdf = new File([file], "x.pdf");
-     console.log(this.pdf);
-      var fileURL = URL.createObjectURL(file);
+    this.candidatePageService
+      .getCVByCandidateId(this.sharePreference .getCandidateId()).subscribe((data:any)=>{
+     var file = new Blob([data], {type: 'application/pdf'});//Get the blob object from the response
+      var fileURL = URL.createObjectURL(file);// Create a unique URL for the blob object
       this.cvContent = this.domSanitizer.bypassSecurityTrustResourceUrl(fileURL);
-      console.log(this.cvContent);
+      window.open(this.cvContent.changingThisBreaksApplicationSecurity, '_blank');//Open the pdf
     });
   }
 

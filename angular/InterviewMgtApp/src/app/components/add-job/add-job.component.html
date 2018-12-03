@@ -22,14 +22,7 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field class="form-group">
-    <input style="font-family: Georgia, serif;" matInput [matDatepicker]="picker" placeholder="Creation Date" formControlName="creationDate">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-    <mat-error *ngIf="!myForm.controls.creationDate.valid && myForm.controls.creationDate.touched" class="text-danger">
-      Field is required
-    </mat-error>
-  </mat-form-field>
+
 
   <mat-form-field class="form-group">
     <input style="font-family: Georgia, serif;" matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" placeholder="Closing Date" formControlName="closingDate">
@@ -69,9 +62,22 @@
       style="float: right">Add Requirement</button>
   </div>
   <br/><br/>
+  <div>
   <input type="file" style="display: none" #fileInput accept=".xlsx" name="file" (change)="onUpload($event)">
   <button mat-stroked-button color="primary" (click)="fileInput.click()">Select Assessment File</button>
   <button mat-stroked-button color="primary" (click)="uploadCandidate()">Upload!!!</button>
+  Or
+  <mat-form-field>
+      <mat-select placeholder="Search Quiz" [(value)]="selected">
+        <mat-option>Not selected</mat-option>
+        <mat-option *ngFor="let quiz of updateQuizs" [value]="quiz">
+          {{quiz.quizName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+</div>
+
+
   <input style="font-family: Georgia, serif;" type="submit" class="btn btn-primary" value="submit">
 </form>
 </mat-card>
