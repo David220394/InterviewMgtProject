@@ -43,6 +43,12 @@ public class Job implements Serializable {
 
 	@Column(name = "LOCATION")
 	private String location;
+	
+	@Column(name = "NO_OF_VACANCY")
+	private Integer noOfVecancy;
+	
+	@Column(name = "REMAINING")
+	private Integer remaining;
 
 	@Column(name = "CLOSING_DATE", nullable = false)
 	private LocalDateTime closingDate;
@@ -207,6 +213,22 @@ public class Job implements Serializable {
 
 	public void setCandidateSkillScores(List<CandidateSkillScore> candidateSkillScores) {
 		this.candidateSkillScores = candidateSkillScores;
+	}
+
+	public Integer getNoOfVecancy() {
+		return noOfVecancy;
+	}
+
+	public void setNoOfVecancy(Integer noOfVecancy) {
+		this.noOfVecancy = noOfVecancy;
+	}
+
+	public Integer getRemaining() {
+		return remaining;
+	}
+
+	public void setRemaining(Integer remaining) {
+		this.remaining = remaining;
 	}
 
 	@PrePersist

@@ -42,7 +42,7 @@ export class SharePreferencesService {
  }
 
  getCandidateName(): string{
-  return localStorage.getItem(this.LOCALSTORAGE_INT_EXPIRE_DATE);
+  return localStorage.getItem(this.LOCALSTORAGE_CANDIDATE_NAME);
 }
 
 getIntExpDate(): Date{

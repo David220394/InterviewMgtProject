@@ -39,7 +39,7 @@
                     </mat-form-field>
 
                 </div>
-                <button type="button"  class="btn btn-primary" *ngIf="(ques.controls.answers.controls.length > 1) && (j == ques.controls.answers.controls.length-1)" (click)="removeAnswer(ques, j)" style="cursor: pointer; float: right">Remove Answer</button>
+                <button type="button"  class="btn btn-primary" *ngIf="(ques.controls.answers.controls.length > 2) && (j == ques.controls.answers.controls.length-1)" (click)="removeAnswer(ques, j)" style="cursor: pointer; float: right">Remove Answer</button>
                 <button type="button"  class="btn btn-primary" *ngIf="j == ques.controls.answers.controls.length-1" (click)="addAnswer(ques)" style="float: right">Add Answer</button>
                 </div>
 
@@ -58,11 +58,13 @@
               Add Question
             </button>
           </div>
-
+          <div class="row" style="margin:15px; justify-content: center;">
+            <small style="color: red;">{{errMsg}}</small>
+          </div>
           <div class="row" style="margin:15px; justify-content: center;">
             <button type="submit" style="width: 20%;" class="btn btn-primary">Submit</button>
           </div>
-          <div class="clearfix"></div>
+
         </form>
       </div>
     </div>

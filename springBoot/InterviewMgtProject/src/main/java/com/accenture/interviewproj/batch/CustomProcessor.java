@@ -36,7 +36,7 @@ public class CustomProcessor implements ItemProcessor<Row, CandidateDto>{
 	@Override
 	public CandidateDto process(Row row) throws Exception {
 		CandidateDto candidateDto = CandidateUtility.getCandidateFromExcel(row);
-		Path path= Paths.get(this.path+"/cv/", row.getCell(1).getStringCellValue()+".pdf");
+		Path path= Paths.get(this.path+"/cv/", "Ammaarah Joosub.pdf");
 		Resource resource = null;
 		try {
 			resource = new UrlResource(path.toUri());

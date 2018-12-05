@@ -298,6 +298,15 @@ public class CandidateService {
 			String newStatus;
 			if(is_change.equals("CHANGE")) {
 				newStatus = status.get(status.indexOf(oldStatus)+1);
+				if(newStatus.equals("Rejected")) {
+					newStatus = oldStatus;
+				}else if(newStatus.equals("Completed")) {
+					job.setRemaining(job.getRemaining() - 1);
+					if(job.getRemaining() == 0) {
+						job.setActiveJob(false);
+					}
+					jobRepository.save(job);
+				}
 			}else {
 				newStatus = "Rejected";
 			}

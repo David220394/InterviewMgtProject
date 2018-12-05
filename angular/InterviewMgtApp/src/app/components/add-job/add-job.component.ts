@@ -37,7 +37,8 @@ export class AddJobComponent implements OnInit {
       projectName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
       position: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
       location: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
-      creationDate: ['', [Validators.required]],
+      noOfVacancy: ['', [Validators.required]],
+      creationDate: ['', ],
       closingDate : ['', [Validators.required]],
       assignTos: this._fb.array([this.initAssignTo(),]),
       requirements : this._fb.array([this.initRequirement()]),
@@ -53,7 +54,7 @@ export class AddJobComponent implements OnInit {
 
   initRequirement() {
     return this._fb.group({
-      requirement : ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
+      requirement : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
     });
   }
 
@@ -85,7 +86,9 @@ export class AddJobComponent implements OnInit {
   }
 
   createJob(createJobForm) {
-    if (this.file != null || this.selected != null) {
+    console.log(createJobForm);
+    console.log(createJobForm.valid);
+    if (this.file != null || this.selected != null && createJobForm.valid) {
       const job = createJobForm.value;
       let assignTos : string[] = [];
       let requirements : string[] = [];
@@ -140,7 +143,5 @@ export class AddJobComponent implements OnInit {
     this.file = $event.target.files[0];
   }
 
-  createJobs(myForm){
-    console.log(myForm.value);
-  }
+
 }

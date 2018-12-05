@@ -22,7 +22,12 @@
     </mat-error>
   </mat-form-field>
 
-
+  <mat-form-field class="form-group">
+    <input style="font-family: Georgia, serif;" matInput type="number" min="1" placeholder="No. Of Vecancy" formControlName="noOfVacancy">
+    <mat-error *ngIf="!myForm.controls.location.valid && myForm.controls.location.touched" class="text-danger">
+      Field is required
+    </mat-error>
+  </mat-form-field>
 
   <mat-form-field class="form-group">
     <input style="font-family: Georgia, serif;" matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" placeholder="Closing Date" formControlName="closingDate">
@@ -51,7 +56,7 @@
       <mat-form-field class="form-group" style="padding-right:0px">
         <input style="font-family: Georgia, serif;" type="text" matInput placeholder="Requirement" formControlName="requirement">
         <mat-error *ngIf="!myForm.controls.requirements.valid && myForm.controls.requirements.touched" class="text-danger">
-          Field is required (characters should be between 5 and 20).
+          Field is required (characters should be between 3 and 20).
         </mat-error>
       </mat-form-field>
 

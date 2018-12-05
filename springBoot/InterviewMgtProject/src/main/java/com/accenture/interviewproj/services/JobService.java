@@ -26,6 +26,8 @@ import com.accenture.interviewproj.dtos.JobDto;
 import com.accenture.interviewproj.dtos.QuestionDto;
 import com.accenture.interviewproj.dtos.QuizDto;
 import com.accenture.interviewproj.entities.AssessmentQuiz;
+import com.accenture.interviewproj.entities.Candidate;
+import com.accenture.interviewproj.entities.CandidateSkillScore;
 import com.accenture.interviewproj.entities.Employee;
 import com.accenture.interviewproj.entities.Job;
 import com.accenture.interviewproj.entities.QuizQuestion;
@@ -33,6 +35,8 @@ import com.accenture.interviewproj.entities.Requirement;
 import com.accenture.interviewproj.exceptions.JobNameAlreadyExistsException;
 import com.accenture.interviewproj.exceptions.JobNotFoundException;
 import com.accenture.interviewproj.repositories.AssessmentQuizRepositorty;
+import com.accenture.interviewproj.repositories.CandidateRepository;
+import com.accenture.interviewproj.repositories.CandidateSkillScoreRepository;
 import com.accenture.interviewproj.repositories.EmployeeRepository;
 import com.accenture.interviewproj.repositories.JobsRepository;
 import com.accenture.interviewproj.repositories.QuizQuestionRepository;
@@ -47,23 +51,31 @@ public class JobService {
 	private final EmployeeRepository employeeRepository;
 
 	private final RequirementRepository requirementRepository;
+	
+	private final CandidateRepository candidateRepository;
+	
+	private final CandidateSkillScoreRepository candidateSkillScoreRepository;
 
 	private final AssessmentQuizService assessmentQuizService;
 
 	public JobService(JobsRepository jobRepository, EmployeeRepository employeeRepository,
-			RequirementRepository requirementRepository, AssessmentQuizService assessmentQuizService) {
+			RequirementRepository requirementRepository, AssessmentQuizService assessmentQuizService,
+			CandidateRepository candidateRepository, CandidateSkillScoreRepository candidateSkillScoreRepository) {
 		this.jobRepository = jobRepository;
 		this.employeeRepository = employeeRepository;
 		this.requirementRepository = requirementRepository;
 		this.assessmentQuizService = assessmentQuizService;
+		this.candidateRepository = candidateRepository;
+		this.candidateSkillScoreRepository = candidateSkillScoreRepository;
 	}
 
 	/**
 	 * Insert a job
 	 */
 	public Job insertJob(JobDto jobDto) throws JobNameAlreadyExistsException {
+		Job job = null;
 		if (jobRepository.findByJobName(jobDto.getProjectName()) == null) {
-			Job job = JobUtility.convertJobDtoToJob(jobDto); // Convert Dto into a Job Object
+			job = JobUtility.convertJobDtoToJob(jobDto); // Convert Dto into a Job Object
 			Set<Requirement> requirements = new HashSet<>();
 			for (String requirement : jobDto.getRequirements()) {//Save or update each requirement
 				if (requirementRepository.findByName(requirement) != null) {
@@ -77,17 +89,32 @@ public class JobService {
 			}
 			job.setRequirements(requirements);
 			job = jobRepository.save(job);
+			System.out.println(jobDto.getAssignTos());
 			for (String assignTo : jobDto.getAssignTos()) {//Assign job to each assignee
-				if (employeeRepository.findByEmployeeName(assignTo) != null) {
-					Employee employee = employeeRepository.findByEmployeeName(assignTo);
+				if (employeeRepository.findByEmployeeId(assignTo) != null) {
+					Employee employee = employeeRepository.findByEmployeeId(assignTo);
 					employee.getJobs().add(job);
 					employeeRepository.save(employee);
 				}
 			}
-			return job;
-		} else {
-			throw new JobNameAlreadyExistsException("This job name already exists");
-		}
+			/*Employee employee = employeeRepository.findByEmployeeId(jobDto.getAssignTos().get(0));
+			Employee emp = employeeRepository.findByEmployeeId(jobDto.getAssignTos().get(1));
+			employee.getJobs().add(job);
+			employeeRepository.save(employee);
+			
+			emp.getJobs().add(job);
+			employeeRepository.save(emp);*/
+			
+			List <Candidate> candidates = candidateRepository.findAll();
+			for (Candidate candidate : candidates) { 
+				CandidateSkillScore candidateSkillScore = new CandidateSkillScore();
+				candidateSkillScore.setCandidate(candidate);
+				candidateSkillScore.setJob(job);
+				candidateSkillScoreRepository.save(candidateSkillScore);
+			}
+			
+		} 
+		return job;
 	}
 
 	/**
@@ -195,7 +222,10 @@ public class JobService {
 
 		List<Job> allJobs = new ArrayList<>();
 		for (BigInteger jobId : jobIds) {
-			allJobs.add(jobRepository.findByJobId(jobId.longValue()));
+			Job job =jobRepository.findByJobId(jobId.longValue());
+			if(job != null && job.getActiveJob()) {
+			allJobs.add(job);
+			}
 		}
 		return allJobs;
 	}

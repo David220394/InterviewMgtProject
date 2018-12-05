@@ -36,6 +36,7 @@ public class AssessmentQuizService {
 	
 	public AssessmentQuiz insertAssessmentQuiz(QuizDto quizDto) {
 		AssessmentQuiz quiz = new AssessmentQuiz();
+		if(assessmentQuizRepositorty.findByQuizName(quizDto.getQuizName()) == null) {
 		quiz.setQuizName(quizDto.getQuizName());
 		assessmentQuizRepositorty.save(quiz);
 		for (QuestionDto questionDto : quizDto.getQuestions()) {
@@ -46,6 +47,7 @@ public class AssessmentQuizService {
 			question.setMark(1);
 			question.setPossibleAnswers(questionDto.getAnswers());
 			questionRepository.save(question);
+		}
 		}
 		return quiz;
 	}

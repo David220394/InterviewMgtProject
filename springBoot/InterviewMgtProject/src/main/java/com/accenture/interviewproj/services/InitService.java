@@ -122,6 +122,8 @@ public class InitService {
 		job.setActiveJob(true);
 		job.setJobName("Accenture Academy");
 		job.setLocation("NexTracom");
+		job.setNoOfVecancy(2);
+		job.setRemaining(2);
 		job.setAssessmentQuiz(assessmentQuiz);
 		job.setPosition("Java Developer");
 		job.setRequirements(requirements);
@@ -131,6 +133,8 @@ public class InitService {
 		job1.setActiveJob(true);
 		job1.setJobName("SAP Development");
 		job1.setLocation("NexTracom");
+		job1.setNoOfVecancy(2);
+		job1.setRemaining(2);
 		job1.setAssessmentQuiz(assessmentQuiz);
 		job1.setPosition("SAP Developer");
 		job1.setRequirements(requirements1);
@@ -157,6 +161,14 @@ public class InitService {
 		employee1.setRole(Role.HR);
 		employee1.setJobs(jobs2);
 		employeeRepository.save(employee1);
+		
+		Employee employee2 = new Employee();
+		employee2.setEmployeeId("l.jankee");
+		employee2.setEmployeeName("Khaushik Jankee");
+		employee2.setEmployeePassword(bcryptEncoder.encode("12345"));
+		employee2.setRole(Role.HR);
+		employee2.setJobs(jobs2);
+		employeeRepository.save(employee2);
 		
 		Set<Skill> skills = new HashSet<>();
 		Set<Skill> skills1 = new HashSet<>();

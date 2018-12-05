@@ -69,7 +69,12 @@ public class CandidateUtility {
 		candidateDto.setInstitution(row.getCell(17).getStringCellValue());
 		candidateDto.setProgramStudy(row.getCell(18).getStringCellValue());
 		candidateDto.setGrade(row.getCell(19).getNumericCellValue());
-		skills.add(row.getCell(20).getStringCellValue());
+		int i = 20;
+		while(row.getCell(i) != null) {
+			skills.add(row.getCell(i).getStringCellValue());
+			i++;
+		}
+		//skills.add(row.getCell(20).getStringCellValue());
 		candidateDto.setSkills(skills);
 		return candidateDto;
 	}

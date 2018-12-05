@@ -61,16 +61,15 @@ export class InterviewDialogComponent implements OnInit {
     this.dialogRef.close();
     }
   }
-  //'mailto:'+${userCompletedPrerequisite.user.emailAdd}+'?subject=Registration for certification '+ ${userCompletedPrerequisite.certificationName}+' approved&body=Hi '+${userCompletedPrerequisite.user.firstname}+',%0D%0AYour proofs of completion of prerequisites have been approved. %0D%0AVoucher code: '"
   sendMailTech(){
     if(this.interviewer != null){
       this.createInterview();
-    let emailAdd = this.interviewer + '@accenture.com';
-    let subject = 'Technical Interview for '+this.data.candidate.name;
+    let emailAdd = this.interviewer + '@accenture.com';//Create interviewer email address
+    let subject = 'Technical Interview for '+this.data.candidate.name; //Define the subject
     let body = 'Hi '+this.interviewer.replace('.',' ')+',%0D%0A'+
                 'Kindly find the link to access the interview Feedback form below %0D%0A'+
-                this.link;
-    window.location.href='mailto:'+emailAdd+'?subject='+subject+'&body='+body;
+                this.link;//Define the body of the mail
+    window.location.href='mailto:'+emailAdd+'?subject='+subject+'&body='+body;//Send mail
   }else{
     this.message = 'Please enter an Interviewer';
   }

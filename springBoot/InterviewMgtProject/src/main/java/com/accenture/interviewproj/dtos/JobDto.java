@@ -13,7 +13,7 @@ public class JobDto {
 	
 	private String location;
 	
-	//private Integer noOfVacancy;
+	private Integer noOfVacancy;
 	
 	//@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime closingDate;
@@ -79,6 +79,14 @@ public class JobDto {
 
 	public void setRequirements(List<String> requirements) {
 		this.requirements = requirements;
+	}
+
+	public Integer getNoOfVacancy() {
+		return noOfVacancy;
+	}
+
+	public void setNoOfVacancy(Integer noOfVacancy) {
+		this.noOfVacancy = noOfVacancy;
 	}
 
 	
